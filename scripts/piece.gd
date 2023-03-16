@@ -8,7 +8,7 @@ func move(target):
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_ELASTIC)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "position", target, 0.3)
+	tween.tween_property(self, "position", target, .3)
 
 
 func dim():

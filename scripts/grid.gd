@@ -1,11 +1,16 @@
 extends Node2D
 
+# State machine
+enum {wait, move}
+var state
+
 # Grid variables
 @export var width : int
 @export var height : int
 @export var x_start : int
 @export var y_start : int
 @export var offset : int
+@export var y_offset : int
 
 # Piece array
 @export var possible_pieces = [
@@ -27,6 +32,7 @@ var controlling = false
 
 func _ready():
 	randomize()
+	state = move
 	all_pieces = make_2d_array()
 	spawn_pieces()
 
@@ -110,6 +116,7 @@ func swap_pieces(column, row, direction):
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
 	if first_piece != null and other_piece != null:
+		state = wait
 		all_pieces[column][row] = other_piece
 		all_pieces[column + direction.x][row + direction.y] = first_piece
 		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
@@ -132,7 +139,8 @@ func touch_difference(grid_1, grid_2):
 
 
 func _process(_delta):
-	touch_input()
+	if state == move:
+		touch_input()
 
 
 func find_matches():
@@ -168,6 +176,59 @@ func destroy_matched():
 				if all_pieces[i][j].matched:
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
-			
+	$"../collapse_timer".start()
+
+
+func collapse_columns():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] == null:
+				for k in range(j + 1, height):
+					if all_pieces[i][k] != null:
+						all_pieces[i][k].move(grid_to_pixel(i, j))
+						all_pieces[i][j] = all_pieces[i][k]
+						all_pieces[i][k] = null
+						break
+	$"../refill_timer".start()
+
+
+# after pieces get removed, more are spawned in
+func refill_columns():
+	for i in width:
+		for j in height:
+			# if the spot is empty we'll spawn a new piece
+			if all_pieces[i][j] == null:
+				var rand = floor(randf_range(0, possible_pieces.size()))
+				var piece = possible_pieces[rand].instantiate()
+				var loops = 0
+				while(match_at(i, j, piece.color) and loops < 100):
+					rand = floor(randf_range(0, possible_pieces.size()))
+					loops += 1
+					piece = possible_pieces[rand].instantiate()
+				add_child(piece)
+				piece.position = grid_to_pixel(i, j - y_offset)
+				piece.move(grid_to_pixel(i, j))
+				all_pieces[i][j] = piece
+	after_refill()
+
+func after_refill():
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				if match_at(i, j, all_pieces[i][j].color):
+					find_matches()
+					$"../destroy_timer".start()
+					return
+	state = move
+
+
 func _on_destroy_timer_timeout():
 	destroy_matched()
+
+
+func _on_collapse_timer_timeout():
+	collapse_columns()
+
+
+func _on_refill_timer_timeout():
+	refill_columns()
