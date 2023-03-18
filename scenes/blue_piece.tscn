@@ -6,7 +6,7 @@
 [ext_resource path="res://art/Tree Pieces/Birch/0001.png" type="Texture" id=4]
 [ext_resource path="res://art/Tree Pieces/Birch/0003.png" type="Texture" id=5]
 [ext_resource path="res://art/Tree Pieces/Birch/0004.png" type="Texture" id=6]
-[ext_resource path="res://art/Pieces/Blue Piece.png" type="Texture" id=7]
+[ext_resource path="res://art/Tree Pieces/piece_background.png" type="Texture" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {

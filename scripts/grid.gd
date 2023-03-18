@@ -16,7 +16,7 @@ export var y_offset : int
 export var use_refill : bool = true
 
 # Piece array
-var possible_pieces = [
+export (Array, PackedScene) var possible_pieces = [
 	preload("res://scenes/blue_piece.tscn"),
 	preload("res://scenes/green_piece.tscn"),
 	preload("res://scenes/orange_piece.tscn"),
@@ -213,7 +213,7 @@ func refill_columns():
 				while(match_at(i, j, piece.color) and loops < 100):
 					rand = floor(rand_range(0, possible_pieces.size()))
 					loops += 1
-					piece = possible_pieces[rand].instan()
+					piece = possible_pieces[rand].instance()
 				add_child(piece)
 				piece.position = grid_to_pixel(i, j - y_offset)
 				piece.move(grid_to_pixel(i, j))

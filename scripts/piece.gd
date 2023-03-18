@@ -15,8 +15,9 @@ func move(target):
 
 
 func dim():
-	var sprite = $Sprite
-	sprite.modulate = Color(1,1,1,0.5)
+	pass
+	# var sprite = $Sprite
+	# sprite.modulate = Color(1,1,1,0.5)
 
 
 func cut():
