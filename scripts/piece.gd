@@ -14,3 +14,8 @@ func move(target):
 func dim():
 	var sprite = $Sprite2D
 	sprite.modulate = Color(1,1,1,0.5)
+
+func cut():
+	var sprite = $AnimatedSprite2D
+	if sprite != null:
+		sprite.play("cut")

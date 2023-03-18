@@ -1,10 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://46k7qje6jda8"]
+[gd_scene load_steps=9 format=3 uid="uid://46k7qje6jda8"]
 
 [ext_resource type="PackedScene" uid="uid://bpm6yu1a2t2jn" path="res://scenes/piece.tscn" id="1_aj04w"]
-[ext_resource type="Texture2D" uid="uid://c5hr8cfcow3vf" path="res://art/Pieces/Orange Piece.png" id="2_1dywc"]
+[ext_resource type="Texture2D" uid="uid://7gj23lkqar7p" path="res://art/Tree Pieces/Tree Piece 2.png" id="2_lo402"]
+[ext_resource type="Texture2D" uid="uid://cdbcitd7wr01u" path="res://art/Tree Pieces/Pine/0001.png" id="3_ixlgl"]
+[ext_resource type="Texture2D" uid="uid://bckgbh20ftkwu" path="res://art/Tree Pieces/Pine/0002.png" id="4_gfucf"]
+[ext_resource type="Texture2D" uid="uid://k8ocqrk84cdq" path="res://art/Tree Pieces/Pine/0003.png" id="5_o7lyu"]
+[ext_resource type="Texture2D" uid="uid://bkstf3ka5hnci" path="res://art/Tree Pieces/Pine/0004.png" id="6_ir86w"]
+[ext_resource type="Texture2D" uid="uid://bbqkh237m44ko" path="res://art/Tree Pieces/Pine/0005.png" id="7_sw3fq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t2jdk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ixlgl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gfucf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_o7lyu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ir86w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_sw3fq")
+}],
+"loop": false,
+"name": &"cut",
+"speed": 10.0
+}]
 
 [node name="Orange_piece" instance=ExtResource("1_aj04w")]
 color = "orange"
 
 [node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("2_1dywc")
+visible = false
+texture = ExtResource("2_lo402")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_t2jdk")

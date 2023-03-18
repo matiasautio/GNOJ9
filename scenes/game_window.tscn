@@ -10,6 +10,12 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("1_d0fly")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(14.56, 25.72)
+color = Color(0.560784, 0.917647, 1, 1)
+
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("2_07qje")
 width = 8
