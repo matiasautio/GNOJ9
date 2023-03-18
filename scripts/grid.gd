@@ -5,18 +5,18 @@ enum {wait, move}
 var state
 
 # Grid variables
-@export var width : int
-@export var height : int
-@export var x_start : int
-@export var y_start : int
-@export var offset : int
-@export var y_offset : int
+export var width : int
+export var height : int
+export var x_start : int
+export var y_start : int
+export var offset : int
+export var y_offset : int
 
 # Gameplay variables
-@export var use_refill : bool = true
+export var use_refill : bool = true
 
 # Piece array
-@export var possible_pieces = [
+var possible_pieces = [
 	preload("res://scenes/blue_piece.tscn"),
 	preload("res://scenes/green_piece.tscn"),
 	preload("res://scenes/orange_piece.tscn"),
@@ -53,13 +53,13 @@ func spawn_pieces():
 	for i in width:
 		for j in height:
 			# pick a random numer and store it
-			var rand = floor(randf_range(0, possible_pieces.size()))
-			var piece = possible_pieces[rand].instantiate()
+			var rand = floor(rand_range(0, possible_pieces.size()))
+			var piece = possible_pieces[rand].instance()
 			var loops = 0
 			while(match_at(i, j, piece.color) and loops < 100):
-				rand = floor(randf_range(0, possible_pieces.size()))
+				rand = floor(rand_range(0, possible_pieces.size()))
 				loops += 1
-				piece = possible_pieces[rand].instantiate()
+				piece = possible_pieces[rand].instance()
 			# instantiate piece from array
 			add_child(piece)
 			piece.position = grid_to_pixel(i, j)
@@ -207,13 +207,13 @@ func refill_columns():
 		for j in height:
 			# if the spot is empty we'll spawn a new piece
 			if all_pieces[i][j] == null:
-				var rand = floor(randf_range(0, possible_pieces.size()))
-				var piece = possible_pieces[rand].instantiate()
+				var rand = floor(rand_range(0, possible_pieces.size()))
+				var piece = possible_pieces[rand].instance()
 				var loops = 0
 				while(match_at(i, j, piece.color) and loops < 100):
-					rand = floor(randf_range(0, possible_pieces.size()))
+					rand = floor(rand_range(0, possible_pieces.size()))
 					loops += 1
-					piece = possible_pieces[rand].instantiate()
+					piece = possible_pieces[rand].instan()
 				add_child(piece)
 				piece.position = grid_to_pixel(i, j - y_offset)
 				piece.move(grid_to_pixel(i, j))

@@ -1,21 +1,25 @@
 extends Node2D
 
-@export var color : String
-@onready var tween
+export var color : String
+onready var tween
 var matched = false
 
+
+func _ready():
+	tween = $Tween
+
+
 func move(target):
-	tween = create_tween()
-	tween.set_trans(Tween.TRANS_ELASTIC)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "position", target, .3)
+	tween.interpolate_property(self, "position", position, target, .3, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	tween.start()
 
 
 func dim():
-	var sprite = $Sprite2D
+	var sprite = $Sprite
 	sprite.modulate = Color(1,1,1,0.5)
 
+
 func cut():
-	var sprite = $AnimatedSprite2D
+	var sprite = $AnimatedSprite
 	if sprite != null:
 		sprite.play("cut")

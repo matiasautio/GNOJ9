@@ -1,42 +1,27 @@
-[gd_scene load_steps=9 format=3 uid="uid://bup52ny0eqguj"]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource type="PackedScene" uid="uid://bpm6yu1a2t2jn" path="res://scenes/piece.tscn" id="1_hoe54"]
-[ext_resource type="Texture2D" uid="uid://vi3rw2p2vyqk" path="res://art/Tree Pieces/Tree Piece 1.png" id="2_bc6ql"]
-[ext_resource type="Texture2D" uid="uid://vm6or4oj4c2r" path="res://art/Tree Pieces/Fir/0001.png" id="3_qyppu"]
-[ext_resource type="Texture2D" uid="uid://dsnkareymghmi" path="res://art/Tree Pieces/Fir/0002.png" id="4_0uiin"]
-[ext_resource type="Texture2D" uid="uid://bfcgj204vg4xn" path="res://art/Tree Pieces/Fir/0003.png" id="5_lutn1"]
-[ext_resource type="Texture2D" uid="uid://c6cyboglq48sy" path="res://art/Tree Pieces/Fir/0004.png" id="6_iecr6"]
-[ext_resource type="Texture2D" uid="uid://cnxa7v1d7l7l6" path="res://art/Tree Pieces/Fir/0005.png" id="7_hktfp"]
+[ext_resource path="res://scenes/piece.tscn" type="PackedScene" id=1]
+[ext_resource path="res://art/Tree Pieces/Fir/0005.png" type="Texture" id=2]
+[ext_resource path="res://art/Tree Pieces/Fir/0002.png" type="Texture" id=3]
+[ext_resource path="res://art/Tree Pieces/Fir/0004.png" type="Texture" id=4]
+[ext_resource path="res://art/Tree Pieces/Fir/0001.png" type="Texture" id=5]
+[ext_resource path="res://art/Tree Pieces/Fir/0003.png" type="Texture" id=6]
+[ext_resource path="res://art/Pieces/Green Piece.png" type="Texture" id=7]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_8w7ue"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_qyppu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_0uiin")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_lutn1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_iecr6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_hktfp")
-}],
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 2 ) ],
 "loop": false,
-"name": &"cut",
+"name": "default",
 "speed": 10.0
-}]
+} ]
 
-[node name="green_piece" instance=ExtResource("1_hoe54")]
+[node name="piece" instance=ExtResource( 1 )]
 color = "green"
 
-[node name="Sprite2D" parent="." index="0"]
+[node name="Sprite" parent="." index="0"]
 visible = false
-texture = ExtResource("2_bc6ql")
+texture = ExtResource( 7 )
 
-[node name="AnimatedSprite2D" parent="." index="1"]
-sprite_frames = SubResource("SpriteFrames_8w7ue")
+[node name="AnimatedSprite" parent="." index="1"]
+frames = SubResource( 1 )

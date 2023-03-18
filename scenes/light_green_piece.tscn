@@ -1,13 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6pjgw4x1aicm"]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource type="PackedScene" uid="uid://bpm6yu1a2t2jn" path="res://scenes/piece.tscn" id="1_tjj2a"]
-[ext_resource type="Texture2D" uid="uid://nwvfcjvr0ern" path="res://art/Pieces/Light Green Piece.png" id="2_rlacb"]
+[ext_resource path="res://scenes/piece.tscn" type="PackedScene" id=1]
+[ext_resource path="res://art/Pieces/Light Green Piece.png" type="Texture" id=2]
 
-[node name="Light_green_piece" instance=ExtResource("1_tjj2a")]
+[node name="piece" instance=ExtResource( 1 )]
 color = "light_green"
 
-[node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("2_rlacb")
-
-[node name="AnimatedSprite2D" parent="." index="1"]
-animation = &""
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 2 )
