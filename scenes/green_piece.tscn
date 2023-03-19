@@ -12,7 +12,7 @@
 animations = [ {
 "frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 2 ) ],
 "loop": false,
-"name": "default",
+"name": "cut",
 "speed": 10.0
 } ]
 
@@ -25,3 +25,4 @@ texture = ExtResource( 7 )
 
 [node name="AnimatedSprite" parent="." index="1"]
 frames = SubResource( 1 )
+animation = "cut"

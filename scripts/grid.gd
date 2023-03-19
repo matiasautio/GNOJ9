@@ -1,5 +1,8 @@
 extends Node2D
 
+
+signal match_made(number_of_tiles)
+
 # State machine
 enum {wait, move}
 var state
@@ -179,12 +182,15 @@ func find_matches():
 
 
 func destroy_matched():
+	var number_of_tiles = 0
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
+					number_of_tiles += 1
+	emit_signal("match_made", number_of_tiles)
 	$"../collapse_timer".start()
 
 
