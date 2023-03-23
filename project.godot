@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="GNOJ9"
-run/main_scene="res://scenes/game_window.tscn"
+run/main_scene="res://scenes/intro.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -31,6 +31,11 @@ common/drop_mouse_on_gui_input_disabled=true
 ui_touch={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+skip_dialogue={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/DialogueSystem.gd" type="Script" id=1]
+[ext_resource path="res://ui/dialogue_theme.tres" type="Theme" id=2]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+
+[sub_resource type="Animation" id=2]
+resource_name = "indicator_blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 3.13833, 1 ),
+"update": 0,
+"values": [ Vector2( 410, 110 ), Vector2( 410, 125 ), Vector2( 410, 110 ) ]
+}
+
+[node name="DialogueBoxHolder" type="Node2D"]
+position = Vector2( 0, 600 )
+
+[node name="DialogueBox" type="ColorRect" parent="."]
+margin_left = 48.0
+margin_top = 49.0
+margin_right = 498.0
+margin_bottom = 199.0
+theme = ExtResource( 2 )
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 1 )
+play_on_start = true
+dialogue_path = "res://dialogue/intro.json"
+
+[node name="ColorRect" type="ColorRect" parent="DialogueBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 110.0
+color = Color( 0.172549, 0.192157, 0.215686, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="DialogueBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 450.0
+margin_bottom = 150.0
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="Name" type="RichTextLabel" parent="DialogueBox"]
+margin_left = 357.0
+margin_top = 9.0
+margin_right = 399.0
+margin_bottom = 31.0
+rect_scale = Vector2( 2, 2 )
+bbcode_enabled = true
+bbcode_text = "name"
+text = "name"
+
+[node name="Text" type="RichTextLabel" parent="DialogueBox"]
+margin_left = 33.0
+margin_top = 47.0
+margin_right = 226.0
+margin_bottom = 131.0
+rect_scale = Vector2( 2, 2 )
+bbcode_enabled = true
+bbcode_text = "Congratulations! You are one of select few to have access to our new forestry tool."
+text = "Congratulations! You are one of select few to have access to our new forestry tool."
+
+[node name="Timer" type="Timer" parent="DialogueBox"]
+
+[node name="Continue" type="Control" parent="DialogueBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -40.0
+margin_bottom = -17.9992
+
+[node name="Indicator" type="Polygon2D" parent="DialogueBox/Continue"]
+position = Vector2( 12, 127 )
+color = Color( 0.87451, 0.592157, 0.0196078, 1 )
+polygon = PoolVector2Array( -17, -21, 17, -21, 0, 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DialogueBox/Continue/Indicator"]
+autoplay = "indicator_blink"
+anims/RESET = SubResource( 1 )
+anims/indicator_blink = SubResource( 2 )
+
+[node name="continue" type="Button" parent="DialogueBox/Continue/Indicator"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -17.0
+margin_top = -21.0
+margin_right = 18.0
+margin_bottom = 24.0
+rect_scale = Vector2( 1, 0.5 )
+
+[connection signal="button_down" from="DialogueBox/Continue/Indicator/continue" to="DialogueBox" method="_on_continue_button_down"]
