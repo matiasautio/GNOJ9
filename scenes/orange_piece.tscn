@@ -20,9 +20,7 @@ animations = [ {
 color = "orange"
 
 [node name="Sprite" parent="." index="0"]
-visible = false
 texture = ExtResource( 7 )
 
 [node name="AnimatedSprite" parent="." index="1"]
 frames = SubResource( 1 )
-animation = "cut"

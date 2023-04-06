@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/DialogueSystem.gd" type="Script" id=1]
 [ext_resource path="res://ui/dialogue_theme.tres" type="Theme" id=2]
+[ext_resource path="res://ui/tool_button_theme.tres" type="Theme" id=3]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -71,6 +72,13 @@ text = "Congratulations! You are one of select few to have access to our new for
 
 [node name="Timer" type="Timer" parent="DialogueBox"]
 
+[node name="skip_area" type="Button" parent="DialogueBox"]
+margin_left = 27.0
+margin_top = 53.0
+margin_right = 403.0
+margin_bottom = 211.0
+theme = ExtResource( 3 )
+
 [node name="Continue" type="Control" parent="DialogueBox"]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -101,4 +109,5 @@ margin_right = 18.0
 margin_bottom = 24.0
 rect_scale = Vector2( 1, 0.5 )
 
+[connection signal="button_down" from="DialogueBox/skip_area" to="DialogueBox" method="_on_skip_area_button_down"]
 [connection signal="button_down" from="DialogueBox/Continue/Indicator/continue" to="DialogueBox" method="_on_continue_button_down"]

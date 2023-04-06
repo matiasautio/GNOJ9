@@ -8,6 +8,7 @@ var boss_annoyance = 0
 var annoyance_treshold = 3
 
 var current_dialogue = null
+var current_level
 
 func _ready():
 	boss_health = get_node("/root/game_data").boss_health
@@ -16,27 +17,30 @@ func _ready():
 func boss_clicked():
 	if can_talk_to:
 		var current_tool = $"../../player_status".current_tool
-		if current_tool == $"../../player_status".none:
-			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
-			$"../../level_one".next_level()
-			# current_dialogue = "level_one_continue"
-		elif current_tool == $"../../player_status".saw:
-			boss_health -= 1
-			boss_annoyance += 1
-			if boss_health == 0:
-				$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_dead.json")
-				can_talk_to = false
-				current_dialogue = "hit_boss_dead"
-			else:
-				if boss_annoyance < annoyance_treshold:
-					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss.json")
+		if current_level == 1:
+			if current_tool == $"../../player_status".none:
+				$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
+				$"../../level_one".next_level()
+				# current_dialogue = "level_one_continue"
+			elif current_tool == $"../../player_status".saw:
+				boss_health -= 1
+				boss_annoyance += 1
+				if boss_health == 0:
+					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_dead.json")
 					can_talk_to = false
-					current_dialogue = "hit_boss"
+					current_dialogue = "hit_boss_dead"
 				else:
-					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_fired.json")
-					can_talk_to = false
-					current_dialogue = "hit_boss_fired"
-			get_node("/root/game_data").boss_health = boss_health
+					if boss_annoyance < annoyance_treshold:
+						$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss.json")
+						can_talk_to = false
+						current_dialogue = "hit_boss"
+					else:
+						$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_fired.json")
+						can_talk_to = false
+						current_dialogue = "hit_boss_fired"
+		elif current_level == 2:
+			pass
+		get_node("/root/game_data").boss_health = boss_health
 
 
 func _on_boss_button_button_down():

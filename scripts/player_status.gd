@@ -20,3 +20,4 @@ func _on_tool_button_button_down():
 		current_tool = saw
 	else:
 		current_tool = none
+	print("current tool is ", current_tool)

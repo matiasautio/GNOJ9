@@ -9,10 +9,12 @@ var tool_is_clicked_first_time = false
 var is_level_goal_reached = false
 
 var current_dialogue = null
+const current_level = 1
 
 
 func _ready():
-	pass # Replace with function body.
+	get_node("/root/game_data").current_level = current_level
+	$"../Control/Boss".current_level = current_level
 	
 
 #func _process(delta):
@@ -64,4 +66,4 @@ func _on_continue_button_down():
 
 
 func next_level():
-	get_tree().change_scene("res://scenes/game_window.tscn")
+	get_tree().change_scene("res://scenes/game_window_two.tscn")

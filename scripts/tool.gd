@@ -13,6 +13,7 @@ func toggle_selection():
 	is_selected = !is_selected
 	if is_selected:
 		tool_sprite.play("selected")
+		$"../../grid".can_play = true
 	else:
 		tool_sprite.play("default")
 

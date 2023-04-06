@@ -89,3 +89,20 @@ func trigger_dialogue(path):
 func _on_continue_button_down():
 	next_phrase()
 	emit_signal("next_phrase_requested")
+
+
+func _on_skip_area_button_down():
+	if self.visible == true:
+		if finished:
+			next_phrase()
+			emit_signal("next_phrase_requested")
+		else:
+			$Text.visible_characters = len($Text.text)
+	# tried emulating button press here, didn't work
+#	print("skip key pressed")
+#	var a = InputEventKey.new()
+#	a.scancode = KEY_ENTER
+#	a.pressed = true # change to false to simulate a key release
+#	Input.parse_input_event(a)
+#	a.pressed = false
+#	$skip_area/skip_key_release.start()
