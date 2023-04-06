@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="GNOJ9"
-run/main_scene="res://scenes/intro.tscn"
+run/main_scene="res://scenes/main_menu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+game_data="*res://scenes/game_data.tscn"
 
 [display]
 

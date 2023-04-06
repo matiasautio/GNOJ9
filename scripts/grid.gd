@@ -3,6 +3,9 @@ extends Node2D
 
 signal match_made(number_of_tiles)
 
+# General gameplay variables
+var can_play = false
+
 # State machine
 enum {wait, move}
 var state
@@ -103,19 +106,20 @@ func is_in_grid(grid_position):
 
 
 func touch_input():
-	if Input.is_action_just_pressed("ui_touch"):
-		var mouse = get_global_mouse_position()
-		mouse = pixel_to_grid(mouse.x, mouse.y)
-		if is_in_grid(mouse):
-			first_touch = mouse
-			controlling = true
-	if Input.is_action_just_released("ui_touch"):
-		var mouse = get_global_mouse_position()
-		mouse = pixel_to_grid(mouse.x, mouse.y)
-		if is_in_grid(mouse) and controlling:
-			final_touch = mouse
-			touch_difference(first_touch, final_touch)
-		controlling = false
+	if can_play:
+		if Input.is_action_just_pressed("ui_touch"):
+			var mouse = get_global_mouse_position()
+			mouse = pixel_to_grid(mouse.x, mouse.y)
+			if is_in_grid(mouse):
+				first_touch = mouse
+				controlling = true
+		if Input.is_action_just_released("ui_touch"):
+			var mouse = get_global_mouse_position()
+			mouse = pixel_to_grid(mouse.x, mouse.y)
+			if is_in_grid(mouse) and controlling:
+				final_touch = mouse
+				touch_difference(first_touch, final_touch)
+			controlling = false
 
 
 func swap_pieces(column, row, direction):
