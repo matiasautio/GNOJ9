@@ -230,6 +230,7 @@ func refill_columns():
 				all_pieces[i][j] = piece
 	after_refill()
 
+
 func after_refill():
 	for i in width:
 		for j in height:
@@ -254,3 +255,17 @@ func _on_refill_timer_timeout():
 		refill_columns()
 	else:
 		after_refill()
+
+
+func pause():
+	$"../destroy_timer".stop()
+	$"../collapse_timer".stop()
+	$"../refill_timer".stop()
+
+
+func reset():
+	for child in self.get_children():
+		self.remove_child(child)
+		child.queue_free()
+	state = move
+	spawn_pieces()

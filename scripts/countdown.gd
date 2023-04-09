@@ -4,7 +4,7 @@ extends RichTextLabel
 onready var time_text = self
 #onready var stopwatch = get_node("/root/Data").get_node("stopwatch")
 const max_elapsed_time = 20
-const countdown_length = 30
+export var countdown_length = 30
 var stopwatch = 0
 var current_time = 0
 var time_left
@@ -14,6 +14,8 @@ var orig_color
 var can_reset = true
 
 var countdown = true
+
+var times_played = 0
 
 
 func _ready():
@@ -55,7 +57,11 @@ func _on_countdown_timer_timeout():
 			time_text.modulate = Color(0.875,0.592,0.02,1)
 		$countdown_timer.start()
 	elif time_left == 0:
-		$"../../grid".can_play = false
-		$"../Boss".toggle_status()
-		$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_001.json")
+		times_played += 1
+		time_left = countdown_length
+		time_text.modulate = orig_color
+		if times_played == 1:
+			$"../../level_two".prompt_end(1)
+		else:
+			$"../../level_two".prompt_end(0)
 		

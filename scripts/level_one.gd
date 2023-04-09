@@ -33,8 +33,14 @@ func level_goal_reached():
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_002.json")
 
 
+func prompt_end():
+	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_wanna_quit.json")
+	current_dialogue = "level_one_wanna_quit"
+
+
 func _on_score_keeper_level_goal_reached():
 	level_goal_reached()
+	$"../grid".pause()
 
 
 func _on_DialogueBox_dialog_box_closed():
@@ -46,16 +52,25 @@ func _on_DialogueBox_dialog_box_closed():
 		$"../grid".can_play = true
 		$"../Control/Boss".toggle_status()
 	if level_state == 3:
-		$"../Control/continue_game".visible = true
+		display_continue_screen()
 	if current_dialogue == "level_one_continue":
 		next_level()
+	if current_dialogue == "level_one_stay":
+		reset()
+	if current_dialogue == "level_one_wanna_quit":
+		display_continue_screen()
 	current_dialogue = null
+
+
+func display_continue_screen():
+	$"../Control/continue_game".visible = true
 
 
 func _on_stay_button_down():
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_stay.json")
 	$"../Control/continue_game".visible = false
 	$"../Control/Boss".can_talk_to = true
+	current_dialogue = "level_one_stay"
 
 
 func _on_continue_button_down():
@@ -63,6 +78,11 @@ func _on_continue_button_down():
 	$"../Control/continue_game".visible = false
 	$"../Control/Boss".can_talk_to = true
 	current_dialogue = "level_one_continue"
+
+
+func reset():
+	$"../grid".reset()
+	$"../score_keeper".reset_score()
 
 
 func next_level():
