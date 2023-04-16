@@ -15,6 +15,7 @@ func toggle_selection():
 		tool_sprite.play("selected")
 		$"../../grid".can_play = true
 	else:
+		$"../../grid".can_play = false
 		tool_sprite.play("default")
 
 

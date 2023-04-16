@@ -244,18 +244,6 @@ position = Vector2( 389, 881 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 9 )
 
-[node name="DialogueBoxHolder" parent="Control" instance=ExtResource( 14 )]
-position = Vector2( 15, 524 )
-
-[node name="DialogueBox" parent="Control/DialogueBoxHolder" index="0"]
-dialogue_path = "res://dialogue/level_two_000.json"
-
-[node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="2"]
-custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-
-[node name="Text" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
-custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-
 [node name="Boss" type="AnimatedSprite" parent="Control"]
 position = Vector2( 103, 938 )
 frames = SubResource( 1 )
@@ -276,6 +264,18 @@ theme = ExtResource( 18 )
 visible = false
 position = Vector2( 103, 938 )
 texture = ExtResource( 12 )
+
+[node name="DialogueBoxHolder" parent="Control" instance=ExtResource( 14 )]
+position = Vector2( 15, 524 )
+
+[node name="DialogueBox" parent="Control/DialogueBoxHolder" index="0"]
+dialogue_path = "res://dialogue/level_two_000.json"
+
+[node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
+custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
+
+[node name="Text" parent="Control/DialogueBoxHolder/DialogueBox" index="4"]
+custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="Screen" type="Sprite" parent="Control"]
 visible = false
@@ -332,17 +332,22 @@ color = Color( 1, 1, 1, 0 )
 [node name="level_two" type="Node" parent="."]
 script = ExtResource( 21 )
 
+[node name="grid_pauser" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [connection signal="match_made" from="grid" to="score_keeper" method="_on_grid_match_made"]
 [connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
 [connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
 [connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/tool_saw/tool_button" to="player_status" method="_on_tool_button_button_down"]
+[connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="Control/Boss" method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="level_two" method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
 [connection signal="button_down" from="Control/continue_game/stay" to="level_two" method="_on_stay_button_down"]
 [connection signal="button_down" from="Control/continue_game/continue" to="level_two" method="_on_continue_button_down"]
+[connection signal="timeout" from="grid_pauser" to="level_two" method="_on_grid_pauser_timeout"]
 
 [editable path="Control/tool_saw"]
 [editable path="Control/DialogueBoxHolder"]

@@ -1,10 +1,10 @@
 extends Node2D
 
 
-signal match_made(number_of_tiles)
+signal match_made(number_of_tiles, tile_group)
 
 # General gameplay variables
-var can_play = false
+export var can_play = false
 
 # State machine
 enum {wait, move}
@@ -33,10 +33,20 @@ export (Array, PackedScene) var possible_pieces = [
 # Current pieces in the scene
 var all_pieces = []
 
+# Swap back variables
+var piece_one = null
+var piece_two = null
+var last_place = Vector2(0,0)
+var last_direction = Vector2(0,0)
+var move_checked = false
+
 # Touch variable
 var first_touch = Vector2(0,0)
 var final_touch = Vector2(0,0)
 var controlling = false
+
+# Pausing and resetting variables
+var asd
 
 
 func _ready():
@@ -126,12 +136,29 @@ func swap_pieces(column, row, direction):
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
 	if first_piece != null and other_piece != null:
+		store_info(first_piece, other_piece, Vector2(column, row), direction)
 		state = wait
 		all_pieces[column][row] = other_piece
 		all_pieces[column + direction.x][row + direction.y] = first_piece
 		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
 		other_piece.move(grid_to_pixel(column, row))
-		find_matches()
+		if !move_checked:
+			find_matches()
+
+func store_info(first_piece, other_piece, place, direction):
+	piece_one = first_piece
+	piece_two = other_piece
+	last_place = place
+	last_direction = direction
+	pass
+
+
+func swap_back():
+	# Move the previously moved pieces back to the previous place
+	if piece_one != null and piece_two != null:
+		swap_pieces(last_place.x, last_place.y, last_direction)
+	state = move
+	move_checked = false
 
 
 func touch_difference(grid_1, grid_2):
@@ -186,16 +213,24 @@ func find_matches():
 
 
 func destroy_matched():
-	var number_of_tiles = 0
+	var number_of_tiles = 0 # Used to emit the score
+	var tile_group
+	var was_matched = false
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
+					was_matched = true
+					tile_group = all_pieces[i][j].get_groups()
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 					number_of_tiles += 1
-	emit_signal("match_made", number_of_tiles)
-	$"../collapse_timer".start()
+	move_checked = true
+	if was_matched:
+		emit_signal("match_made", number_of_tiles, tile_group)
+		$"../collapse_timer".start()
+	else:
+		swap_back()
 
 
 func collapse_columns():
@@ -240,6 +275,7 @@ func after_refill():
 					$"../destroy_timer".start()
 					return
 	state = move
+	move_checked = false
 
 
 func _on_destroy_timer_timeout():
@@ -258,14 +294,17 @@ func _on_refill_timer_timeout():
 
 
 func pause():
+	print("pausing grid")
 	$"../destroy_timer".stop()
 	$"../collapse_timer".stop()
 	$"../refill_timer".stop()
 
-
 func reset():
+	print("resetting grid")
+	destroy_matched()
 	for child in self.get_children():
 		self.remove_child(child)
 		child.queue_free()
 	state = move
 	spawn_pieces()
+

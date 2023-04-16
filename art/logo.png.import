@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/0005.png-2493b1306f76eccf89f421dbc2e61b78.stex"
+path="res://.import/logo.png-b31b2ea6758d8cc9ccd6d1a1783e6877.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Protester Pieces/0005.png"
-dest_files=[ "res://.import/0005.png-2493b1306f76eccf89f421dbc2e61b78.stex" ]
+source_file="res://art/logo.png"
+dest_files=[ "res://.import/logo.png-b31b2ea6758d8cc9ccd6d1a1783e6877.stex" ]
 
 [params]
 

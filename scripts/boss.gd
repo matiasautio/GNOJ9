@@ -42,7 +42,9 @@ func boss_clicked():
 					can_talk_to = false
 					current_dialogue = "hit_boss_fired"
 		elif current_level == 2:
-			pass
+			$"../../level_two".prompt_end()
+		elif current_level == 3:
+			$"../../level_three".prompt_end()
 		get_node("/root/game_data").boss_health = boss_health
 
 

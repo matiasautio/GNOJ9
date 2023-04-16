@@ -8,6 +8,9 @@ var current_dialogue = null
 
 const current_level = 2
 
+# grid pause hack
+var times_paused = 0
+
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
@@ -54,7 +57,8 @@ func prompt_end(times_played = 0):
 	var score = $"../score_keeper".score
 	var boss = $"../Control/Boss"
 	
-	$"../grid".pause()
+	ask_for_grid_pause()
+	$"../Control/timer_text".pause_countdown()
 	
 	# special case if player is ending the game by getting fired or killing the boss
 	if boss.current_dialogue == "hit_boss_dead" or boss.current_dialogue == "hit_boss_fired":
@@ -70,20 +74,21 @@ func prompt_end(times_played = 0):
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_restart.json")
 			current_dialogue = "level_two_restart"
 	else:
-		if score > 0:
-			boss.can_talk_to = true
-			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_wanna_quit.json")
-			current_dialogue = "level_two_wanna_quit"
-		else:
-			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_restart.json")
-			current_dialogue = "level_two_restart"
+#		if score > 0:
+		boss.can_talk_to = true
+		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_wanna_quit.json")
+		current_dialogue = "level_two_wanna_quit"
+		# if the player has passed once, we'll just let them leave
+#		else:
+#			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_restart.json")
+#			current_dialogue = "level_two_restart"
 
 
 func reset_level():
 	$"../Control/timer_text".start_countdown()
 	$"../score_keeper".reset_score()
 	$"../grid".reset()
-	$"../grid".can_play = true
+	$"../grid".can_play = $"../Control/tool_saw".is_selected
 
 
 func _on_stay_button_down():
@@ -97,3 +102,16 @@ func _on_continue_button_down():
 	$"../Control/continue_game".visible = false
 	current_dialogue = "level_two_continue"
 	#prompt_end()
+
+
+func ask_for_grid_pause():
+	if times_paused < 3:
+		times_paused += 1
+		$"../grid".pause()
+		$"../grid_pauser".start()
+	elif times_paused == 3:
+		times_paused = 0
+
+
+func _on_grid_pauser_timeout():
+	ask_for_grid_pause()

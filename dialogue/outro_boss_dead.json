@@ -1,7 +1,7 @@
 [
-	{"Name":"BOSS", "Text":"All the fun sides of forestry with none of the bad."},
-	{"Name":"BOSS", "Text":"No sawdust, no noise, no screaming protesters."},
-	{"Name":"BOSS", "Text":"I bet you enjoyed your first day!"},
-	{"Name":"BOSS", "Text":"I think I should say 'thank you for playing'"},
-	{"Name":"BOSS", "Text":"but I'll just say don't be late tomorrow, we continue at 06:00."},
+	{"Name":"PROTESTER", "Text":"Did you just motorsaw that guy to death?"},
+	{"Name":"PROTESTER", "Text":"We cannot condone this kinda violent behaviour"},
+	{"Name":"PROTESTER", "Text":"but this might stop the logging for a while."},
+	{"Name":"PROTESTER", "Text":"So eh, I think I should say 'thank you'?"},
+	{"Name":"PROTESTER", "Text":"Anyway, you better leave now. I'm calling the cops!"},
 ]
