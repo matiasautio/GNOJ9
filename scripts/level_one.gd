@@ -96,7 +96,7 @@ func reset():
 
 
 func next_level():
-	get_tree().change_scene("res://scenes/game_window_two.tscn")
+	var _x = get_tree().change_scene("res://scenes/game_window_two.tscn")
 
 
 func ask_for_grid_pause():

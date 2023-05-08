@@ -10,14 +10,10 @@ func _ready():
 	current_tool = none
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func _on_tool_button_button_down():
 	if current_tool != saw:
 		current_tool = saw
 	else:
 		current_tool = none
-	print("current tool is ", current_tool)
+	# print("current tool is ", current_tool)
+	$ToolChangeSound.play()

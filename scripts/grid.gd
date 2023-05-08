@@ -50,6 +50,10 @@ var asd
 
 
 func _ready():
+	var _x = $"../destroy_timer".connect("timeout", self, "_on_destroy_timer_timeout")
+	_x = $"../collapse_timer".connect("timeout", self, "_on_collapse_timer_timeout")
+	_x = $"../refill_timer".connect("timeout", self, "_on_refill_timer_timeout")
+	_x = connect("match_made", $"../score_keeper", "_on_grid_match_made")
 	randomize()
 	state = move
 	all_pieces = make_2d_array()
@@ -142,6 +146,7 @@ func swap_pieces(column, row, direction):
 		all_pieces[column + direction.x][row + direction.y] = first_piece
 		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
 		other_piece.move(grid_to_pixel(column, row))
+		$Swap.play()
 		if !move_checked:
 			find_matches()
 
@@ -150,7 +155,6 @@ func store_info(first_piece, other_piece, place, direction):
 	piece_two = other_piece
 	last_place = place
 	last_direction = direction
-	pass
 
 
 func swap_back():
@@ -197,6 +201,7 @@ func find_matches():
 							all_pieces[i + 1][j].matched = true
 							all_pieces[i + 1][j].dim()
 							all_pieces[i + 1][j].cut()
+							$Destroy.play_audio()
 				if j > 0 && j < height - 1:
 					if all_pieces[i][j - 1] !=null && all_pieces[i][j + 1] != null:
 						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
@@ -209,6 +214,7 @@ func find_matches():
 							all_pieces[i][j + 1].matched = true
 							all_pieces[i][j + 1].dim()
 							all_pieces[i][j + 1].cut()
+							$Destroy.play_audio()
 	$"../destroy_timer".start()
 
 
@@ -225,11 +231,13 @@ func destroy_matched():
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 					number_of_tiles += 1
+					
 	move_checked = true
 	if was_matched:
 		emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
 	else:
+		$FailSound.play()
 		swap_back()
 
 
@@ -261,12 +269,13 @@ func refill_columns():
 					piece = possible_pieces[rand].instance()
 				add_child(piece)
 				piece.position = grid_to_pixel(i, j - y_offset)
-				piece.move(grid_to_pixel(i, j))
+				piece.move(grid_to_pixel(i, j))			
 				all_pieces[i][j] = piece
 	after_refill()
 
 
 func after_refill():
+	$NewTreesFalling.play_audio()
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
@@ -281,12 +290,18 @@ func after_refill():
 func _on_destroy_timer_timeout():
 	destroy_matched()
 
+	
+func _on_sound_timer_timeout():
+	$NewTreesFalling.play_audio()
+
 
 func _on_collapse_timer_timeout():
+	$NewTreesFalling.play_audio()
 	collapse_columns()
 
 
 func _on_refill_timer_timeout():
+	$NewTreesFalling.play_audio()
 	if use_refill:
 		refill_columns()
 	else:
@@ -299,12 +314,14 @@ func pause():
 	$"../collapse_timer".stop()
 	$"../refill_timer".stop()
 
+
 func reset():
 	print("resetting grid")
 	destroy_matched()
 	for child in self.get_children():
-		self.remove_child(child)
-		child.queue_free()
+		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer"):
+			self.remove_child(child)
+			child.queue_free()
 	state = move
 	spawn_pieces()
 

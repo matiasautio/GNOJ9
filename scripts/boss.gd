@@ -57,11 +57,11 @@ func _on_boss_button_button_down():
 func _on_DialogueBox_dialog_box_closed():
 	if current_dialogue != null:
 		if current_dialogue == "hit_boss_fired":
-			get_tree().change_scene("res://scenes/main_menu.tscn")
+			var _x = get_tree().change_scene("res://scenes/main_menu.tscn")
 		if current_dialogue == "hit_boss_dead":
-			get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
+			var _x = get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
 		can_talk_to = true
-		current_dialogue == null
+		current_dialogue = null
 
 
 func toggle_status():

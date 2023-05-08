@@ -13,6 +13,7 @@ signal next_phrase_requested
 signal dialog_box_closed
 
 
+
 func _ready():
 	if play_on_start:
 		start_dialogue()
@@ -27,11 +28,10 @@ func _process(_delta):
 				emit_signal("next_phrase_requested")
 			else:
 				$Text.visible_characters = len($Text.text)
-	
+
 
 func start_dialogue():
 	# get_parent().get_parent().is_interaction_active = true
-	
 	visible = true
 	phrase_num = 0
 	$Timer.wait_time = text_speed
@@ -72,8 +72,8 @@ func next_phrase() -> void:
 	
 	while $Text.visible_characters < len($Text.bbcode_text):
 		$Text.visible_characters += 1
-		
 		$Timer.start()
+		$BossVoice.play_audio()
 		yield($Timer, "timeout")
 	
 	finished = true

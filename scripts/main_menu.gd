@@ -10,6 +10,7 @@ func _ready():
 
 func _on_start_game_button_down():
 	$BackgroundColor/Control/piece/AnimatedSprite.play("cut")
+	$AudioStreamPlayer.play()
 
 
 func _on_AnimatedSprite_animation_finished():
@@ -17,4 +18,4 @@ func _on_AnimatedSprite_animation_finished():
 
 
 func _on_start_delay_timeout():
-	get_tree().change_scene("res://scenes/intro.tscn")
+	var _x = get_tree().change_scene("res://scenes/intro.tscn")

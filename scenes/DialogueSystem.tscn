@@ -105,4 +105,6 @@ margin_bottom = 84.5
 
 [node name="Timer" type="Timer" parent="DialogueBox"]
 
+[node name="BossVoice" type="AudioStreamPlayer" parent="DialogueBox"]
+
 [connection signal="button_down" from="DialogueBox/Indicator/Button" to="DialogueBox" method="_on_Button_button_down"]

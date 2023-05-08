@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
-[ext_resource path="res://scripts/grid.gd" type="Script" id=2]
+[ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/screen.png" type="Texture" id=3]
 [ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=5]
@@ -21,6 +21,7 @@
 [ext_resource path="res://scripts/player_status.gd" type="Script" id=19]
 [ext_resource path="res://scenes/yellow_piece.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scripts/level_two.gd" type="Script" id=21]
+[ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=22]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -40,6 +41,9 @@ animations = [ {
 [node name="player_status" type="Node" parent="."]
 script = ExtResource( 19 )
 
+[node name="ToolChangeSound" type="AudioStreamPlayer" parent="player_status"]
+stream = ExtResource( 22 )
+
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 margin_left = -668.0
@@ -53,14 +57,7 @@ margin_right = 577.0
 margin_bottom = 1027.0
 color = Color( 0.235294, 0.341176, 0.305882, 1 )
 
-[node name="grid" type="Node2D" parent="."]
-script = ExtResource( 2 )
-width = 8
-height = 10
-x_start = 64
-y_start = 800
-offset = 64
-y_offset = -2
+[node name="grid" parent="." instance=ExtResource( 2 )]
 possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 20 ) ]
 
 [node name="destroy_timer" type="Timer" parent="."]
@@ -336,10 +333,6 @@ script = ExtResource( 21 )
 wait_time = 0.1
 one_shot = true
 
-[connection signal="match_made" from="grid" to="score_keeper" method="_on_grid_match_made"]
-[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
-[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
-[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/tool_saw/tool_button" to="player_status" method="_on_tool_button_button_down"]
 [connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]

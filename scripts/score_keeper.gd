@@ -13,14 +13,9 @@ func _ready():
 	score_text.bbcode_text = "[center]" + String(score) + "[/center]"
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func _on_grid_match_made(number_of_tiles, tile_group):
 	#print(number_of_tiles)
-	print(tile_group)
+	#print(tile_group)
 	score += 70 * number_of_tiles
 	score_text.bbcode_text = "[center]" + String(score) + "[/center]"
 	# no points for protesters

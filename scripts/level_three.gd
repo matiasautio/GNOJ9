@@ -50,7 +50,7 @@ func _on_DialogueBox_dialog_box_closed():
 	current_dialogue = null
 
 
-func _on_grid_match_made(number_of_tiles, tile_group):
+func _on_grid_match_made(_number_of_tiles, _tile_group):
 	pass
 #	if tile_group.size() > 0 and tile_group[0] == "protester":
 #		cut_protesters += 1
@@ -76,7 +76,7 @@ func signal_from_scorekeeper():
 
 
 func prompt_end():
-	var score = $"../score_keeper".score
+	var _score = $"../score_keeper".score
 	var boss = $"../Control/Boss"
 	
 	$"../grid".can_play = false
@@ -133,7 +133,7 @@ func reset_level():
 	
 
 func next_level():
-	get_tree().change_scene("res://scenes/outro.tscn")
+	var _x = get_tree().change_scene("res://scenes/outro.tscn")
 
 
 func _on_stay_pressed():
