@@ -274,7 +274,7 @@ func refill_columns():
 
 
 func after_refill():
-	$NewTreesFalling.play_audio()
+	$TreesDropping.play_audio()
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
@@ -291,16 +291,16 @@ func _on_destroy_timer_timeout():
 
 	
 func _on_sound_timer_timeout():
-	$NewTreesFalling.play_audio()
+	$TreesDropping.play_audio()
 
 
 func _on_collapse_timer_timeout():
-	$NewTreesFalling.play_audio()
+	$TreesDropping.play_audio()
 	collapse_columns()
 
 
 func _on_refill_timer_timeout():
-	$NewTreesFalling.play_audio()
+	$TreesDropping.play_audio()
 	if use_refill:
 		refill_columns()
 	else:

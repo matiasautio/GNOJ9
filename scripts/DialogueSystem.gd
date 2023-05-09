@@ -69,7 +69,7 @@ func next_phrase() -> void:
 	
 	$Text.visible_characters = 0
 	
-	$CharacterVoice.play_audio()
+	$CharacterVoice.play_batch(3)
 	
 	while $Text.visible_characters < len($Text.bbcode_text):
 		$Text.visible_characters += 1

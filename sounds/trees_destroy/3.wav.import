@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/trees-3.wav-88dd7b3849f7bc9742013e69e1f2a972.sample"
+path="res://.import/3.wav-e948000388bb10714b2d8d7a07241ab8.sample"
 
 [deps]
 
-source_file="res://sounds/trees_falling/trees-3.wav"
-dest_files=[ "res://.import/trees-3.wav-88dd7b3849f7bc9742013e69e1f2a972.sample" ]
+source_file="res://sounds/trees_destroy/3.wav"
+dest_files=[ "res://.import/3.wav-e948000388bb10714b2d8d7a07241ab8.sample" ]
 
 [params]
 
