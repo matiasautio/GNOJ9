@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/outro_boss_dead.gd" type="Script" id=3]
+[ext_resource path="res://scripts/credits.gd" type="Script" id=3]
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=4]
-[ext_resource path="res://art/xr_logo.png" type="Texture" id=5]
-[ext_resource path="res://art/xr_color.png" type="Texture" id=6]
+[ext_resource path="res://art/Tree Pieces/Birch/0001.png" type="Texture" id=5]
 [ext_resource path="res://ui/basic_theme.tres" type="Theme" id=7]
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=8]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=9]
@@ -13,9 +12,8 @@
 [ext_resource path="res://art/tool.png" type="Texture" id=11]
 [ext_resource path="res://art/screen.png" type="Texture" id=12]
 [ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
-[ext_resource path="res://art/Protester Pieces/0001.png" type="Texture" id=14]
 
-[node name="outro_boss_dead" type="Node2D"]
+[node name="credits" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -44,47 +42,29 @@ one_shot = true
 script = ExtResource( 1 )
 
 [node name="Background" type="Sprite" parent="."]
-visible = false
-position = Vector2( 293, 238 )
-scale = Vector2( 2.70923, 2.70923 )
+position = Vector2( 270, 345 )
+scale = Vector2( 4.64844, 4.64844 )
 texture = ExtResource( 5 )
-
-[node name="0001" type="Sprite" parent="."]
-position = Vector2( 277, 315 )
-scale = Vector2( 5.71875, 5.71875 )
-texture = ExtResource( 14 )
-
-[node name="XrColor" type="Sprite" parent="."]
-visible = false
-position = Vector2( 290.5, 792 )
-scale = Vector2( 4.78906, 3.76563 )
-texture = ExtResource( 6 )
 
 [node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
-dialogue_path = "res://dialogue/outro_boss_dead.json"
+dialogue_path = "res://dialogue/credits/note_from_tatu.json"
 
 [node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
-margin_left = 271.0
+margin_left = 270.0
 margin_right = 356.0
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = "PROTESTER"
-text = "PROTESTER"
+bbcode_text = "DEVELOPER"
+text = "DEVELOPER"
 
 [node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="BossFace" type="Sprite" parent="."]
-visible = false
 position = Vector2( 162, 554 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 13 )
-
-[node name="ProtesterFace" type="Sprite" parent="."]
-position = Vector2( 162, 554 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 9 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false
@@ -103,7 +83,7 @@ margin_bottom = 40.0
 size_flags_vertical = 0
 bbcode_enabled = true
 bbcode_text = "[center]SCORE[/center]"
-text = "SCORE"
+text = "[center]SCORE[/center]"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="MarginContainer2/score_header"]
@@ -170,7 +150,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
-text = "10000"
+text = "[center]10000[/center]"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="Control/score"]
@@ -236,6 +216,7 @@ visible = false
 position = Vector2( 103, 939 )
 texture = ExtResource( 12 )
 
+[connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
 
 [editable path="DialogueBoxHolder"]

@@ -46,8 +46,7 @@ var final_touch = Vector2(0,0)
 var controlling = false
 
 # Pausing and resetting variables
-var asd
-
+# no variables for this currently
 
 func _ready():
 	var _x = $"../destroy_timer".connect("timeout", self, "_on_destroy_timer_timeout")

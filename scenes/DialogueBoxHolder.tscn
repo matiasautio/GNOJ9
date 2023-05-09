@@ -121,7 +121,7 @@ margin_right = 18.0
 margin_bottom = 24.0
 rect_scale = Vector2( 1, 0.5 )
 
-[node name="BossVoice" type="AudioStreamPlayer" parent="DialogueBox"]
+[node name="CharacterVoice" type="AudioStreamPlayer" parent="DialogueBox"]
 script = ExtResource( 4 )
 yes_interruptions = false
 

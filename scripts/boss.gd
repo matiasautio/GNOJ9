@@ -18,12 +18,19 @@ func _ready():
 func boss_clicked():
 	if can_talk_to:
 		var current_tool = $"../../player_status".current_tool
-		if current_level == 1:
-			if current_tool == $"../../player_status".none:
-				# $"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
+		print(current_tool)
+		# player has nothing equipped
+		if current_tool == $"../../player_status".none:
+			# $"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
+			# current_dialogue = "level_one_continue"
+			if current_level == 1:
 				$"../../level_one".prompt_end()
-				# current_dialogue = "level_one_continue"
-		if current_tool == $"../../player_status".saw:
+			elif current_level == 2:
+				$"../../level_two".prompt_end()
+			elif current_level == 3:
+				$"../../level_three".prompt_end()
+		# player has the saw equipped
+		elif current_tool == $"../../player_status".saw:
 			boss_health -= 1
 			boss_annoyance += 1
 			if boss_health == 0:
@@ -41,10 +48,10 @@ func boss_clicked():
 					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_fired.json")
 					can_talk_to = false
 					current_dialogue = "hit_boss_fired"
-		elif current_level == 2:
-			$"../../level_two".prompt_end()
-		elif current_level == 3:
-			$"../../level_three".prompt_end()
+		#elif current_level == 2:
+			#$"../../level_two".prompt_end()
+		#elif current_level == 3:
+			#$"../../level_three".prompt_end()
 		get_node("/root/game_data").boss_health = boss_health
 
 

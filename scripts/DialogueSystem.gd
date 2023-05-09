@@ -13,7 +13,6 @@ signal next_phrase_requested
 signal dialog_box_closed
 
 
-
 func _ready():
 	if play_on_start:
 		start_dialogue()
@@ -70,10 +69,12 @@ func next_phrase() -> void:
 	
 	$Text.visible_characters = 0
 	
+	$CharacterVoice.play_audio()
+	
 	while $Text.visible_characters < len($Text.bbcode_text):
 		$Text.visible_characters += 1
 		$Timer.start()
-		$BossVoice.play_audio()
+		#$CharacterVoice.play_audio()
 		yield($Timer, "timeout")
 	
 	finished = true

@@ -129,7 +129,7 @@ func reset_level():
 	$"../grid".reset()
 	$"../grid".can_play = $"../Control/tool_saw".is_selected
 	$"../Control/Boss".toggle_status()
-	level_state = 3
+	#level_state = 3
 	
 
 func next_level():

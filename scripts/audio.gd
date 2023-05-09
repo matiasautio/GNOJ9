@@ -26,3 +26,8 @@ func play_audio():
 	if !playing or yes_interruptions:
 		stream = sounds[randi() % sounds.size()]
 		play()
+
+
+func reset_sounds():
+	sounds = []
+	load_sounds()

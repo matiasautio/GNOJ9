@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://art/Tree Pieces/Fir/0005.png" type="Texture" id=15]
 [ext_resource path="res://art/Tree Pieces/Fir/0004.png" type="Texture" id=16]
 [ext_resource path="res://art/Tree Pieces/Fir/0003.png" type="Texture" id=17]
+[ext_resource path="res://art/faces/narrator_face.png" type="Texture" id=18]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -76,19 +77,29 @@ frames = SubResource( 1 )
 dialogue_path = "res://dialogue/dream.json"
 
 [node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
-margin_left = 281.0
-margin_right = 361.0
+margin_left = 267.0
+margin_right = 354.0
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = "NARRATOR"
-text = "NARRATOR"
+bbcode_text = "PROTESTER"
+text = "PROTESTER"
 
 [node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
+[node name="CharacterVoice" parent="DialogueBoxHolder/DialogueBox" index="8"]
+sound_files_path = "res://sounds/dream_voices/"
+yes_interruptions = true
+
 [node name="BossFace" type="Sprite" parent="."]
+visible = false
 position = Vector2( 162, 554 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 13 )
+
+[node name="NarratorFace" type="Sprite" parent="."]
+position = Vector2( 162, 553 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 18 )
 
 [node name="Protester" type="Sprite" parent="."]
 visible = false
@@ -113,7 +124,7 @@ margin_bottom = 40.0
 size_flags_vertical = 0
 bbcode_enabled = true
 bbcode_text = "[center]SCORE[/center]"
-text = "SCORE"
+text = "[center]SCORE[/center]"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="MarginContainer2/score_header"]
@@ -180,7 +191,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
-text = "10000"
+text = "[center]10000[/center]"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="Control/score"]
