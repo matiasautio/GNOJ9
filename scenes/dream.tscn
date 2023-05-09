@@ -74,6 +74,7 @@ frames = SubResource( 1 )
 [node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
+play_sounds_in_batch = false
 dialogue_path = "res://dialogue/dream.json"
 
 [node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
@@ -87,8 +88,8 @@ text = "PROTESTER"
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="CharacterVoice" parent="DialogueBoxHolder/DialogueBox" index="8"]
-sound_files_path = "res://sounds/dream_voices/"
 yes_interruptions = true
+character = "dream"
 
 [node name="BossFace" type="Sprite" parent="."]
 visible = false
@@ -124,7 +125,7 @@ margin_bottom = 40.0
 size_flags_vertical = 0
 bbcode_enabled = true
 bbcode_text = "[center]SCORE[/center]"
-text = "[center]SCORE[/center]"
+text = "SCORE"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="MarginContainer2/score_header"]
@@ -191,7 +192,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
-text = "[center]10000[/center]"
+text = "10000"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="Control/score"]

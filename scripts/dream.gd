@@ -15,6 +15,7 @@ onready var protester = $Protester
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$DialogueBoxHolder/DialogueBox/CharacterVoice.set_sounds("dream")
 	orig_color = background.color
 	background.color = dream_color
 
@@ -22,8 +23,8 @@ func _ready():
 func _on_DialogueBox_dialog_box_closed():
 	if scene_sequence_index == 0:
 		background.color = orig_color
-		$DialogueBoxHolder/DialogueBox/CharacterVoice.sound_files_path = "res://sounds/boss_voices/"
-		$DialogueBoxHolder/DialogueBox/CharacterVoice.reset_sounds()
+		$DialogueBoxHolder/DialogueBox/CharacterVoice.set_sounds("boss")
+		$DialogueBoxHolder/DialogueBox.play_sounds_in_batch = true
 		$DialogueBoxHolder/DialogueBox.trigger_dialogue("res://dialogue/protester_visit.json")
 		narrator.visible = false
 		protester.visible = true

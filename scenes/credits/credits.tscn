@@ -83,7 +83,7 @@ margin_bottom = 40.0
 size_flags_vertical = 0
 bbcode_enabled = true
 bbcode_text = "[center]SCORE[/center]"
-text = "[center]SCORE[/center]"
+text = "SCORE"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="MarginContainer2/score_header"]
@@ -150,7 +150,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
-text = "[center]10000[/center]"
+text = "10000"
 fit_content_height = true
 
 [node name="VScrollBar2" type="VScrollBar" parent="Control/score"]

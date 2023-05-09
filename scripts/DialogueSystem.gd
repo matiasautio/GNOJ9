@@ -1,6 +1,7 @@
 extends ColorRect
 
 export var play_on_start : bool = false
+export var play_sounds_in_batch : bool = true
 export (String, MULTILINE) var dialogue_path = ""
 export (float) var text_speed = 0.05
 
@@ -69,7 +70,10 @@ func next_phrase() -> void:
 	
 	$Text.visible_characters = 0
 	
-	$CharacterVoice.play_batch(3)
+	if play_sounds_in_batch:
+		$CharacterVoice.play_batch(3)
+	else:
+		$CharacterVoice.play_audio()
 	
 	while $Text.visible_characters < len($Text.bbcode_text):
 		$Text.visible_characters += 1
