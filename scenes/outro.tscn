@@ -13,7 +13,7 @@
 [ext_resource path="res://art/screen.png" type="Texture" id=12]
 [ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
 
-[node name="intro" type="Node2D"]
+[node name="outro" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -51,10 +51,10 @@ texture = ExtResource( 5 )
 [node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
 dialogue_path = "res://dialogue/outro.json"
 
-[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="2"]
+[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
-[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="3"]
+[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="BossFace" type="Sprite" parent="."]

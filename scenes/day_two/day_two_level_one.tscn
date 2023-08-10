@@ -1,8 +1,11 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
 [ext_resource path="res://art/screen.png" type="Texture" id=3]
+[ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/basic_theme.tres" type="Theme" id=7]
 [ext_resource path="res://art/tool.png" type="Texture" id=8]
 [ext_resource path="res://art/tools_header.png" type="Texture" id=9]
@@ -12,11 +15,28 @@
 [ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/tool.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scripts/level_one.gd" type="Script" id=16]
+[ext_resource path="res://scenes/player_status.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scripts/boss.gd" type="Script" id=17]
 [ext_resource path="res://ui/tool_button_theme.tres" type="Theme" id=18]
-[ext_resource path="res://scripts/player_status.gd" type="Script" id=19]
-[ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=20]
+[ext_resource path="res://scenes/yellow_piece.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scripts/day_two_level_one.gd" type="Script" id=21]
+[ext_resource path="res://scenes/aspen_piece.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scripts/move_keeper.gd" type="Script" id=23]
+[ext_resource path="res://art/Tools/tools_icons2.png" type="Texture" id=24]
+[ext_resource path="res://art/Tools/tools_icons1.png" type="Texture" id=25]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 25 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 24 ) ],
+"loop": true,
+"name": "selected",
+"speed": 5.0
+} ]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -31,13 +51,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="game_window" type="Node2D"]
+[node name="day_two_level_one" type="Node2D"]
 
-[node name="player_status" type="Node" parent="."]
-script = ExtResource( 19 )
-
-[node name="ToolChangeSound" type="AudioStreamPlayer" parent="player_status"]
-stream = ExtResource( 20 )
+[node name="player_status" parent="." instance=ExtResource( 16 )]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -53,9 +69,7 @@ margin_bottom = 1027.0
 color = Color( 0.235294, 0.341176, 0.305882, 1 )
 
 [node name="grid" parent="." instance=ExtResource( 2 )]
-
-[node name="score_keeper" type="Node" parent="."]
-script = ExtResource( 10 )
+possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 20 ), ExtResource( 22 ) ]
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -68,6 +82,9 @@ one_shot = true
 [node name="refill_timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="score_keeper" type="Node" parent="."]
+script = ExtResource( 10 )
 
 [node name="Control" type="Control" parent="."]
 margin_right = 576.0
@@ -107,6 +124,47 @@ position = Vector2( 483, 111 )
 rotation = 3.14159
 scale = Vector2( 1.25, -1 )
 texture = ExtResource( 3 )
+
+[node name="MarginContainer3" type="MarginContainer" parent="Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -1024.0
+margin_right = -446.0
+margin_bottom = -905.0
+rect_scale = Vector2( 1.5, 1.5 )
+
+[node name="timer_header" type="RichTextLabel" parent="Control/MarginContainer3"]
+margin_right = 131.0
+margin_bottom = 40.0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]MOVES[/center]"
+text = "MOVES"
+fit_content_height = true
+
+[node name="Screen3" type="Sprite" parent="Control"]
+modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
+position = Vector2( 97, 111 )
+rotation = 3.14159
+scale = Vector2( 1.25, 1 )
+texture = ExtResource( 3 )
+
+[node name="timer_text" type="RichTextLabel" parent="Control"]
+margin_left = 22.0
+margin_top = 83.0
+margin_right = 120.0
+margin_bottom = 123.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+bbcode_enabled = true
+bbcode_text = "[center]∞[/center]"
+text = "∞"
+fit_content_height = true
+
+[node name="countdown_timer" type="Timer" parent="Control/timer_text"]
+one_shot = true
 
 [node name="Tool_0" type="Sprite" parent="Control"]
 visible = false
@@ -167,7 +225,13 @@ bbcode_text = "[center]TOOLS[/center]"
 text = "TOOLS"
 fit_content_height = true
 
-[node name="tool_saw" parent="Control" instance=ExtResource( 15 )]
+[node name="tool_saw" parent="Control" groups=["tools"] instance=ExtResource( 15 )]
+position = Vector2( 329, 950 )
+
+[node name="tool_combiner" parent="Control" groups=["tools"] instance=ExtResource( 15 )]
+position = Vector2( 433, 950 )
+frames = SubResource( 2 )
+tool_i_am = 2
 
 [node name="Tool_3" type="Sprite" parent="Control"]
 visible = false
@@ -218,7 +282,7 @@ texture = ExtResource( 12 )
 position = Vector2( 15, 524 )
 
 [node name="DialogueBox" parent="Control/DialogueBoxHolder" index="0"]
-dialogue_path = "res://dialogue/level_one_000.json"
+dialogue_path = "res://dialogue/day_two/day_two_one_000.json"
 
 [node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
@@ -278,63 +342,29 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 1, 1, 1, 0 )
 
-[node name="MarginContainer3" type="MarginContainer" parent="Control"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -24.0
-margin_top = -1024.0
-margin_right = -471.0
-margin_bottom = -905.0
-rect_scale = Vector2( 1.5, 1.5 )
-
-[node name="timer_header" type="RichTextLabel" parent="Control/MarginContainer3"]
-margin_right = 129.0
-margin_bottom = 40.0
-size_flags_vertical = 0
-bbcode_enabled = true
-bbcode_text = "[center]TIME[/center]"
-text = "TIME"
-fit_content_height = true
-
-[node name="Screen3" type="Sprite" parent="Control"]
-modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
-position = Vector2( 97, 111 )
-rotation = 3.14159
-scale = Vector2( 1.25, 1 )
-texture = ExtResource( 3 )
-
-[node name="timer_text" type="RichTextLabel" parent="Control"]
-margin_left = 22.0
-margin_top = 83.0
-margin_right = 120.0
-margin_bottom = 123.0
-rect_scale = Vector2( 1.5, 1.5 )
-size_flags_vertical = 4
-bbcode_enabled = true
-bbcode_text = "[center]∞[/center]"
-text = "∞"
-fit_content_height = true
-
-[node name="countdown_timer" type="Timer" parent="Control/timer_text"]
-one_shot = true
-
-[node name="level_one" type="Node" parent="."]
-script = ExtResource( 16 )
+[node name="day_two_level_one" type="Node" parent="."]
+script = ExtResource( 21 )
 
 [node name="grid_pauser" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
-[connection signal="level_goal_reached" from="score_keeper" to="level_one" method="_on_score_keeper_level_goal_reached"]
-[connection signal="button_down" from="Control/tool_saw/tool_button" to="level_one" method="_on_tool_button_button_down"]
+[node name="move_keeper" type="Node" parent="."]
+script = ExtResource( 23 )
+number_of_moves = 20
+
+[connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]
+[connection signal="level_goal_reached" from="score_keeper" to="day_two_level_one" method="_on_score_keeper_level_goal_reached"]
+[connection signal="protesters_matched" from="score_keeper" to="day_two_level_one" method="_on_score_keeper_protesters_matched"]
+[connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="Control/Boss" method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="level_one" method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="button_down" from="Control/continue_game/stay" to="level_one" method="_on_stay_button_down"]
-[connection signal="button_down" from="Control/continue_game/continue" to="level_one" method="_on_continue_button_down"]
-[connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
-[connection signal="timeout" from="grid_pauser" to="level_one" method="_on_grid_pauser_timeout"]
+[connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="day_two_level_one" method="_on_DialogueBox_dialog_box_closed"]
+[connection signal="pressed" from="Control/continue_game/stay" to="day_two_level_one" method="_on_stay_pressed"]
+[connection signal="pressed" from="Control/continue_game/continue" to="day_two_level_one" method="_on_continue_pressed"]
+[connection signal="timeout" from="grid_pauser" to="day_two_level_one" method="_on_grid_pauser_timeout"]
+[connection signal="moves_deplenished" from="move_keeper" to="day_two_level_one" method="_on_move_keeper_moves_deplenished"]
 
 [editable path="Control/tool_saw"]
+[editable path="Control/tool_combiner"]
 [editable path="Control/DialogueBoxHolder"]

@@ -65,6 +65,47 @@ position = Vector2( 284, 683 )
 scale = Vector2( 1.6, 1.6 )
 texture = ExtResource( 7 )
 
+[node name="continue" type="Button" parent="BackgroundColor/Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -147.5
+margin_top = 291.5
+margin_right = 0.5
+margin_bottom = 319.5
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 5 )
+text = "continue"
+
+[node name="restart" type="Button" parent="BackgroundColor/Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -147.5
+margin_top = 355.5
+margin_right = 0.5
+margin_bottom = 383.5
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 5 )
+text = "restart"
+
+[node name="credits" type="Button" parent="BackgroundColor/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -147.5
+margin_top = 419.5
+margin_right = 0.5
+margin_bottom = 447.5
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 5 )
+text = "credits"
+
 [node name="start_game" type="Button" parent="BackgroundColor/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -78,6 +119,79 @@ rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 5 )
 text = "start game"
 
+[node name="Credits" parent="." instance=ExtResource( 1 )]
+visible = false
+
+[node name="Control" type="Control" parent="Credits"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -288.5
+margin_top = -513.5
+margin_right = 288.5
+margin_bottom = 513.5
+theme = ExtResource( 5 )
+
+[node name="piece" parent="Credits/Control" instance=ExtResource( 4 )]
+visible = false
+position = Vector2( 284, 310 )
+scale = Vector2( 10, 10 )
+
+[node name="TextureRect" type="TextureRect" parent="Credits/Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -499.5
+margin_right = 256.0
+margin_bottom = 12.5
+texture = ExtResource( 3 )
+stretch_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credits/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -288.5
+margin_top = -195.5
+margin_right = -96.5
+margin_bottom = 4.5
+rect_scale = Vector2( 3, 3 )
+bbcode_enabled = true
+bbcode_text = "[center]a game by
+[wave]Tatu Heinämäki[/wave]
+
+with audio by
+[wave]Aleksi Martikainen[/wave][/center]"
+text = "a game by
+Tatu Heinämäki
+
+with audio by
+Aleksi Martikainen"
+fit_content_height = true
+
+[node name="Logo" type="Sprite" parent="Credits/Control"]
+position = Vector2( 284, 161 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 7 )
+
+[node name="return" type="Button" parent="Credits/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -147.5
+margin_top = 419.5
+margin_right = 0.5
+margin_bottom = 447.5
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 5 )
+text = "return"
+
 [node name="start_delay" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
@@ -86,7 +200,13 @@ one_shot = true
 stream = ExtResource( 8 )
 
 [connection signal="animation_finished" from="BackgroundColor/Control/piece/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="button_down" from="BackgroundColor/Control/continue" to="." method="_on_continue_button_down"]
+[connection signal="button_down" from="BackgroundColor/Control/restart" to="." method="_on_restart_button_down"]
+[connection signal="button_down" from="BackgroundColor/Control/credits" to="." method="_on_credits_button_down"]
 [connection signal="button_down" from="BackgroundColor/Control/start_game" to="." method="_on_start_game_button_down"]
+[connection signal="animation_finished" from="Credits/Control/piece/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="button_down" from="Credits/Control/return" to="." method="_on_return_button_down"]
 [connection signal="timeout" from="start_delay" to="." method="_on_start_delay_timeout"]
 
 [editable path="BackgroundColor/Control/piece"]
+[editable path="Credits/Control/piece"]

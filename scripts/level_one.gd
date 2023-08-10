@@ -17,6 +17,9 @@ var times_played = 0
 # grid pause hack
 var times_paused = 0
 
+# scoring
+var highest_score = 0
+
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
@@ -39,6 +42,8 @@ func level_goal_reached():
 		else:
 			prompt_end()
 		times_played += 1
+		if $"../score_keeper".score > highest_score:
+			highest_score = $"../score_keeper".score
 
 
 func prompt_end():
@@ -96,6 +101,7 @@ func reset():
 
 
 func next_level():
+	game_data.current_score += highest_score
 	var _x = get_tree().change_scene("res://scenes/game_window_two.tscn")
 
 

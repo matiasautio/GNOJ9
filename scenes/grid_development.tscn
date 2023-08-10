@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
 [ext_resource path="res://scripts/grid.gd" type="Script" id=2]
@@ -7,6 +7,16 @@
 [ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/yellow_piece.tscn" type="PackedScene" id=7]
+[ext_resource path="res://sounds/trees_destroy/1.wav" type="AudioStream" id=8]
+[ext_resource path="res://sounds/trees_dropping/trees-3.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/swap.wav" type="AudioStream" id=10]
+[ext_resource path="res://sounds/trees_destroy/4.wav" type="AudioStream" id=11]
+[ext_resource path="res://sounds/trees_dropping/trees-2.wav" type="AudioStream" id=12]
+[ext_resource path="res://sounds/trees_dropping/trees-1.wav" type="AudioStream" id=13]
+[ext_resource path="res://sounds/trees_destroy/3.wav" type="AudioStream" id=14]
+[ext_resource path="res://sounds/trees_destroy/2.wav" type="AudioStream" id=15]
+[ext_resource path="res://sounds/fail_sound.wav" type="AudioStream" id=16]
+[ext_resource path="res://scripts/audio.gd" type="Script" id=17]
 
 [node name="game_window" type="Node2D"]
 
@@ -33,6 +43,20 @@ y_start = 800
 offset = 64
 y_offset = -2
 possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 3 ) ]
+
+[node name="TreesDropping" type="AudioStreamPlayer" parent="grid"]
+script = ExtResource( 17 )
+sounds = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 9 ) ]
+
+[node name="Destroy" type="AudioStreamPlayer" parent="grid"]
+script = ExtResource( 17 )
+sounds = [ ExtResource( 8 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 11 ) ]
+
+[node name="FailSound" type="AudioStreamPlayer" parent="grid"]
+stream = ExtResource( 16 )
+
+[node name="Swap" type="AudioStreamPlayer" parent="grid"]
+stream = ExtResource( 10 )
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5

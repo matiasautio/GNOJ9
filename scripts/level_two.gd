@@ -11,6 +11,9 @@ const current_level = 2
 # grid pause hack
 var times_paused = 0
 
+# scoring
+var highest_score = 0
+
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
@@ -41,6 +44,7 @@ func _on_DialogueBox_dialog_box_closed():
 				#$"../Control/Boss".toggle_status()
 			reset_level()
 		if current_dialogue == "level_two_continue":
+			game_data.current_score += highest_score
 			get_tree().change_scene("res://scenes/game_window_three.tscn")
 		if current_dialogue == "level_two_wanna_quit":
 			$"../Control/continue_game".visible = true
@@ -82,6 +86,8 @@ func prompt_end(times_played = 0):
 #		else:
 #			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_two_restart.json")
 #			current_dialogue = "level_two_restart"
+	if $"../score_keeper".score > highest_score:
+		highest_score = $"../score_keeper".score
 
 
 func reset_level():

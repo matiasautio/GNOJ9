@@ -1,7 +1,7 @@
 extends Node
 
 
-enum {none, saw, hand}
+enum {none, saw, tape}
 var current_tool
 
 
@@ -10,10 +10,7 @@ func _ready():
 	current_tool = none
 
 
-func _on_tool_button_button_down():
-	if current_tool != saw:
-		current_tool = saw
-	else:
-		current_tool = none
+func tool_selected(selected_tool):
+	current_tool = selected_tool
 	print("current tool is ", current_tool)
 	$ToolChangeSound.play()

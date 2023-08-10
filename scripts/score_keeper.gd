@@ -17,12 +17,13 @@ func _on_grid_match_made(number_of_tiles, tile_group):
 	#print(number_of_tiles)
 	#print(tile_group)
 	score += 70 * number_of_tiles
-	score_text.bbcode_text = "[center]" + String(score) + "[/center]"
 	# no points for protesters
 	if tile_group.size() > 0 and tile_group[0] == "protester":
 		emit_signal("protesters_matched")
+		#score -= 70 * number_of_tiles # uncomment to not add score from protesters
 	if score >= level_goal:
 		emit_signal("level_goal_reached")
+	score_text.bbcode_text = "[center]" + String(score) + "[/center]"
 
 
 func reset_score():

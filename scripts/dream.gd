@@ -1,6 +1,7 @@
 extends Node2D
 
 
+onready var game_data = get_node("/root/game_data")
 onready var background = $BackgroundColor
 var orig_color
 var dream_color = "023548"
@@ -31,7 +32,10 @@ func _on_DialogueBox_dialog_box_closed():
 		scene_sequence_index += 1
 	elif scene_sequence_index == 1:
 		scene_sequence_index += 1
-		var _scene = get_tree().change_scene("res://scenes/credits/credits.tscn")
+		game_data.current_level = 2
+		# all data from level 1 is written to disk here and only here
+		game_data.save_progression()
+		var _scene = get_tree().change_scene("res://scenes/day_two/day_two_intro.tscn")
 		
 func _on_DialogueBox_next_phrase_requested():
 	if dream_sequence_index == 0:

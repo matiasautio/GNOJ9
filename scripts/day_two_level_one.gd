@@ -136,7 +136,6 @@ func reset_level():
 	print("---------------")
 	print("resetting scene")
 	$"../score_keeper".reset_score()
-	$"../move_keeper".reset_moves()
 	cut_protesters = 0
 	is_level_goal_reached = false
 	$"../grid".reset()

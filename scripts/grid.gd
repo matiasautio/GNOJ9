@@ -5,6 +5,10 @@ signal match_made(number_of_tiles, tile_group)
 
 # General gameplay variables
 export var can_play = false
+# matches can happen on their own too when pieces collapse
+# this helps to check if a match was made from player's input
+var player_swapped = false
+signal swap_succesful
 
 # State machine
 enum {wait, move}
@@ -131,6 +135,7 @@ func touch_input():
 			mouse = pixel_to_grid(mouse.x, mouse.y)
 			if is_in_grid(mouse) and controlling:
 				final_touch = mouse
+				player_swapped = true
 				touch_difference(first_touch, final_touch)
 			controlling = false
 
@@ -235,9 +240,13 @@ func destroy_matched():
 	if was_matched:
 		emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
+		if player_swapped:
+			emit_signal("swap_succesful")
 	else:
 		$FailSound.play()
 		swap_back()
+	# making sure this is always reverted to false
+	player_swapped = false
 
 
 func collapse_columns():
