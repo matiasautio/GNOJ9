@@ -143,6 +143,7 @@ func touch_input():
 func swap_pieces(column, row, direction):
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
+	# if !first_piece.is_static and !other_piece.is_static and first_piece != null and other_piece != null:
 	if first_piece != null and other_piece != null:
 		store_info(first_piece, other_piece, Vector2(column, row), direction)
 		state = wait
@@ -196,12 +197,15 @@ func find_matches():
 				if i > 0 && i < width - 1:
 					if all_pieces[i - 1][j] !=null && all_pieces[i + 1][j] != null:
 						if all_pieces[i - 1][j].color == current_color and all_pieces[i + 1][j].color == current_color:
+						#if !all_pieces[i - 1][j].is_static:
 							all_pieces[i - 1][j].matched = true
 							all_pieces[i - 1][j].dim()
 							all_pieces[i - 1][j].cut()
+						#if !all_pieces[i][j].is_static:
 							all_pieces[i][j].matched = true
 							all_pieces[i][j].dim()
 							all_pieces[i][j].cut()
+						#if !all_pieces[i + 1][j].is_static:
 							all_pieces[i + 1][j].matched = true
 							all_pieces[i + 1][j].dim()
 							all_pieces[i + 1][j].cut()
@@ -209,12 +213,15 @@ func find_matches():
 				if j > 0 && j < height - 1:
 					if all_pieces[i][j - 1] !=null && all_pieces[i][j + 1] != null:
 						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
+						#if !all_pieces[i][j - 1].is_static:
 							all_pieces[i][j - 1].matched = true
 							all_pieces[i][j - 1].dim()
 							all_pieces[i][j - 1].cut()
+						#if !all_pieces[i][j].is_static:
 							all_pieces[i][j].matched = true
 							all_pieces[i][j].dim()
 							all_pieces[i][j].cut()
+						#if !all_pieces[i][j + 1].is_static:
 							all_pieces[i][j + 1].matched = true
 							all_pieces[i][j + 1].dim()
 							all_pieces[i][j + 1].cut()

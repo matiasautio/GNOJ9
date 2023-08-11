@@ -3,6 +3,7 @@ extends Node2D
 export var color : String
 onready var tween
 var matched = false
+export var is_static = false
 
 
 func _ready():
