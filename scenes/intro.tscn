@@ -48,10 +48,10 @@ texture = ExtResource( 5 )
 
 [node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
 
-[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="2"]
+[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
-[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="3"]
+[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="BossFace" type="Sprite" parent="."]

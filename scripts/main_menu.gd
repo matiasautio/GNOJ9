@@ -23,7 +23,7 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_start_delay_timeout():
 	if game_data.current_level == 1:
-		var _x = get_tree().change_scene("res://scenes/intro.tscn")
+		var _x = get_tree().change_scene("res://scenes/onboarding.tscn")
 	elif game_data.current_level == 2:
 		var _x = get_tree().change_scene("res://scenes/day_two/day_two_one.tscn")
 

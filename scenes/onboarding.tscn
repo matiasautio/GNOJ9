@@ -1,0 +1,314 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://scripts/audio.gd" type="Script" id=1]
+[ext_resource path="res://scripts/grid.gd" type="Script" id=2]
+[ext_resource path="res://sounds/trees_destroy/3.wav" type="AudioStream" id=3]
+[ext_resource path="res://sounds/trees_dropping/trees-3.wav" type="AudioStream" id=4]
+[ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=5]
+[ext_resource path="res://sounds/fail_sound.wav" type="AudioStream" id=6]
+[ext_resource path="res://sounds/trees_dropping/trees-1.wav" type="AudioStream" id=7]
+[ext_resource path="res://sounds/trees_destroy/1.wav" type="AudioStream" id=8]
+[ext_resource path="res://sounds/trees_destroy/4.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/trees_dropping/trees-2.wav" type="AudioStream" id=10]
+[ext_resource path="res://sounds/swap.wav" type="AudioStream" id=11]
+[ext_resource path="res://sounds/trees_destroy/2.wav" type="AudioStream" id=12]
+[ext_resource path="res://ui/menu_theme.tres" type="Theme" id=13]
+[ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=14]
+[ext_resource path="res://ui/basic_theme.tres" type="Theme" id=15]
+[ext_resource path="res://scripts/onboarding.gd" type="Script" id=16]
+[ext_resource path="res://animation/increase_scale.tres" type="Animation" id=17]
+[ext_resource path="res://art/hand.png" type="Texture" id=18]
+[ext_resource path="res://art/screen.png" type="Texture" id=19]
+[ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/helpers/grid_center_setter.tscn" type="PackedScene" id=23]
+
+[sub_resource type="Animation" id=3]
+resource_name = "increase_scale"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 0.450625, 2.82843, 0.5, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "increase_scale_larger"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 0.450625, 2.82843, 0.5, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 2.4, 2.4 ), Vector2( 1.8, 1.8 ), Vector2( 2, 2 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 377, 739 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "how_to_swipe"
+length = 1.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 183, 737 ), Vector2( 448, 737 ), Vector2( 448, 737 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -10.0, 45.0 ]
+}
+
+[node name="game_window" type="Node2D"]
+
+[node name="onboarding" type="Node" parent="."]
+script = ExtResource( 16 )
+
+[node name="delay" type="Timer" parent="onboarding"]
+wait_time = 0.5
+one_shot = true
+
+[node name="grid_center_setter" parent="." instance=ExtResource( 23 )]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+margin_left = -668.0
+margin_top = 93.0
+margin_right = 1252.0
+margin_bottom = 1173.0
+texture = ExtResource( 5 )
+
+[node name="BackgroundColor" type="ColorRect" parent="."]
+margin_right = 577.0
+margin_bottom = 1027.0
+theme = ExtResource( 15 )
+color = Color( 0.235294, 0.341176, 0.305882, 1 )
+
+[node name="guide_text" type="RichTextLabel" parent="BackgroundColor"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -286.5
+margin_top = -300.5
+margin_right = 289.5
+margin_bottom = -200.5
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 288, 50 )
+theme = ExtResource( 13 )
+bbcode_enabled = true
+bbcode_text = "[center][wave]Swipe the trees!"
+text = "Swipe the trees!"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/guide_text"]
+autoplay = "increase_scale"
+anims/increase_scale = ExtResource( 17 )
+
+[node name="score_ui" type="Control" parent="BackgroundColor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 664.0
+margin_bottom = -194.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 288, 0 )
+
+[node name="score_header" type="RichTextLabel" parent="BackgroundColor/score_ui"]
+margin_left = 203.0
+margin_top = -28.0
+margin_right = 332.0
+margin_bottom = 12.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]SCORE[/center]"
+text = "SCORE"
+fit_content_height = true
+
+[node name="Screen2" type="Sprite" parent="BackgroundColor/score_ui"]
+modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
+position = Vector2( 302, 80 )
+rotation = 3.14159
+scale = Vector2( 1.25, -1 )
+texture = ExtResource( 19 )
+
+[node name="score" type="RichTextLabel" parent="BackgroundColor/score_ui"]
+margin_left = 108.0
+margin_top = 52.0
+margin_right = 364.0
+margin_bottom = 92.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+bbcode_enabled = true
+bbcode_text = "[center]0[/center]"
+text = "0"
+fit_content_height = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/score_ui"]
+anims/increase_scale = ExtResource( 17 )
+
+[node name="moves_ui" type="Control" parent="BackgroundColor"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -288.5
+margin_top = 150.5
+margin_right = 288.5
+margin_bottom = 319.5
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 288, 0 )
+
+[node name="timer_header" type="RichTextLabel" parent="BackgroundColor/moves_ui"]
+margin_left = 204.0
+margin_top = -28.0
+margin_right = 336.0
+margin_bottom = 12.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]MOVES[/center]"
+text = "MOVES"
+fit_content_height = true
+
+[node name="Screen3" type="Sprite" parent="BackgroundColor/moves_ui"]
+modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
+position = Vector2( 302, 80 )
+rotation = 3.14159
+scale = Vector2( 1.25, 1 )
+texture = ExtResource( 19 )
+
+[node name="timer_text" type="RichTextLabel" parent="BackgroundColor/moves_ui"]
+margin_left = 224.0
+margin_top = 56.0
+margin_right = 322.0
+margin_bottom = 96.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+bbcode_enabled = true
+bbcode_text = "[center]1[/center]"
+text = "1"
+fit_content_height = true
+
+[node name="countdown_timer" type="Timer" parent="BackgroundColor/moves_ui/timer_text"]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/moves_ui"]
+anims/increase_scale = SubResource( 3 )
+
+[node name="start_job" type="Button" parent="BackgroundColor"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -90.0
+margin_top = -327.0
+margin_right = 90.0
+margin_bottom = -288.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 90, 0 )
+theme = ExtResource( 14 )
+text = "start job!"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/start_job"]
+anims/increase_scale = ExtResource( 17 )
+anims/increase_scale_larger = SubResource( 4 )
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource( 2 )
+can_play = true
+width = 4
+height = 4
+offset = 64
+y_offset = -2
+possible_pieces = [ ExtResource( 20 ), ExtResource( 22 ), ExtResource( 21 ) ]
+
+[node name="TreesDropping" type="AudioStreamPlayer" parent="grid"]
+script = ExtResource( 1 )
+sounds = [ ExtResource( 7 ), ExtResource( 10 ), ExtResource( 4 ) ]
+
+[node name="Destroy" type="AudioStreamPlayer" parent="grid"]
+script = ExtResource( 1 )
+sounds = [ ExtResource( 8 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 9 ) ]
+
+[node name="FailSound" type="AudioStreamPlayer" parent="grid"]
+stream = ExtResource( 6 )
+
+[node name="Swap" type="AudioStreamPlayer" parent="grid"]
+stream = ExtResource( 11 )
+
+[node name="destroy_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="collapse_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="refill_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="hand" type="Sprite" parent="."]
+position = Vector2( 377, 739 )
+rotation = -0.174533
+texture = ExtResource( 18 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="hand"]
+autoplay = "how_to_swipe"
+anims/RESET = SubResource( 1 )
+anims/how_to_swipe = SubResource( 2 )
+
+[node name="score_incrementer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="timeout" from="onboarding/delay" to="onboarding" method="_on_delay_timeout"]
+[connection signal="animation_finished" from="BackgroundColor/score_ui/AnimationPlayer" to="onboarding" method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="BackgroundColor/moves_ui/timer_text/countdown_timer" to="BackgroundColor/moves_ui/timer_text" method="_on_countdown_timer_timeout"]
+[connection signal="animation_finished" from="BackgroundColor/moves_ui/AnimationPlayer" to="onboarding" method="_on_AnimationPlayer_animation_finished"]
+[connection signal="pressed" from="BackgroundColor/start_job" to="onboarding" method="_on_start_job_pressed"]
+[connection signal="match_made" from="grid" to="onboarding" method="_on_grid_match_made"]
+[connection signal="swap_succesful" from="grid" to="onboarding" method="_on_grid_swap_succesful"]
+[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
+[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
+[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[connection signal="timeout" from="score_incrementer" to="onboarding" method="_on_score_incrementer_timeout"]
