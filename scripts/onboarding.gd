@@ -15,6 +15,7 @@ func _on_grid_swap_succesful():
 		$"../BackgroundColor/score_ui/AnimationPlayer".play("increase_scale")
 	elif index == 2:
 		$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Limited moves!"
+		$"../BackgroundColor/guide_text/AnimationPlayer".play("increase_scale")
 		$"../BackgroundColor/score_ui".visible = false
 		$"../BackgroundColor/moves_ui/AnimationPlayer".play("increase_scale")
 	elif index == 3:
@@ -47,10 +48,19 @@ func _on_score_incrementer_timeout():
 
 
 func _on_delay_timeout():
-	$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Well done!"
-	$"../BackgroundColor/moves_ui".visible = false
-	$"../BackgroundColor/start_job/AnimationPlayer".play("increase_scale_larger")
-
+	if index == 3:
+		$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Well done!"
+		$"../BackgroundColor/guide_text/AnimationPlayer".play("increase_scale")
+		$"../BackgroundColor/moves_ui".visible = false
+		$"../BackgroundColor/start_job/AnimationPlayer".play("increase_scale_larger")
+	elif index < 0:
+		var x = get_tree().change_scene("res://scenes/intro.tscn")
 
 func _on_start_job_pressed():
-	var x = get_tree().change_scene("res://scenes/intro.tscn")
+	$"../button_feedback".play()
+	var pieces = $"../grid".get_children()
+	for child in pieces:
+		if child.has_method("cut"):
+			child.cut()
+	index = -100
+	$delay.start(1)
