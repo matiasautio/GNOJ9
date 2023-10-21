@@ -24,4 +24,7 @@ func dim():
 func cut():
 	var sprite = $AnimatedSprite
 	if sprite != null:
-		sprite.play("cut")
+		if game_data.get_node("player_status").current_tool == 2:
+			sprite.play("protected")
+		else:
+			sprite.play("cut")

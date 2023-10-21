@@ -22,6 +22,9 @@ export var y_start : int
 export var offset : int
 export var y_offset : int
 
+# Obstacle stuff
+export (Array, Vector2) var empty_spaces
+
 # Gameplay variables
 export var use_refill : bool = true
 
@@ -63,6 +66,14 @@ func _ready():
 	spawn_pieces()
 
 
+func restricted_movement(place):
+	# Check the empty pieces
+	for i in empty_spaces.size():
+		if empty_spaces[i] == place:
+			return true
+	return false
+
+
 func make_2d_array():
 	var array = []
 	for i in width:
@@ -75,18 +86,19 @@ func make_2d_array():
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			# pick a random numer and store it
-			var rand = floor(rand_range(0, possible_pieces.size()))
-			var piece = possible_pieces[rand].instance()
-			var loops = 0
-			while(match_at(i, j, piece.color) and loops < 100):
-				rand = floor(rand_range(0, possible_pieces.size()))
-				loops += 1
-				piece = possible_pieces[rand].instance()
-			# instantiate piece from array
-			add_child(piece)
-			piece.position = grid_to_pixel(i, j)
-			all_pieces[i][j] = piece
+			if !restricted_movement(Vector2(i,j)):
+				# pick a random number and store it
+				var rand = floor(rand_range(0, possible_pieces.size()))
+				var piece = possible_pieces[rand].instance()
+				var loops = 0
+				while(match_at(i, j, piece.color) and loops < 100):
+					rand = floor(rand_range(0, possible_pieces.size()))
+					loops += 1
+					piece = possible_pieces[rand].instance()
+				# instantiate piece from array
+				add_child(piece)
+				piece.position = grid_to_pixel(i, j)
+				all_pieces[i][j] = piece
 
 
 #  Is the balancing managed here? By determining 
@@ -209,7 +221,10 @@ func find_matches():
 							all_pieces[i + 1][j].matched = true
 							all_pieces[i + 1][j].dim()
 							all_pieces[i + 1][j].cut()
-							$Destroy.play_audio()
+							if game_data.get_node("player_status").current_tool == 2:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 				if j > 0 && j < height - 1:
 					if all_pieces[i][j - 1] !=null && all_pieces[i][j + 1] != null:
 						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
@@ -225,7 +240,10 @@ func find_matches():
 							all_pieces[i][j + 1].matched = true
 							all_pieces[i][j + 1].dim()
 							all_pieces[i][j + 1].cut()
-							$Destroy.play_audio()
+							if game_data.get_node("player_status").current_tool == 2:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 	$"../destroy_timer".start()
 
 
@@ -239,7 +257,11 @@ func destroy_matched():
 				if all_pieces[i][j].matched:
 					was_matched = true
 					tile_group = all_pieces[i][j].get_groups()
-					all_pieces[i][j].queue_free()
+					if game_data.get_node("player_status").current_tool == 2:
+						empty_spaces.append(Vector2(i,j))
+						print(Vector2(i,j), " added to empty spaces")
+					else:
+						all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 					number_of_tiles += 1
 					
@@ -259,7 +281,7 @@ func destroy_matched():
 func collapse_columns():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
 				for k in range(j + 1, height):
 					if all_pieces[i][k] != null:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
@@ -274,7 +296,7 @@ func refill_columns():
 	for i in width:
 		for j in height:
 			# if the spot is empty we'll spawn a new piece
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
 				var rand = floor(rand_range(0, possible_pieces.size()))
 				var piece = possible_pieces[rand].instance()
 				var loops = 0

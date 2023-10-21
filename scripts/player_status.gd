@@ -1,13 +1,8 @@
 extends Node
 
 
-enum {none, saw, tape}
-var current_tool
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	current_tool = none
+# Tools are: none, saw, tape
+var current_tool = 2
 
 
 func tool_selected(selected_tool):

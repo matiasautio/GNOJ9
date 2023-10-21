@@ -1,22 +1,12 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
-[ext_resource path="res://scripts/grid.gd" type="Script" id=2]
-[ext_resource path="res://scenes/pink_piece.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/aspen_piece.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/yellow_piece.tscn" type="PackedScene" id=7]
-[ext_resource path="res://sounds/trees_destroy/1.wav" type="AudioStream" id=8]
-[ext_resource path="res://sounds/trees_dropping/trees-3.wav" type="AudioStream" id=9]
-[ext_resource path="res://sounds/swap.wav" type="AudioStream" id=10]
-[ext_resource path="res://sounds/trees_destroy/4.wav" type="AudioStream" id=11]
-[ext_resource path="res://sounds/trees_dropping/trees-2.wav" type="AudioStream" id=12]
-[ext_resource path="res://sounds/trees_dropping/trees-1.wav" type="AudioStream" id=13]
-[ext_resource path="res://sounds/trees_destroy/3.wav" type="AudioStream" id=14]
-[ext_resource path="res://sounds/trees_destroy/2.wav" type="AudioStream" id=15]
-[ext_resource path="res://sounds/fail_sound.wav" type="AudioStream" id=16]
-[ext_resource path="res://scripts/audio.gd" type="Script" id=17]
+[ext_resource path="res://art/bg_shadow.png" type="Texture" id=18]
 
 [node name="game_window" type="Node2D"]
 
@@ -33,30 +23,13 @@ margin_right = 577.0
 margin_bottom = 1027.0
 color = Color( 0.235294, 0.341176, 0.305882, 1 )
 
-[node name="grid" type="Node2D" parent="."]
-script = ExtResource( 2 )
-can_play = true
-width = 8
-height = 10
-x_start = 64
-y_start = 800
-offset = 64
-y_offset = -2
-possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 3 ) ]
-
-[node name="TreesDropping" type="AudioStreamPlayer" parent="grid"]
-script = ExtResource( 17 )
-sounds = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 9 ) ]
-
-[node name="Destroy" type="AudioStreamPlayer" parent="grid"]
-script = ExtResource( 17 )
-sounds = [ ExtResource( 8 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 11 ) ]
-
-[node name="FailSound" type="AudioStreamPlayer" parent="grid"]
-stream = ExtResource( 16 )
-
-[node name="Swap" type="AudioStreamPlayer" parent="grid"]
-stream = ExtResource( 10 )
+[node name="bg_shadow" type="TextureRect" parent="BackgroundColor"]
+modulate = Color( 1, 1, 1, 0.705882 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_scale = Vector2( 8, 8 )
+mouse_filter = 2
+texture = ExtResource( 18 )
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -70,6 +43,8 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
-[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
-[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
-[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
+[node name="grid" parent="." instance=ExtResource( 2 )]
+can_play = true
+possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 3 ) ]
+
+[editable path="grid"]
