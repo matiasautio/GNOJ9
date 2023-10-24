@@ -21,6 +21,9 @@ var times_paused = 0
 # scoring
 var highest_score = 0
 
+# level specific logic
+var has_boss_reacted = false
+
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
@@ -54,18 +57,19 @@ func _on_DialogueBox_dialog_box_closed():
 
 
 func _on_grid_match_made(_number_of_tiles, _tile_group):
-	pass
-#	if tile_group.size() > 0 and tile_group[0] == "protester":
-#		cut_protesters += 1
-#		if cut_protesters == protester_treshold:
-#			level_state = 5
-#			prompt_end()
+	if game_data.get_node("player_status").current_tool == 2 and !has_boss_reacted:
+		has_boss_reacted = true
+		$"../Control/Boss".toggle_status()
+		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/day_two/day_two_one_tape_reaction.json")
+		current_dialogue = "day_two_one_tape_reaction"
+
 
 func _on_score_keeper_protesters_matched():
 	cut_protesters += 1
 	if cut_protesters == protester_treshold:
 		level_state = 5
 		prompt_end()
+
 
 func _on_move_keeper_moves_deplenished():
 	if !is_level_goal_reached and cut_protesters < protester_treshold:
@@ -75,6 +79,7 @@ func _on_move_keeper_moves_deplenished():
 		if $"../score_keeper".score > highest_score:
 			highest_score = $"../score_keeper".score
 
+
 func _on_score_keeper_level_goal_reached():
 	if !is_level_goal_reached and cut_protesters < protester_treshold:
 		is_level_goal_reached = true
@@ -82,6 +87,7 @@ func _on_score_keeper_level_goal_reached():
 		prompt_end()
 		if $"../score_keeper".score > highest_score:
 			highest_score = $"../score_keeper".score
+
 
 func signal_from_scorekeeper():
 	pass

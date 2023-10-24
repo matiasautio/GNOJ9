@@ -1,8 +1,8 @@
 [gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/pieces/fir_piece.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/pieces/pine_piece.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/grid.gd" type="Script" id=4]
 [ext_resource path="res://sounds/fail_sound.wav" type="AudioStream" id=5]
 [ext_resource path="res://sounds/swap.wav" type="AudioStream" id=6]

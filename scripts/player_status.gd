@@ -2,7 +2,7 @@ extends Node
 
 
 # Tools are: none, saw, tape
-var current_tool = 2
+var current_tool = 0
 
 
 func tool_selected(selected_tool):
