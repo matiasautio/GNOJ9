@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://scripts/audio.gd" type="Script" id=1]
 [ext_resource path="res://scripts/grid.gd" type="Script" id=2]
@@ -16,15 +16,17 @@
 [ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=14]
 [ext_resource path="res://ui/basic_theme.tres" type="Theme" id=15]
 [ext_resource path="res://scripts/onboarding.gd" type="Script" id=16]
-[ext_resource path="res://animation/increase_scale.tres" type="Animation" id=17]
+[ext_resource path="res://animation/increase_scale_low_fps.tres" type="Animation" id=17]
 [ext_resource path="res://art/hand.png" type="Texture" id=18]
 [ext_resource path="res://art/screen.png" type="Texture" id=19]
-[ext_resource path="res://scenes/blue_piece.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/orange_piece.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/green_piece.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/pieces/pine_piece.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/pieces/fir_piece.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/helpers/grid_center_setter.tscn" type="PackedScene" id=23]
 [ext_resource path="res://art/bg_shadow.png" type="Texture" id=24]
 [ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=25]
+[ext_resource path="res://animation/how_to_swipe.tres" type="Animation" id=26]
+[ext_resource path="res://animation/how_to_swipe_low_fps.tres" type="Animation" id=27]
 
 [sub_resource type="Animation" id=3]
 resource_name = "increase_scale"
@@ -69,35 +71,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 377, 739 ) ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "how_to_swipe"
-length = 1.5
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 183, 737 ), Vector2( 448, 737 ), Vector2( 448, 737 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ -10.0, 45.0 ]
 }
 
 [node name="game_window" type="Node2D"]
@@ -254,7 +227,7 @@ text = "start job!"
 anims/increase_scale = ExtResource( 17 )
 anims/increase_scale_larger = SubResource( 4 )
 
-[node name="TextureRect" type="TextureRect" parent="BackgroundColor"]
+[node name="bg_shadow" type="TextureRect" parent="BackgroundColor"]
 modulate = Color( 1, 1, 1, 0.705882 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -305,7 +278,9 @@ texture = ExtResource( 18 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="hand"]
 autoplay = "how_to_swipe"
 anims/RESET = SubResource( 1 )
-anims/how_to_swipe = SubResource( 2 )
+anims/how_to_swipe = ExtResource( 26 )
+anims/how_to_swipe_low_fps = ExtResource( 27 )
+anims/increase_scale = ExtResource( 17 )
 
 [node name="score_incrementer" type="Timer" parent="."]
 wait_time = 0.1

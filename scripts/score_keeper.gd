@@ -14,11 +14,16 @@ func _ready():
 
 
 func _on_grid_match_made(number_of_tiles, tile_group):
-	#print(number_of_tiles)
-	#print(tile_group)
-	score += 70 * number_of_tiles
+	var price = 70
+	if tile_group == "aspen" or tile_group == "juniper":
+		price = 140
+	# Using the tape reduces points
+	if game_data.get_node("player_status").current_tool == 2:
+		score -= price * number_of_tiles
+	else:
+		score += price * number_of_tiles
 	# no points for protesters
-	if tile_group.size() > 0 and tile_group[0] == "protester":
+	if tile_group == "protester":
 		emit_signal("protesters_matched")
 		#score -= 70 * number_of_tiles # uncomment to not add score from protesters
 	if score >= level_goal:

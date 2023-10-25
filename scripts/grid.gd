@@ -22,16 +22,21 @@ export var y_start : int
 export var offset : int
 export var y_offset : int
 
+# Obstacle stuff
+export (Array, Vector2) var empty_spaces
+
 # Gameplay variables
 export var use_refill : bool = true
+# If the current tool is tape, this is set true
+var is_protecting = false
 
 # Piece array
 export (Array, PackedScene) var possible_pieces = [
-	preload("res://scenes/blue_piece.tscn"),
-	preload("res://scenes/green_piece.tscn"),
-	preload("res://scenes/orange_piece.tscn"),
-	preload("res://scenes/pink_piece.tscn"),
-	preload("res://scenes/yellow_piece.tscn")
+	preload("res://scenes/pieces/birch_piece.tscn"),
+	preload("res://scenes/pieces/fir_piece.tscn"),
+	preload("res://scenes/pieces/pine_piece.tscn"),
+	preload("res://scenes/pieces/protester_piece.tscn"),
+	preload("res://scenes/pieces/juniper_piece.tscn")
 ]
 
 # Current pieces in the scene
@@ -60,7 +65,16 @@ func _ready():
 	randomize()
 	state = move
 	all_pieces = make_2d_array()
-	spawn_pieces()
+	if possible_pieces.size() > 0:
+		spawn_pieces()
+
+
+func restricted_movement(place):
+	# Check the empty pieces
+	for i in empty_spaces.size():
+		if empty_spaces[i] == place:
+			return true
+	return false
 
 
 func make_2d_array():
@@ -75,18 +89,19 @@ func make_2d_array():
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			# pick a random numer and store it
-			var rand = floor(rand_range(0, possible_pieces.size()))
-			var piece = possible_pieces[rand].instance()
-			var loops = 0
-			while(match_at(i, j, piece.color) and loops < 100):
-				rand = floor(rand_range(0, possible_pieces.size()))
-				loops += 1
-				piece = possible_pieces[rand].instance()
-			# instantiate piece from array
-			add_child(piece)
-			piece.position = grid_to_pixel(i, j)
-			all_pieces[i][j] = piece
+			if !restricted_movement(Vector2(i,j)):
+				# pick a random number and store it
+				var rand = floor(rand_range(0, possible_pieces.size()))
+				var piece = possible_pieces[rand].instance()
+				var loops = 0
+				while(match_at(i, j, piece.color) and loops < 100):
+					rand = floor(rand_range(0, possible_pieces.size()))
+					loops += 1
+					piece = possible_pieces[rand].instance()
+				# instantiate piece from array
+				add_child(piece)
+				piece.position = grid_to_pixel(i, j)
+				all_pieces[i][j] = piece
 
 
 #  Is the balancing managed here? By determining 
@@ -141,6 +156,11 @@ func touch_input():
 
 
 func swap_pieces(column, row, direction):
+	# Let's check which tool the player is using
+	if game_data.get_node("player_status").current_tool == 2:
+		is_protecting = true
+	else:
+		is_protecting = false
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
 	# if !first_piece.is_static and !other_piece.is_static and first_piece != null and other_piece != null:
@@ -209,7 +229,10 @@ func find_matches():
 							all_pieces[i + 1][j].matched = true
 							all_pieces[i + 1][j].dim()
 							all_pieces[i + 1][j].cut()
-							$Destroy.play_audio()
+							if is_protecting:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 				if j > 0 && j < height - 1:
 					if all_pieces[i][j - 1] !=null && all_pieces[i][j + 1] != null:
 						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
@@ -225,7 +248,10 @@ func find_matches():
 							all_pieces[i][j + 1].matched = true
 							all_pieces[i][j + 1].dim()
 							all_pieces[i][j + 1].cut()
-							$Destroy.play_audio()
+							if is_protecting:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 	$"../destroy_timer".start()
 
 
@@ -238,8 +264,11 @@ func destroy_matched():
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
 					was_matched = true
-					tile_group = all_pieces[i][j].get_groups()
-					all_pieces[i][j].queue_free()
+					tile_group = all_pieces[i][j].color#get_groups()
+					if game_data.get_node("player_status").current_tool == 2:
+						empty_spaces.append(Vector2(i,j))
+					else:
+						all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
 					number_of_tiles += 1
 					
@@ -259,7 +288,7 @@ func destroy_matched():
 func collapse_columns():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
 				for k in range(j + 1, height):
 					if all_pieces[i][k] != null:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
@@ -274,7 +303,7 @@ func refill_columns():
 	for i in width:
 		for j in height:
 			# if the spot is empty we'll spawn a new piece
-			if all_pieces[i][j] == null:
+			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
 				var rand = floor(rand_range(0, possible_pieces.size()))
 				var piece = possible_pieces[rand].instance()
 				var loops = 0
@@ -290,7 +319,8 @@ func refill_columns():
 
 
 func after_refill():
-	$TreesDropping.play_audio()
+	if !is_protecting:
+		$TreesDropping.play_audio()
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
@@ -307,16 +337,19 @@ func _on_destroy_timer_timeout():
 
 	
 func _on_sound_timer_timeout():
-	$TreesDropping.play_audio()
+	if !is_protecting:
+		$TreesDropping.play_audio()
 
 
 func _on_collapse_timer_timeout():
-	$TreesDropping.play_audio()
+	if !is_protecting:
+		$TreesDropping.play_audio()
 	collapse_columns()
 
 
 func _on_refill_timer_timeout():
-	$TreesDropping.play_audio()
+	if !is_protecting:
+		$TreesDropping.play_audio()
 	if use_refill:
 		refill_columns()
 	else:
