@@ -4,6 +4,7 @@ signal level_goal_reached
 signal protesters_matched
 
 var score = 0
+var good_guy_points = 0
 onready var score_text = $"../Control/score"
 export var level_goal = 10000
 
@@ -17,11 +18,12 @@ func _on_grid_match_made(number_of_tiles, tile_group):
 	var price = 70
 	if tile_group == "aspen" or tile_group == "juniper":
 		price = 140
-	# Using the tape reduces points
+	# Using the tape gives no score
+	# just good guy points
 	if game_data.get_node("player_status").current_tool == 2:
-		score -= price * number_of_tiles
-	else:
-		score += price * number_of_tiles
+		good_guy_points += price * number_of_tiles
+		price = 0
+	score += price * number_of_tiles
 	# no points for protesters
 	if tile_group == "protester":
 		emit_signal("protesters_matched")

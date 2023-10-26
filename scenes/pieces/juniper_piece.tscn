@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/pieces/piece.tscn" type="PackedScene" id=1]
 [ext_resource path="res://art/Pieces/Yellow Piece.png" type="Texture" id=2]
@@ -7,12 +7,22 @@
 [ext_resource path="res://art/Tree Pieces/Juniper/0002.png" type="Texture" id=5]
 [ext_resource path="res://art/Tree Pieces/Juniper/0004.png" type="Texture" id=6]
 [ext_resource path="res://art/Tree Pieces/Juniper/0005.png" type="Texture" id=7]
+[ext_resource path="res://art/Tree Pieces/Juniper/0006.png" type="Texture" id=8]
+[ext_resource path="res://art/Tree Pieces/Juniper/0010.png" type="Texture" id=9]
+[ext_resource path="res://art/Tree Pieces/Juniper/0009.png" type="Texture" id=10]
+[ext_resource path="res://art/Tree Pieces/Juniper/0007.png" type="Texture" id=11]
+[ext_resource path="res://art/Tree Pieces/Juniper/0008.png" type="Texture" id=12]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": false,
 "name": "cut",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 8 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 10 ), ExtResource( 9 ) ],
+"loop": false,
+"name": "protected",
 "speed": 10.0
 } ]
 
