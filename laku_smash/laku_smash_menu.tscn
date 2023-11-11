@@ -1,0 +1,192 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://laku_smash/lakupeli_grafiikkoja_tausta.png" type="Texture" id=1]
+[ext_resource path="res://laku_smash/lakugraffat_koko logo.png" type="Texture" id=2]
+[ext_resource path="res://laku_smash/laku_smash_menu.gd" type="Script" id=3]
+[ext_resource path="res://ui/invisible_button_theme.tres" type="Theme" id=4]
+[ext_resource path="res://laku_smash/lakugraffat_alempi laku.png" type="Texture" id=5]
+[ext_resource path="res://laku_smash/lakugraffat_päällyslaku.png" type="Texture" id=6]
+[ext_resource path="res://laku_smash/lakugraffat_taustajateksti.png" type="Texture" id=7]
+[ext_resource path="res://laku_smash/lakugraffat_törmäystähti.png" type="Texture" id=8]
+[ext_resource path="res://laku_smash/laku_curtains.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("logo4:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 300, 261.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("logo3:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -50, 369 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "laku_smashing"
+length = 0.65
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("logo3:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.45 ),
+"transitions": PoolRealArray( 3.36359, 0.435275, 1.8025 ),
+"update": 0,
+"values": [ Vector2( -50, 369 ), Vector2( 112, 369 ), Vector2( 103, 369 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("logo4:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.45 ),
+"transitions": PoolRealArray( 3.36359, 0.378929, 2.14355 ),
+"update": 0,
+"values": [ Vector2( 300, 261.5 ), Vector2( 185, 261.5 ), Vector2( 194, 261.5 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("logo5:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("logo:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[node name="laku_smash_menu" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="bg" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 576.0
+margin_bottom = 1024.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="logo3" type="TextureRect" parent="bg"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -338.0
+margin_top = -143.0
+margin_right = -46.0
+margin_bottom = 149.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="logo5" type="TextureRect" parent="bg"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -151.0
+margin_top = -220.5
+margin_right = 141.0
+margin_bottom = 71.5
+texture = ExtResource( 8 )
+expand = true
+
+[node name="logo4" type="TextureRect" parent="bg"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 12.0
+margin_top = -250.5
+margin_right = 303.999
+margin_bottom = 41.5
+texture = ExtResource( 6 )
+expand = true
+
+[node name="logo2" type="TextureRect" parent="bg"]
+visible = false
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -235.5
+margin_top = -235.5
+margin_right = 235.5
+margin_bottom = 235.5
+texture = ExtResource( 7 )
+expand = true
+
+[node name="logo" type="TextureRect" parent="bg"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -235.5
+margin_top = -235.5
+margin_right = 235.5
+margin_bottom = 235.5
+texture = ExtResource( 2 )
+expand = true
+
+[node name="start_game" type="Button" parent="bg/logo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -229.0
+margin_top = -237.0
+margin_right = 229.0
+margin_bottom = 237.0
+theme = ExtResource( 4 )
+
+[node name="logo_animation" type="AnimationPlayer" parent="bg"]
+anims/RESET = SubResource( 1 )
+anims/laku_smashing = SubResource( 2 )
+
+[node name="start_delay" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="laku_curtains" parent="." instance=ExtResource( 9 )]
+margin_right = 576.0
+margin_bottom = 1024.0
+
+[connection signal="pressed" from="bg/logo/start_game" to="." method="_on_start_game_pressed"]
+[connection signal="timeout" from="start_delay" to="." method="_on_start_delay_timeout"]

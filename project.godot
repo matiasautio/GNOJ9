@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="GNOJ9"
-run/main_scene="res://laku_smash/laku_smash.tscn"
+run/main_scene="res://laku_smash/laku_smash_menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
