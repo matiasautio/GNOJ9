@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://laku_smash/lakupeli_grafiikkoja_tausta.png" type="Texture" id=1]
 [ext_resource path="res://laku_smash/lakugraffat_koko logo.png" type="Texture" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://laku_smash/lakugraffat_taustajateksti.png" type="Texture" id=7]
 [ext_resource path="res://laku_smash/lakugraffat_törmäystähti.png" type="Texture" id=8]
 [ext_resource path="res://laku_smash/laku_curtains.tscn" type="PackedScene" id=9]
+[ext_resource path="res://laku_smash/laku_smash_theme.tres" type="Theme" id=10]
+[ext_resource path="res://laku_smash/lakupeli_button.png" type="Texture" id=11]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -180,13 +182,37 @@ theme = ExtResource( 4 )
 anims/RESET = SubResource( 1 )
 anims/laku_smashing = SubResource( 2 )
 
+[node name="play" type="Button" parent="bg"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -83.0
+margin_top = -266.0
+margin_right = 83.0
+margin_bottom = -184.0
+theme = ExtResource( 10 )
+text = "Pelaa!"
+icon = ExtResource( 11 )
+icon_align = 1
+expand_icon = true
+
+[node name="visible_delay" type="Timer" parent="bg/play"]
+wait_time = 0.5
+one_shot = true
+
 [node name="start_delay" type="Timer" parent="."]
 one_shot = true
 autostart = true
 
 [node name="laku_curtains" parent="." instance=ExtResource( 9 )]
+margin_top = -1.0
 margin_right = 576.0
-margin_bottom = 1024.0
+margin_bottom = 1023.0
 
 [connection signal="pressed" from="bg/logo/start_game" to="." method="_on_start_game_pressed"]
+[connection signal="animation_finished" from="bg/logo_animation" to="." method="_on_logo_animation_animation_finished"]
+[connection signal="pressed" from="bg/play" to="." method="_on_play_pressed"]
+[connection signal="timeout" from="bg/play/visible_delay" to="." method="_on_visible_delay_timeout"]
 [connection signal="timeout" from="start_delay" to="." method="_on_start_delay_timeout"]

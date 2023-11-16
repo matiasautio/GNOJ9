@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://laku_smash/lakupeli_pelitausta2.png" type="Texture" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -14,7 +14,77 @@
 [ext_resource path="res://scripts/move_keeper.gd" type="Script" id=12]
 [ext_resource path="res://laku_smash/laku_smash.gd" type="Script" id=13]
 [ext_resource path="res://laku_smash/laku_curtains.tscn" type="PackedScene" id=14]
+[ext_resource path="res://laku_smash/lakupeli_button.png" type="Texture" id=15]
+[ext_resource path="res://laku_smash/laku_smash_theme.tres" type="Theme" id=16]
+[ext_resource path="res://laku_smash/larger_laku_smash_theme.tres" type="Theme" id=17]
 [ext_resource path="res://art/bg_shadow.png" type="Texture" id=18]
+[ext_resource path="res://laku_smash/hi_score.gd" type="Script" id=19]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("text:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "text_appears"
+tracks/0/type = "value"
+tracks/0/path = NodePath("text:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6 ),
+"transitions": PoolRealArray( 2.82843, 1.46408, 0.329877 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("play:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("play:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1.93187 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("hiscore_text:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7 ),
+"transitions": PoolRealArray( 1.86607, 2.07053, 0.307786 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+}
 
 [node name="laku_smash" type="Node2D"]
 script = ExtResource( 13 )
@@ -139,6 +209,114 @@ bbcode_text = "[center]10000[/center]"
 text = "10000"
 fit_content_height = true
 
+[node name="end_stuff" type="Control" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="play" type="Button" parent="Control/end_stuff"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -83.0
+margin_top = -450.0
+margin_right = 83.0
+margin_bottom = -368.0
+rect_pivot_offset = Vector2( 83, 41 )
+theme = ExtResource( 16 )
+text = "Uudelleen!"
+icon = ExtResource( 15 )
+icon_align = 1
+expand_icon = true
+
+[node name="visible_delay" type="Timer" parent="Control/end_stuff/play"]
+wait_time = 0.5
+one_shot = true
+
+[node name="text" type="Control" parent="Control/end_stuff"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -191.5
+margin_right = 254.0
+margin_bottom = 47.5
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 255, 119 )
+
+[node name="end_text" type="Label" parent="Control/end_stuff/text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -210.5
+margin_top = -120.5
+margin_right = 210.5
+margin_bottom = 120.5
+theme = ExtResource( 17 )
+text = "Siirrot loppuivat!
+Onnistuit saamaan
+
+Hienoa!"
+align = 1
+
+[node name="end_score" type="Label" parent="Control/end_stuff/text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -258.5
+margin_top = 2.5
+margin_right = 258.5
+margin_bottom = 83.5
+theme = ExtResource( 17 )
+text = "10000 pistettä"
+align = 1
+
+[node name="hiscore_text" type="Control" parent="Control/end_stuff"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = 151.5
+margin_right = 254.0
+margin_bottom = 391.5
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 255, 120 )
+
+[node name="hiscore_text" type="Label" parent="Control/end_stuff/hiscore_text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -210.5
+margin_top = -97.0
+margin_right = 210.5
+margin_bottom = -39.0
+theme = ExtResource( 17 )
+text = "Paras tuloksesi on:"
+align = 1
+
+[node name="hiscore_score" type="Label" parent="Control/end_stuff/hiscore_text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -258.5
+margin_top = -40.5
+margin_right = 258.5
+margin_bottom = 40.5
+theme = ExtResource( 17 )
+text = "10000 pistettä"
+align = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/end_stuff"]
+anims/RESET = SubResource( 1 )
+anims/text_appears = SubResource( 2 )
+
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
@@ -170,7 +348,11 @@ margin_bottom = 1024.0
 wait_time = 2.0
 one_shot = true
 
+[node name="hi_score" type="Node" parent="."]
+script = ExtResource( 19 )
+
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
+[connection signal="pressed" from="Control/end_stuff/play" to="." method="_on_play_pressed"]
 [connection signal="match_made" from="grid" to="score_keeper" method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]
 [connection signal="moves_deplenished" from="move_keeper" to="." method="_on_move_keeper_moves_deplenished"]

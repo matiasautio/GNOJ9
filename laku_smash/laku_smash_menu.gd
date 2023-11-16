@@ -15,3 +15,15 @@ func _on_start_delay_timeout():
 
 func _on_curtains_animation_animation_finished(anim_name):
 	get_tree().change_scene("res://laku_smash/laku_smash.tscn")
+
+
+func _on_logo_animation_animation_finished(anim_name):
+	$bg/play/visible_delay.start()
+
+
+func _on_visible_delay_timeout():
+	$bg/play.visible = true
+
+
+func _on_play_pressed():
+	_on_start_game_pressed()
