@@ -166,12 +166,18 @@ bbcode_text = "[center]a game by
 [wave]Tatu Heinämäki[/wave]
 
 with audio by
-[wave]Aleksi Martikainen[/wave][/center]"
+[wave]Aleksi Martikainen[/wave]
+
+and thanks to
+[wave]Games Now!, Mom, Sami, Santtu[/wave][/center]"
 text = "a game by
 Tatu Heinämäki
 
 with audio by
-Aleksi Martikainen"
+Aleksi Martikainen
+
+and thanks to
+Games Now!, Mom, Sami, Santtu"
 fit_content_height = true
 
 [node name="Logo" type="Sprite" parent="Credits/Control"]

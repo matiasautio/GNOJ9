@@ -9,7 +9,8 @@ var orig_level = 0
 var current_level = 1
 
 # misc fun data
-var protesters_killed
+var protesters_killed = 0
+var cops_killed = 0
 
 
 func _ready():
@@ -43,10 +44,16 @@ func load_saved_progression():
 		print("No save game present!")
 		return # Error! We don't have a save to load.
 	
+#	save_game.open("user://savegame.save", File.READ)
+#	while save_game.get_position() < save_game.get_len():
+#		# Get the saved dictionary from the next line in the save file
+#		var node_data = parse_json(save_game.get_line())
+#		current_level = node_data["current_level"]
 	save_game.open("user://savegame.save", File.READ)
 	while save_game.get_position() < save_game.get_len():
 		# Get the saved dictionary from the next line in the save file
 		var node_data = parse_json(save_game.get_line())
-		current_level = node_data["current_level"]
+		for i in node_data.keys():
+			game_data.set(i, node_data[i])
 		
 	save_game.close()

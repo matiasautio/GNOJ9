@@ -6,10 +6,6 @@ onready var player_status = get_node("/root/game_data/player_status")
 var is_selected = false
 export var tool_i_am = 1
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
 
 func toggle_selection():
 	is_selected = !is_selected

@@ -9,6 +9,10 @@ func _ready():
 		$BackgroundColor/Control/start_game.visible = false
 		$BackgroundColor/Control/continue.visible = true
 		$BackgroundColor/Control/restart.visible = true
+		if game_data.current_level == 2:
+			$BackgroundColor/Control/continue.text = "continue: day two"
+		elif game_data.current_level == 3:
+			$BackgroundColor/Control/continue.text = "continue: day three"
 	# game_data.boss_health = game_data.orig_boss_health
 
 

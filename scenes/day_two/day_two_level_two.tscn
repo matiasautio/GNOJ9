@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=10]
 [ext_resource path="res://art/faces/boss_face_away.png" type="Texture" id=11]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=12]
-[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
+[ext_resource path="res://art/faces/boss_face1.png" type="Texture" id=13]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/tool.tscn" type="PackedScene" id=15]
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=16]
@@ -24,6 +24,10 @@
 [ext_resource path="res://scenes/pieces/aspen_piece.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scripts/move_keeper.gd" type="Script" id=23]
 [ext_resource path="res://art/Tools/tools_tape1.png" type="Texture" id=24]
+[ext_resource path="res://scripts/cop.gd" type="Script" id=25]
+[ext_resource path="res://art/faces/cop_happy.png" type="Texture" id=26]
+[ext_resource path="res://art/faces/cop_neutral.png" type="Texture" id=27]
+[ext_resource path="res://art/faces/cop_pain.png" type="Texture" id=28]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -49,9 +53,45 @@ animations = [ {
 "loop": true,
 "name": "default",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ) ],
+"loop": true,
+"name": "happy",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "hurt",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 11 ) ],
+"loop": true,
+"name": "away",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 27 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 26 ) ],
+"loop": true,
+"name": "happy",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 28 ) ],
+"loop": true,
+"name": "hurt",
+"speed": 5.0
 } ]
 
 [node name="day_two_level_one" type="Node2D"]
+
+[node name="day_two_level_two" type="Node" parent="."]
+script = ExtResource( 21 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -268,6 +308,23 @@ margin_right = -3.0
 margin_bottom = -1.0
 theme = ExtResource( 18 )
 
+[node name="Cop" type="AnimatedSprite" parent="Control"]
+visible = false
+position = Vector2( 103, 938 )
+frames = SubResource( 3 )
+script = ExtResource( 25 )
+
+[node name="cop_button" type="Button" parent="Control/Cop"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -121.0
+margin_top = -122.0
+margin_right = -3.0
+margin_bottom = -1.0
+theme = ExtResource( 18 )
+
 [node name="Protester" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 103, 938 )
@@ -277,7 +334,7 @@ texture = ExtResource( 12 )
 position = Vector2( 15, 524 )
 
 [node name="DialogueBox" parent="Control/DialogueBoxHolder" index="0"]
-dialogue_path = "res://dialogue/day_two/day_two_one_000.json"
+dialogue_path = "res://dialogue/day_two/day_two_two_000.json"
 
 [node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
@@ -337,9 +394,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 1, 1, 1, 0 )
 
-[node name="day_two_level_two" type="Node" parent="."]
-script = ExtResource( 21 )
-
 [node name="grid_pauser" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
@@ -354,8 +408,10 @@ number_of_moves = 20
 [connection signal="protesters_matched" from="score_keeper" to="day_two_level_two" method="_on_score_keeper_protesters_matched"]
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
+[connection signal="button_down" from="Control/Cop/cop_button" to="Control/Cop" method="_on_cop_button_button_down"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="Control/Boss" method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="day_two_level_two" method="_on_DialogueBox_dialog_box_closed"]
+[connection signal="next_phrase_requested" from="Control/DialogueBoxHolder/DialogueBox" to="day_two_level_two" method="_on_DialogueBox_next_phrase_requested"]
 [connection signal="pressed" from="Control/continue_game/stay" to="day_two_level_two" method="_on_stay_pressed"]
 [connection signal="pressed" from="Control/continue_game/continue" to="day_two_level_two" method="_on_continue_pressed"]
 [connection signal="timeout" from="grid_pauser" to="day_two_level_two" method="_on_grid_pauser_timeout"]

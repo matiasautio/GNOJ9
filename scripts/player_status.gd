@@ -3,6 +3,7 @@ extends Node
 
 # Tools are: none, saw, tape
 var current_tool = 0
+enum {none, saw, tape}
 
 
 func tool_selected(selected_tool):

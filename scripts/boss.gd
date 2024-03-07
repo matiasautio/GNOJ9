@@ -1,26 +1,21 @@
-extends AnimatedSprite
+extends Character
 
 
-var is_present = true
-var can_talk_to
 var boss_health
-var boss_annoyance = 0
+var boss_annoyance = 0 # tie boss annoyance to an angry sprite
 var annoyance_treshold = 3
 
-var current_dialogue = null
-var current_level
 
 func _ready():
-	boss_health = get_node("/root/game_data").boss_health
-	can_talk_to = false
+	boss_health = game_data.boss_health
 
 
-func boss_clicked():
+func clicked():
 	if can_talk_to:
-		var current_tool = $"../../player_status".current_tool
+		var current_tool = player_status.current_tool
 		print(current_tool)
 		# player has nothing equipped
-		if current_tool == $"../../player_status".none:
+		if current_tool == 0:#$"../../player_status".none:
 			# $"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
 			# current_dialogue = "level_one_continue"
 			if current_level == 1:
@@ -30,7 +25,7 @@ func boss_clicked():
 			elif current_level == 3:
 				$"../../level_three".prompt_end()
 		# player has the saw equipped
-		elif current_tool == $"../../player_status".saw:
+		elif current_tool == 1:#$"../../player_status".saw:
 			boss_health -= 1
 			boss_annoyance += 1
 			if boss_health == 0:
@@ -52,11 +47,11 @@ func boss_clicked():
 			#$"../../level_two".prompt_end()
 		#elif current_level == 3:
 			#$"../../level_three".prompt_end()
-		get_node("/root/game_data").boss_health = boss_health
+		game_data.boss_health = boss_health
 
 
 func _on_boss_button_button_down():
-	boss_clicked()
+	clicked()
 
 
 # Let's observe the boss dialogue box closing here
@@ -69,16 +64,3 @@ func _on_DialogueBox_dialog_box_closed():
 			var _x = get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
 		can_talk_to = true
 		current_dialogue = null
-
-
-func toggle_status():
-	# if boss is interactable we don't want him to go away
-	print("can talk to is ", can_talk_to)
-	if can_talk_to or current_dialogue != null:
-		return
-	if is_present:
-		is_present = false
-		self.play("away")
-	else:
-		is_present = true
-		self.play("default")
