@@ -2,6 +2,7 @@ extends Node2D
 
 
 signal match_made(number_of_tiles, tile_group)
+signal pieces_generated()
 
 # General gameplay variables
 export var can_play = false
@@ -102,6 +103,7 @@ func spawn_pieces():
 				add_child(piece)
 				piece.position = grid_to_pixel(i, j)
 				all_pieces[i][j] = piece
+	emit_signal("pieces_generated")
 
 
 #  Is the balancing managed here? By determining 

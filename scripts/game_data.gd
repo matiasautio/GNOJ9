@@ -1,5 +1,6 @@
 extends Node
 
+const is_paid_version = false
 
 var orig_boss_health = 5
 var boss_health = 5
@@ -22,6 +23,7 @@ func reset_progression():
 	current_score = 0
 	current_level = 1
 	save_progression()
+
 
 func save_progression():
 	# save progression to disk here
