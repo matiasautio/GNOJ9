@@ -1,7 +1,8 @@
 extends AnimatedSprite
 
-
 class_name Character
+
+signal dead
 
 
 var is_present = true

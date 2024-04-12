@@ -9,6 +9,8 @@ var current_score = 0
 var orig_level = 0
 var current_level = 1
 
+var previous_level_name = ""
+
 # misc fun data
 var protesters_killed = 0
 var cops_killed = 0

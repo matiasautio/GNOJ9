@@ -91,11 +91,11 @@ animations = [ {
 [node name="cop_raid" type="Node" parent="."]
 script = ExtResource( 6 )
 level_type = 1
-current_level = 2
 wanna_quit_dialogue = "res://dialogue/cop_raid_looping.json"
 
 [node name="move_keeper" type="Node" parent="."]
 script = ExtResource( 23 )
+number_of_moves = 1
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -410,6 +410,7 @@ one_shot = true
 [connection signal="protesters_matched" from="score_keeper" to="cop_raid" method="_on_score_keeper_protesters_matched"]
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
+[connection signal="dead" from="Control/Cop" to="cop_raid" method="_on_Cop_dead"]
 [connection signal="button_down" from="Control/Cop/cop_button" to="Control/Cop" method="_on_cop_button_button_down"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="cop_raid" method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="Control/Boss" method="_on_DialogueBox_dialog_box_closed"]

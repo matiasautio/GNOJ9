@@ -24,13 +24,15 @@ func clicked():
 			#boss_health -= 1
 			#boss_annoyance += 1
 			#if boss_health == 0:
+			animation = "hurt"
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_dead.json")
 			can_talk_to = false
 			current_dialogue = "hit_boss_dead"
+			emit_signal("dead")
 		elif current_tool == 2:
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_muffled.json")
 			#can_talk_to = false
-			current_dialogue = "hit_boss_dead"
+			#current_dialogue = "hit_boss_dead"
 #			else:
 #				if boss_annoyance < annoyance_treshold:
 #					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss.json")

@@ -11,7 +11,8 @@ export var moves = 10
 var level_state = 0
 var gameplay_state = 2 # depends on scene?
 var is_level_goal_reached = false
-export var current_level : int = 0
+export var current_day : int = 0
+export var current_level_name = ""
 export var next_level_scene = ""
 
 export var stay_dialogue = ""
@@ -44,8 +45,8 @@ var has_boss_reacted = false
 
 
 func _ready():
-	get_node("/root/game_data").current_level = current_level
-	$"../Control/Boss".current_level = current_level
+	get_node("/root/game_data").current_level = current_day
+	$"../Control/Boss".current_level = current_day
 
 
 func _on_DialogueBox_dialog_box_closed():
@@ -59,6 +60,7 @@ func _on_DialogueBox_dialog_box_closed():
 			$"../Control/Protester".animation = "away"
 		$"../Control/input_blocker".visible = false
 	if level_state == 6:
+		game_data.previous_level_name = current_level_name
 		var _x = get_tree().change_scene(cop_scene)
 
 
@@ -171,6 +173,7 @@ func reset_level():
 func next_level():
 	game_data.protesters_killed = cut_protesters
 	game_data.current_score += highest_score
+	
 	var _x = get_tree().change_scene(next_level_scene)
 
 
