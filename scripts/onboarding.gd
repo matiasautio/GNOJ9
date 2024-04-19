@@ -9,13 +9,13 @@ func _on_grid_swap_succesful():
 	index += 1
 	if index == 1:
 		$"../hand".visible = false
-		$"../BackgroundColor/guide_text/AnimationPlayer".play("increase_scale")
-		$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Earn points!"
+		$"../BackgroundColor/ScaleHelper/guide_text/AnimationPlayer".play("increase_scale")
+		$"../BackgroundColor/ScaleHelper/guide_text".bbcode_text = "[center][wave]Earn points!"
 		$"../BackgroundColor/score_ui".visible = true
 		$"../BackgroundColor/score_ui/AnimationPlayer".play("increase_scale")
 	elif index == 2:
-		$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Limited moves!"
-		$"../BackgroundColor/guide_text/AnimationPlayer".play("increase_scale")
+		$"../BackgroundColor/ScaleHelper/guide_text".bbcode_text = "[center][wave]Limited moves!"
+		$"../BackgroundColor/ScaleHelper/guide_text/AnimationPlayer".play("increase_scale")
 		$"../BackgroundColor/score_ui".visible = false
 		$"../BackgroundColor/moves_ui/AnimationPlayer".play("increase_scale")
 	elif index == 3:
@@ -49,8 +49,8 @@ func _on_score_incrementer_timeout():
 
 func _on_delay_timeout():
 	if index == 3:
-		$"../BackgroundColor/guide_text".bbcode_text = "[center][wave]Well done!"
-		$"../BackgroundColor/guide_text/AnimationPlayer".play("increase_scale")
+		$"../BackgroundColor/ScaleHelper/guide_text".bbcode_text = "[center][wave]Well done!"
+		$"../BackgroundColor/ScaleHelper/guide_text/AnimationPlayer".play("increase_scale")
 		$"../BackgroundColor/moves_ui".visible = false
 		$"../BackgroundColor/start_job/AnimationPlayer".play("increase_scale_larger")
 	elif index < 0:

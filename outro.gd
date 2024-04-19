@@ -10,3 +10,4 @@ func _on_DialogueBox_next_phrase_requested():
 	# print(current_dialogue_value)
 	if current_dialogue_value == end_game_value:
 		var _x = get_tree().change_scene("res://scenes/dream.tscn")
+		game_data.calculate_score()

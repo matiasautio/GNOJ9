@@ -1,0 +1,7 @@
+[
+	{"Name":"BOSS", "Text":"Let's see. Your score today was [wave]$SCORE[/wave]."},
+	{"Name":"BOSS", "Text":"And for these two days you've been employed it's [wave]$TOTALSCORE[/wave] in total."},
+	{"Name":"BOSS", "Text":"Pretty good, although I know you can do better."},
+	{"Name":"BOSS", "Text":"I'll see what the guys over at development can do about that bugged tool of yours."},
+	{"Name":"BOSS", "Text":"Don't be late tomorrow. We start at 06:00, real sharp."},
+]

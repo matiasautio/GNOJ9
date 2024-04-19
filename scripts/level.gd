@@ -8,28 +8,31 @@ export var score_threshold = 10000
 export var moves = 10
 
 # 0 = beginning, 1 = intro done, 2 = gameplay, 3 = goal reached, 4 = replay, 5 = protester fail, 6 = cop fail
+# 10 = end level
 var level_state = 0
 var gameplay_state = 2 # depends on scene?
 var is_level_goal_reached = false
 export var current_day : int = 0
-export var current_level_name = ""
-export var next_level_scene = ""
+#export var current_level_name = ""
+export (String, MULTILINE) var next_level_scene = ""
+const main_menu = "res://scenes/main_menu.tscn"
 
-export var stay_dialogue = ""
-export var continue_dialogue = ""
-export var wanna_quit_dialogue = ""
-export var end_of_level_dialogue = ""
-export var restart_dialogue = ""
+export (String, MULTILINE) var stay_dialogue = ""
+export (String, MULTILINE) var continue_dialogue = ""
+export (String, MULTILINE) var wanna_quit_dialogue = ""
+export (String, MULTILINE) var end_of_level_dialogue = ""
+export (String, MULTILINE) var restart_dialogue = ""
 
 var current_dialogue
 
+export var ignore_protestor_safety = false
 var cut_protesters = 0
 const protester_treshold = 10
-export var protester_treshold_met_dialogue = "res://dialogue/level_three_restart.json"
+export (String, MULTILINE) var protester_treshold_met_dialogue = "res://dialogue/level_three_restart.json"
 var cut_cops = 0
 var cop_treshold = 10
-export var cop_treshold_met_dialogue = "res://dialogue/cop_triggered.json"
-export var cop_scene = "res://scenes/day_two/cop_raid.tscn"
+export (String, MULTILINE) var cop_treshold_met_dialogue = "res://dialogue/cop_triggered.json"
+export (String, MULTILINE) var cop_scene = "res://scenes/day_two/cop_raid.tscn"
 
 # looping
 var times_played = 0
@@ -47,21 +50,38 @@ var has_boss_reacted = false
 func _ready():
 	get_node("/root/game_data").current_level = current_day
 	$"../Control/Boss".current_level = current_day
+	$"../move_keeper".number_of_moves = moves
+	$"../score_keeper".level_goal = score_threshold
+	other_init()
+
+
+func other_init():
+	pass
 
 
 func _on_DialogueBox_dialog_box_closed():
 	if level_state == 0:
-		level_state = gameplay_state
+		level_state = 2
 		if $"../Control/Boss".visible:
 			$"../Control/Boss".animation = "away"
-		if $"../Control/Cop".visible:
+		if $"../Control/Cop" != null and $"../Control/Cop".visible:
 			$"../Control/Cop".animation = "away"
-		if $"../Control/Protester".visible:
+		if $"../Control/Protester" != null and $"../Control/Protester".visible:
 			$"../Control/Protester".animation = "away"
 		$"../Control/input_blocker".visible = false
-	if level_state == 6:
-		game_data.previous_level_name = current_level_name
+	elif level_state == 2:
+		#level_state = 3
+		$"../Control/continue_game".visible = true
+	elif level_state == 3:
+		$"../Control/continue_game".visible = true
+	elif level_state == 4:
+		pass
+		#reset_level()
+	elif level_state == 6:
+		#game_data.previous_level_name = current_level_name
 		var _x = get_tree().change_scene(cop_scene)
+	elif level_state == 10:
+		next_level()
 
 
 func _on_DialogueBox_next_phrase_requested():
@@ -71,7 +91,7 @@ func _on_DialogueBox_next_phrase_requested():
 func _on_grid_match_made(_number_of_tiles, _tile_group):
 	if _tile_group == "protester":
 		cut_protesters += _number_of_tiles
-		if cut_protesters >= protester_treshold:
+		if cut_protesters >= protester_treshold and !ignore_protestor_safety:
 			level_state = 5
 			prompt_end()
 	if _tile_group == "cop":
@@ -89,12 +109,15 @@ func _on_score_keeper_protesters_matched():
 
 
 func _on_move_keeper_moves_deplenished():
+	print("moves deplenished")
 	if level_type == 1:
+		level_state = 3
 		prompt_end()
 
 
 func _on_score_keeper_level_goal_reached():
 	if level_type == 0:
+		level_state = 3
 		prompt_end()
 
 
@@ -102,8 +125,14 @@ func signal_from_scorekeeper():
 	pass
 
 
+func update_score(new_score):
+	if new_score > highest_score:
+		highest_score = new_score
+
+
 func prompt_end():
 	var _score = $"../score_keeper".score
+	update_score(_score)
 	var boss = $"../Control/Boss"
 	
 	$"../grid".can_play = false
@@ -115,14 +144,25 @@ func prompt_end():
 	
 	boss.toggle_status()
 	
+	print("level state is ", level_state)
 	if level_state == 2:
-		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
-		current_dialogue = "wanna_quit"
+		#$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
+		boss.toggle_status()
+		#level_state = 3
+		if times_played == 0:
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
+			boss.can_talk_to = true
+			times_played += 1
+		else:
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
+			current_dialogue = "wanna_quit"
+		#current_dialogue = "wanna_quit"
 		
 	# level goal is reached
 	if level_state == 3:
 		print("level state is 3 so imma go there")
 		if times_played == 0:
+			boss.toggle_status()
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
 			boss.can_talk_to = true
 			times_played += 1
@@ -160,6 +200,7 @@ func reset_level():
 	print("---------------")
 	print("resetting scene")
 	$"../score_keeper".reset_score()
+	$"../move_keeper".number_of_moves = moves
 	$"../move_keeper".reset_moves()
 	cut_protesters = 0
 	cut_cops = 0
@@ -173,7 +214,6 @@ func reset_level():
 func next_level():
 	game_data.protesters_killed = cut_protesters
 	game_data.current_score += highest_score
-	
 	var _x = get_tree().change_scene(next_level_scene)
 
 
@@ -181,14 +221,14 @@ func _on_stay_pressed():
 	$"../Control/continue_game".visible = false
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(stay_dialogue)
 	#current_dialogue = "level_three_stay"
-	level_state = gameplay_state
+	level_state = 4
 
 
 func _on_continue_pressed():
 	$"../Control/continue_game".visible = false
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(continue_dialogue)
 	#current_dialogue = "level_three_continue"
-	level_state = gameplay_state
+	level_state = 10
 
 
 func _on_grid_pauser_timeout():

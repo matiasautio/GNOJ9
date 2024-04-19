@@ -98,15 +98,23 @@ margin_bottom = 1027.0
 theme = ExtResource( 15 )
 color = Color( 0.235294, 0.341176, 0.305882, 1 )
 
-[node name="guide_text" type="RichTextLabel" parent="BackgroundColor"]
+[node name="ScaleHelper" type="Control" parent="BackgroundColor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -288.0
+margin_right = -288.0
+margin_bottom = -513.0
+rect_scale = Vector2( 2, 2 )
+
+[node name="guide_text" type="RichTextLabel" parent="BackgroundColor/ScaleHelper"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -286.5
-margin_top = -300.5
+margin_top = -134.0
 margin_right = 289.5
-margin_bottom = -200.5
+margin_bottom = -34.0
 rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 288, 50 )
 theme = ExtResource( 13 )
@@ -114,7 +122,7 @@ bbcode_enabled = true
 bbcode_text = "[center][wave]Swipe the trees!"
 text = "Swipe the trees!"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/guide_text"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundColor/ScaleHelper/guide_text"]
 autoplay = "increase_scale"
 anims/increase_scale = ExtResource( 17 )
 

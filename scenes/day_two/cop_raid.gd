@@ -7,12 +7,11 @@ extends Level
 
 var cop_piece = preload("res://scenes/pieces/police_piece.tscn")
 var next_phrases = 0
+var is_raid_over = false
 
 # res://dialogue/cop_raid_failed.json
 
-func _ready():
-	get_node("/root/game_data").current_level = current_day
-	$"../Control/Boss".current_level = current_day
+func other_init():
 	cop_treshold = 999
 
 
@@ -29,11 +28,14 @@ func _on_DialogueBox_dialog_box_closed():
 		$"../Control/input_blocker".visible = false
 	elif level_state == 2:
 		$"../grid".possible_pieces.erase(cop_piece)
+		moves += 5
 		reset_level()
 		$"../grid".possible_pieces.append(cop_piece)
 		#spawn_first_cop()
 	elif level_state == 3:
 		prompt_end()
+	elif level_state == 4:
+		var _x = get_tree().change_scene(main_menu)
 	elif level_state == 6:
 		var _x = get_tree().change_scene(cop_scene)
 
@@ -57,7 +59,13 @@ func spawn_first_cop():
 func check_tiles_after_match():
 	for x in $"../grid".width:
 		if $"../grid".all_pieces[x][0] != null and $"../grid".all_pieces[x][0].color == "cop":
-			pass
+			level_state = 4
+			prompt_end()
+
+func _on_move_keeper_moves_deplenished():
+	print("moves deplenished")
+	#level_state = 2
+	prompt_end()
 
 
 func prompt_end():
@@ -65,13 +73,27 @@ func prompt_end():
 	ask_for_grid_pause()
 	
 	if level_state == 2:
+		times_played += 1
+		if times_played == 3:
+			is_raid_over = true
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
+			level_state = 3
+			return
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
 		current_dialogue = "wanna_quit"
 		$"../Control/Cop".toggle_status()
 		$"../Control/Cop".can_talk_to = true
+		
 		#$"../Control/Cop".animation = "happy"
-	if level_state == 3:
-		var _x = get_tree().change_scene(game_data.previous_level_name)
+	elif level_state == 3:
+		if is_raid_over:
+			var _x = get_tree().change_scene("res://scenes/day_two/day_two_level_three.tscn")#game_data.previous_level_name)
+		else:
+			var _x = get_tree().change_scene("res://scenes/day_two/day_two_cop_died.tscn")
+	elif level_state == 4:
+		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_raid_failed.json")
+		$"../Control/Cop".toggle_status()
+		$"../Control/Cop".can_talk_to = true
 
 
 func _on_grid_pieces_generated():

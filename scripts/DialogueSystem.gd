@@ -14,7 +14,7 @@ signal next_phrase_requested
 signal dialog_box_closed
 
 # functionality to replace keywords with variables in text
-# Keywords are: $SCORE
+# Keywords are: $SCORE, $TOTALSCORE, $PROTECTSCORE
 onready var game_data = get_node("/root/game_data")
 var special_character = "$"
 
@@ -126,5 +126,9 @@ func replace_keywords(phrase):
 	var new_phrase
 	if "$SCORE" in phrase:
 		new_phrase = phrase.replace("$SCORE", String(game_data.current_score))
+	if "$TOTALSCORE" in phrase:
+		new_phrase = phrase.replace("$TOTALSCORE", String(game_data.total_score))
+	if "$PROTECTSCORE" in phrase:
+		new_phrase = phrase.replace("$TOTALSCORE", String(game_data.total_score))
 	# Add other keywords here
 	$Text.bbcode_text = new_phrase

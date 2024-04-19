@@ -5,6 +5,7 @@ const is_paid_version = false
 var orig_boss_health = 5
 var boss_health = 5
 var current_score = 0
+var total_score = 0
 
 var orig_level = 0
 var current_level = 1
@@ -18,6 +19,15 @@ var cops_killed = 0
 
 func _ready():
 	load_saved_progression()
+
+
+# currently calculated on each outro scene closing
+func calculate_score():
+	total_score += current_score
+
+
+func reset_current_score():
+	current_score = 0
 
 
 func reset_progression():

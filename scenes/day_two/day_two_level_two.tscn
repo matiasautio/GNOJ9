@@ -91,7 +91,8 @@ animations = [ {
 
 [node name="day_two_level_two" type="Node" parent="."]
 script = ExtResource( 21 )
-current_level_name = "res://scenes/day_two/day_two_level_two.tscn"
+level_type = 1
+current_day = 2
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false

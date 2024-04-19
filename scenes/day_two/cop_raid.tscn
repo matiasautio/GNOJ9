@@ -92,6 +92,7 @@ animations = [ {
 script = ExtResource( 6 )
 level_type = 1
 wanna_quit_dialogue = "res://dialogue/cop_raid_looping.json"
+end_of_level_dialogue = "res://dialogue/cop_raid_001.json"
 
 [node name="move_keeper" type="Node" parent="."]
 script = ExtResource( 23 )
