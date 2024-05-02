@@ -39,7 +39,7 @@ game_data="*res://scenes/game_data.tscn"
 window/size/width=576
 window/size/height=1024
 window/handheld/orientation="portrait"
-window/stretch/mode="2d"
+window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
 [gui]

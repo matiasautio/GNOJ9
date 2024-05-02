@@ -25,7 +25,7 @@ func clicked():
 			#boss_annoyance += 1
 			#if boss_health == 0:
 			animation = "hurt"
-			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_dead.json")
+			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_dead.json")
 			can_talk_to = false
 			current_dialogue = "hit_boss_dead"
 			emit_signal("dead")
