@@ -5,6 +5,7 @@ const is_paid_version = false
 var orig_boss_health = 5
 var boss_health = 5
 var current_score = 0
+var current_good_guys_score = 0
 var total_score = 0
 
 var orig_level = 0
@@ -28,6 +29,7 @@ func calculate_score():
 
 func reset_current_score():
 	current_score = 0
+	current_good_guys_score = 0
 
 
 func reset_progression():
@@ -40,7 +42,9 @@ func reset_progression():
 func save_progression():
 	# save progression to disk here
 	var save_dict = {
-		"current_level" : current_level
+		"current_level" : current_level,
+		"current_score" : current_score,
+		"current_good_guys_score" : current_good_guys_score
 	}
 	var save_game = File.new()
 	save_game.open("user://savegame.save", File.WRITE)

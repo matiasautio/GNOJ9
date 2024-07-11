@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://art/faces/cop_happy.png" type="Texture" id=26]
 [ext_resource path="res://art/faces/cop_neutral.png" type="Texture" id=27]
 [ext_resource path="res://art/faces/cop_pain.png" type="Texture" id=28]
+[ext_resource path="res://ui/basic_theme_smaller_score.tres" type="Theme" id=29]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -101,6 +102,7 @@ continue_dialogue = "res://dialogue/day_two/day_two_three_continue.json"
 wanna_quit_dialogue = "res://dialogue/day_two/day_two_three_wanna_quit.json"
 end_of_level_dialogue = "res://dialogue/day_two/day_two_three_001.json"
 ignore_protestor_safety = true
+ignore_cop_safety = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -236,11 +238,26 @@ texture = ExtResource( 9 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 83.0
+margin_top = 62.0
 margin_right = 545.0
-margin_bottom = 123.0
+margin_bottom = 102.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
+theme = ExtResource( 29 )
+bbcode_enabled = true
+bbcode_text = "[center]10000[/center]"
+text = "10000"
+fit_content_height = true
+
+[node name="xr_score" type="RichTextLabel" parent="Control"]
+self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
+margin_left = 289.0
+margin_top = 102.0
+margin_right = 545.0
+margin_bottom = 142.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+theme = ExtResource( 29 )
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
 text = "10000"

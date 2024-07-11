@@ -11,7 +11,7 @@
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=9]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=10]
 [ext_resource path="res://art/screen.png" type="Texture" id=11]
-[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=12]
+[ext_resource path="res://animation/boss_faces.tres" type="SpriteFrames" id=12]
 
 [node name="day_two_intro" type="Node2D"]
 script = ExtResource( 6 )
@@ -57,10 +57,10 @@ custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 [node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
-[node name="BossFace" type="Sprite" parent="."]
+[node name="BossFace" type="AnimatedSprite" parent="."]
 position = Vector2( 162, 554 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 12 )
+frames = ExtResource( 12 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false

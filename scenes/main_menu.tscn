@@ -169,7 +169,7 @@ with audio by
 [wave]Aleksi Martikainen[/wave]
 
 and thanks to
-[wave]Games Now!, Mom, Sami, Santtu[/wave][/center]"
+[wave]Games Now!, Mom, Sami, Santtu, Aino[/wave][/center]"
 text = "a game by
 Tatu Heinämäki
 
@@ -177,7 +177,7 @@ with audio by
 Aleksi Martikainen
 
 and thanks to
-Games Now!, Mom, Sami, Santtu"
+Games Now!, Mom, Sami, Santtu, Aino"
 fit_content_height = true
 
 [node name="Logo" type="Sprite" parent="Credits/Control"]

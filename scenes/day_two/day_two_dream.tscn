@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
@@ -18,6 +18,9 @@
 [ext_resource path="res://art/police_pieces/0002.png" type="Texture" id=16]
 [ext_resource path="res://art/police_pieces/0001.png" type="Texture" id=17]
 [ext_resource path="res://art/faces/narrator_face.png" type="Texture" id=18]
+[ext_resource path="res://art/faces/it_face.png" type="Texture" id=19]
+[ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=20]
+[ext_resource path="res://art/Tools/tools_tape1_not_in_use.png" type="Texture" id=21]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -31,6 +34,158 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 } ]
+
+[sub_resource type="Animation" id=8]
+resource_name = "appears"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0.046875, 0.046875 ), Vector2( 0.1875, 0.1875 ), Vector2( 0.46875, 0.46875 ), Vector2( 0.75, 0.75 ), Vector2( 1.3125, 1.3125 ), Vector2( 1.875, 1.875 ), Vector2( 2.4375, 2.4375 ), Vector2( 3, 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.5625 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.75 ), Color( 1, 1, 1, 0.875 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "appears"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0.046875, 0.046875 ), Vector2( 0.1875, 0.1875 ), Vector2( 0.46875, 0.46875 ), Vector2( 0.75, 0.75 ), Vector2( 1.3125, 1.3125 ), Vector2( 1.875, 1.875 ), Vector2( 2.4375, 2.4375 ), Vector2( 3, 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.5625 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.75 ), Color( 1, 1, 1, 0.875 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "increase_scale"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1 ),
+"transitions": PoolRealArray( 0.450625, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.82843, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0.368, 0.368 ), Vector2( 0.468652, 0.468652 ), Vector2( 0.56007, 0.56007 ), Vector2( 0.651489, 0.651489 ), Vector2( 0.742907, 0.742907 ), Vector2( 0.834326, 0.834326 ), Vector2( 0.925744, 0.925744 ), Vector2( 1.01716, 1.01716 ), Vector2( 1.10858, 1.10858 ), Vector2( 1.2, 1.2 ), Vector2( 1.19405, 1.19405 ), Vector2( 1.15776, 1.15776 ), Vector2( 1.02888, 1.02888 ), Vector2( 0.9, 0.9 ), Vector2( 0.941667, 0.941667 ), Vector2( 0.955556, 0.955556 ), Vector2( 0.966667, 0.966667 ), Vector2( 0.977778, 0.977778 ), Vector2( 0.988889, 0.988889 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "increase_scale_larger"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 0.450625, 2.82843, 0.5, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 2.4, 2.4 ), Vector2( 1.8, 1.8 ), Vector2( 2, 2 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "pump_scale"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ), Vector2( 1.9, 1.9 ), Vector2( 1.8, 1.8 ), Vector2( 1.9, 1.9 ), Vector2( 2, 2 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "increase_scale"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1 ),
+"transitions": PoolRealArray( 0.450625, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.82843, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0.368, 0.368 ), Vector2( 0.468652, 0.468652 ), Vector2( 0.56007, 0.56007 ), Vector2( 0.651489, 0.651489 ), Vector2( 0.742907, 0.742907 ), Vector2( 0.834326, 0.834326 ), Vector2( 0.925744, 0.925744 ), Vector2( 1.01716, 1.01716 ), Vector2( 1.10858, 1.10858 ), Vector2( 1.2, 1.2 ), Vector2( 1.19405, 1.19405 ), Vector2( 1.15776, 1.15776 ), Vector2( 1.02888, 1.02888 ), Vector2( 0.9, 0.9 ), Vector2( 0.941667, 0.941667 ), Vector2( 0.955556, 0.955556 ), Vector2( 0.966667, 0.966667 ), Vector2( 0.977778, 0.977778 ), Vector2( 0.988889, 0.988889 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "increase_scale_larger"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 0.450625, 2.82843, 0.5, 0.707107 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 2.4, 2.4 ), Vector2( 1.8, 1.8 ), Vector2( 2, 2 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "pump_scale"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 0, 0, 0, 0, 0 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
 
 [node name="dream_two" type="Node2D"]
 script = ExtResource( 3 )
@@ -47,6 +202,7 @@ margin_bottom = 1173.0
 texture = ExtResource( 8 )
 
 [node name="BackgroundColor" parent="." instance=ExtResource( 4 )]
+color = Color( 0.4, 0.588235, 0.00784314, 1 )
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -106,16 +262,24 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 
 [node name="Protester" type="Sprite" parent="."]
-visible = false
-position = Vector2( 162, 554 )
-scale = Vector2( 2, 2 )
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 282, 434 )
+scale = Vector2( 1e-05, 1e-05 )
 texture = ExtResource( 9 )
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Protester"]
+playback_speed = 2.0
+anims/appears = SubResource( 8 )
+
 [node name="Visitor" type="Sprite" parent="."]
-visible = false
-position = Vector2( 162, 554 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 9 )
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 282, 434 )
+scale = Vector2( 1e-05, 1e-05 )
+texture = ExtResource( 19 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Visitor"]
+playback_speed = 2.0
+anims/appears = SubResource( 9 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false
@@ -267,7 +431,49 @@ visible = false
 position = Vector2( 103, 939 )
 texture = ExtResource( 12 )
 
+[node name="install_addon_button" type="Button" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 339.0
+margin_top = 618.0
+margin_right = 519.0
+margin_bottom = 657.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 90, 0 )
+theme = ExtResource( 20 )
+text = "install addon"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="install_addon_button"]
+anims/increase_scale = SubResource( 2 )
+anims/increase_scale_larger = SubResource( 3 )
+anims/pump_scale = SubResource( 4 )
+
+[node name="tool_button" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 362.0
+margin_top = 773.0
+margin_right = 490.0
+margin_bottom = 901.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 64, 64 )
+theme = ExtResource( 20 )
+icon = ExtResource( 21 )
+flat = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="tool_button"]
+anims/increase_scale = SubResource( 5 )
+anims/increase_scale_larger = SubResource( 6 )
+anims/pump_scale = SubResource( 7 )
+
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
+[connection signal="pressed" from="tool_button" to="." method="_on_tool_button_pressed"]
+[connection signal="animation_finished" from="tool_button/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="DialogueBoxHolder"]

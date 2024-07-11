@@ -3,7 +3,7 @@ extends Node2D
 
 onready var game_data = get_node("/root/game_data")
 onready var background = $BackgroundColor
-var orig_color
+var orig_color #3c574e
 var dream_color = "023548"
 
 var dream_sequence_index = 0
@@ -44,6 +44,7 @@ func _on_DialogueBox_dialog_box_closed():
 		$DialogueBoxHolder/DialogueBox.play_sounds_in_batch = true
 		narrator.visible = false
 		scene_sequence_index += 1
+		$Protester/AnimationPlayer.play("appears")
 	elif scene_sequence_index == 1:
 		if day == 1:
 			game_data.current_level = day + 1
@@ -51,10 +52,12 @@ func _on_DialogueBox_dialog_box_closed():
 			game_data.save_progression()
 			var _scene = get_tree().change_scene(next_scene)
 		elif day == 2:
+			$Protester/AnimationPlayer.play_backwards("appears")
 			$DialogueBoxHolder/DialogueBox/CharacterVoice.set_sounds(visitor_sounds)
 			$DialogueBoxHolder/DialogueBox.play_sounds_in_batch = true
 			$DialogueBoxHolder/DialogueBox.trigger_dialogue(visitor_dialogue)
 			visitor.visible = true
+			$Visitor/AnimationPlayer.play("appears")
 		scene_sequence_index += 1
 	elif scene_sequence_index == 2:
 		scene_sequence_index += 1
@@ -66,3 +69,31 @@ func _on_DialogueBox_dialog_box_closed():
 func _on_DialogueBox_next_phrase_requested():
 	if dream_sequence_index == 0:
 		dream_vision.play("cut")
+	if dream_sequence_index == 4 and day == 1:
+		dream_vision.visible = false
+	if dream_sequence_index == 7 and day == 1:
+		$tool_button/AnimationPlayer.play("increase_scale")
+		$DialogueBoxHolder/DialogueBox.disconnect_skip_buttons()
+	if dream_sequence_index == 4 and day == 2:
+		dream_vision.visible = false
+	if dream_sequence_index == 11 and day == 2:
+		$tool_button/AnimationPlayer.play("increase_scale")
+		$DialogueBoxHolder/DialogueBox.disconnect_skip_buttons()
+	#if dream_sequence_index == 8:
+		#$tool_button/AnimationPlayer.disconnect("animation_finished",self, "_on_AnimationPlayer_animation_finished")
+		#$tool_button/AnimationPlayer.play_backwards("increase_scale")
+	dream_sequence_index += 1
+	#print(dream_sequence_index)
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "increase_scale":
+		$tool_button/AnimationPlayer.play("pump_scale")
+
+
+func _on_tool_button_pressed():
+	$DialogueBoxHolder/DialogueBox._on_continue_button_down()
+	$DialogueBoxHolder/DialogueBox.connect_skip_buttons()
+	$tool_button/AnimationPlayer.disconnect("animation_finished",self, "_on_AnimationPlayer_animation_finished")
+	$tool_button/AnimationPlayer.play_backwards("increase_scale")
+	$tool_button.disconnect("pressed", self, "_on_tool_button_pressed")

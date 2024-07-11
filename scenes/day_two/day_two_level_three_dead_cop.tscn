@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/tool.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/pieces/juniper_piece.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/basic_theme_smaller_score.tres" type="Theme" id=4]
 [ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/pieces/aspen_piece.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=7]
@@ -230,11 +231,26 @@ texture = ExtResource( 19 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 83.0
+margin_top = 62.0
 margin_right = 545.0
-margin_bottom = 123.0
+margin_bottom = 102.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
+theme = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]10000[/center]"
+text = "10000"
+fit_content_height = true
+
+[node name="xr_score" type="RichTextLabel" parent="Control"]
+self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
+margin_left = 289.0
+margin_top = 102.0
+margin_right = 545.0
+margin_bottom = 142.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+theme = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
 text = "10000"

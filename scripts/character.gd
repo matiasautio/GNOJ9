@@ -6,6 +6,7 @@ signal dead
 
 
 var is_present = true
+# When the character stays onscreen and is not goign away anymore
 var can_talk_to
 
 var current_dialogue = null
@@ -24,12 +25,15 @@ func clicked():
 
 func toggle_status():
 	# if boss is interactable we don't want him to go away
-	print("can talk to is ", can_talk_to)
+	#print("can talk to is ", can_talk_to)
 	if can_talk_to or current_dialogue != null:
+		print("The character is supposed to stay on screen. Not toggling him away!")
 		return
 	if is_present:
 		is_present = false
 		self.play("away")
+		print("Playing character goes away.")
 	else:
 		is_present = true
 		self.play("default")
+		print("Playing character appears.")

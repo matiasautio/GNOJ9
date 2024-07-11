@@ -32,4 +32,5 @@ func deselect():
 
 
 func _on_tool_button_button_down():
+	print("asd")
 	toggle_selection()

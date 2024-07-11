@@ -1,7 +1,6 @@
 [
 	{"Name":"BOSS", "Text":"[shake]What was that?[/shake] A glitch?"},
-	{"Name":"BOSS", "Text":"Instead of falling down the trees got marked with tags."},
-	{"Name":"BOSS", "Text":"''Protected by The Ministry of the Environment''."},
+	{"Name":"BOSS", "Text":"You... taped up the trees?"},
 	{"Name":"BOSS", "Text":"Must be a bug in the software, Jesus Christ."},
-	{"Name":"BOSS", "Text":"You can't cut those trees now, so just hope the bug doesn't remanifest."}
+	{"Name":"BOSS", "Text":"Continue logging and hope the bug doesn't remanifest."}
 ]

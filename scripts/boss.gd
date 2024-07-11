@@ -4,10 +4,16 @@ extends Character
 var boss_health
 var boss_annoyance = 0 # tie boss annoyance to an angry sprite
 var annoyance_treshold = 3
+var timer
 
 
 func _ready():
+	if frames != load("res://animation/boss_faces.tres"):
+		frames = load("res://animation/boss_faces.tres")
 	boss_health = game_data.boss_health
+	timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "hurt_window")
 
 
 func clicked():
@@ -27,6 +33,8 @@ func clicked():
 		# player has the saw equipped
 		elif current_tool == 1:#$"../../player_status".saw:
 			boss_health -= 1
+			play("hurt")
+			timer.start(1)
 			boss_annoyance += 1
 			if boss_health == 0:
 				$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_dead.json")
@@ -43,7 +51,8 @@ func clicked():
 					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_fired.json")
 					can_talk_to = false
 					current_dialogue = "hit_boss_fired"
-		#elif current_level == 2:
+		elif current_level == 2:
+			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/special/boss_tape_reaction.json")
 			#$"../../level_two".prompt_end()
 		#elif current_level == 3:
 			#$"../../level_three".prompt_end()
@@ -64,3 +73,9 @@ func _on_DialogueBox_dialog_box_closed():
 			var _x = get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
 		can_talk_to = true
 		current_dialogue = null
+
+
+func hurt_window():
+	play("default")
+	if boss_annoyance >= annoyance_treshold:
+		play("happy")

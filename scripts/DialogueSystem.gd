@@ -18,6 +18,9 @@ signal dialog_box_closed
 onready var game_data = get_node("/root/game_data")
 var special_character = "$"
 
+# Helper stuff
+var skip_disabled = false
+
 
 func _ready():
 	if play_on_start:
@@ -26,7 +29,7 @@ func _ready():
 
 func _process(_delta):
 	$Continue/Indicator.visible = finished
-	if Input.is_action_just_pressed("skip_dialogue"):
+	if Input.is_action_just_pressed("skip_dialogue") and !skip_disabled:
 		if self.visible == true:
 			if finished:
 				next_phrase()
@@ -106,7 +109,7 @@ func _on_continue_button_down():
 
 func _on_skip_area_button_down():
 	if self.visible == true:
-		if finished:
+		if finished and !skip_disabled:
 			next_phrase()
 			emit_signal("next_phrase_requested")
 		else:
@@ -129,6 +132,20 @@ func replace_keywords(phrase):
 	if "$TOTALSCORE" in phrase:
 		new_phrase = phrase.replace("$TOTALSCORE", String(game_data.total_score))
 	if "$PROTECTSCORE" in phrase:
-		new_phrase = phrase.replace("$TOTALSCORE", String(game_data.total_score))
+		new_phrase = phrase.replace("$PROTECTSCORE", String(game_data.current_good_guys_score))
 	# Add other keywords here
 	$Text.bbcode_text = new_phrase
+
+
+# Helper scripts
+func disconnect_skip_buttons():
+	#$skip_area.disabled = true
+	skip_disabled = true
+	$Continue/Indicator/continue.disabled = true
+	$Continue.visible = false
+
+
+func connect_skip_buttons():
+	skip_disabled = false
+	$Continue/Indicator/continue.disabled = false
+	$Continue.visible = true

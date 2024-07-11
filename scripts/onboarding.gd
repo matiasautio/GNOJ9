@@ -56,6 +56,18 @@ func _on_delay_timeout():
 	elif index < 0:
 		var x = get_tree().change_scene("res://scenes/intro.tscn")
 
+
+func start_job_button_became_visible(anim_name):
+	#print(anim_name)
+	if anim_name == "increase_scale_larger":
+		$"../BackgroundColor/start_job/AnimationPlayer".play("pump_scale")
+		$"../hand".visible = true
+		$"../hand".position = Vector2(434, 789)
+		$"../hand/AnimationPlayer".play("start_game")
+		#377
+		#739
+
+
 func _on_start_job_pressed():
 	$"../button_feedback".play()
 	var pieces = $"../grid".get_children()

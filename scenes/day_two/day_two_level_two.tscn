@@ -5,13 +5,14 @@
 [ext_resource path="res://art/screen.png" type="Texture" id=3]
 [ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/pieces/police_piece.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/basic_theme_smaller_score.tres" type="Theme" id=6]
 [ext_resource path="res://ui/basic_theme.tres" type="Theme" id=7]
 [ext_resource path="res://art/tool.png" type="Texture" id=8]
 [ext_resource path="res://art/tools_header.png" type="Texture" id=9]
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=10]
 [ext_resource path="res://art/faces/boss_face_away.png" type="Texture" id=11]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=12]
-[ext_resource path="res://art/faces/boss_face1.png" type="Texture" id=13]
+[ext_resource path="res://animation/boss_faces.tres" type="SpriteFrames" id=13]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/tool.tscn" type="PackedScene" id=15]
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=16]
@@ -38,29 +39,6 @@ animations = [ {
 "frames": [ ExtResource( 19 ) ],
 "loop": true,
 "name": "selected",
-"speed": 5.0
-} ]
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 11 ) ],
-"loop": true,
-"name": "away",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 13 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 13 ) ],
-"loop": true,
-"name": "happy",
-"speed": 5.0
-}, {
-"frames": [  ],
-"loop": true,
-"name": "hurt",
 "speed": 5.0
 } ]
 
@@ -91,8 +69,15 @@ animations = [ {
 
 [node name="day_two_level_two" type="Node" parent="."]
 script = ExtResource( 21 )
-level_type = 1
+level_type = -1
+score_threshold = 7500
+moves = -1
 current_day = 2
+next_level_scene = "res://scenes/day_two/day_two_level_three.tscn"
+stay_dialogue = "res://dialogue/day_two/day_two_two_stay.json"
+continue_dialogue = "res://dialogue/day_two/day_two_two_move.json"
+wanna_quit_dialogue = "res://dialogue/day_two/day_two_two_wanna_quit.json"
+end_of_level_dialogue = "res://dialogue/day_two/day_two_two_001.json"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -224,11 +209,26 @@ texture = ExtResource( 9 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 83.0
+margin_top = 62.0
 margin_right = 545.0
-margin_bottom = 123.0
+margin_bottom = 102.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
+theme = ExtResource( 6 )
+bbcode_enabled = true
+bbcode_text = "[center]10000[/center]"
+text = "10000"
+fit_content_height = true
+
+[node name="xr_score" type="RichTextLabel" parent="Control"]
+self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
+margin_left = 289.0
+margin_top = 102.0
+margin_right = 545.0
+margin_bottom = 142.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+theme = ExtResource( 6 )
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
 text = "10000"
@@ -295,7 +295,7 @@ texture = ExtResource( 9 )
 
 [node name="Boss" type="AnimatedSprite" parent="Control"]
 position = Vector2( 103, 938 )
-frames = SubResource( 1 )
+frames = ExtResource( 13 )
 script = ExtResource( 17 )
 
 [node name="boss_button" type="Button" parent="Control/Boss"]

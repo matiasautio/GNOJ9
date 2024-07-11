@@ -62,6 +62,7 @@ func check_tiles_after_match():
 			level_state = 4
 			prompt_end()
 
+
 func _on_move_keeper_moves_deplenished():
 	print("moves deplenished")
 	#level_state = 2
@@ -79,7 +80,11 @@ func prompt_end():
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
 			level_state = 3
 			return
-		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
+		if times_played == 1:
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_raid_looping_001.json")
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
+		if times_played == 2:
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_raid_looping_001.json")
 		current_dialogue = "wanna_quit"
 		$"../Control/Cop".toggle_status()
 		$"../Control/Cop".can_talk_to = true

@@ -5,6 +5,7 @@ class_name Level
 # 0 = score, 1 = moves, 2 = timer
 export var level_type = 0
 export var score_threshold = 10000
+# -1 is infinite moves
 export var moves = 10
 
 # 0 = beginning, 1 = intro done, 2 = gameplay, 3 = goal reached, 4 = replay, 5 = protester fail, 6 = cop fail
@@ -29,6 +30,7 @@ export var ignore_protestor_safety = false
 var cut_protesters = 0
 const protester_treshold = 10
 export (String, MULTILINE) var protester_treshold_met_dialogue = "res://dialogue/level_three_restart.json"
+export var ignore_cop_safety = false
 var cut_cops = 0
 var cop_treshold = 10
 export (String, MULTILINE) var cop_treshold_met_dialogue = "res://dialogue/cop_triggered.json"
@@ -41,7 +43,8 @@ var times_played = 0
 var times_paused = 0
 
 # scoring
-var highest_score = 0
+#var highest_score = 0
+var level_highscores = Vector2.ZERO
 
 # level specific logic
 var has_boss_reacted = false
@@ -66,17 +69,22 @@ func _on_DialogueBox_dialog_box_closed():
 			$"../Control/Boss".animation = "away"
 		if $"../Control/Cop" != null and $"../Control/Cop".visible:
 			$"../Control/Cop".animation = "away"
+			$"../Control/Cop".visible = false
 		if $"../Control/Protester" != null and $"../Control/Protester".visible:
 			$"../Control/Protester".animation = "away"
+			$"../Control/Protester".visible = false
 		$"../Control/input_blocker".visible = false
 	elif level_state == 2:
 		#level_state = 3
 		$"../Control/continue_game".visible = true
 	elif level_state == 3:
 		$"../Control/continue_game".visible = true
+	# Level reset was selected
 	elif level_state == 4:
-		pass
-		#reset_level()
+		reset_level()
+	# Too many protesters were cut down, level resets
+	elif level_state == 5:
+		reset_level()
 	elif level_state == 6:
 		#game_data.previous_level_name = current_level_name
 		var _x = get_tree().change_scene(cop_scene)
@@ -88,20 +96,23 @@ func _on_DialogueBox_next_phrase_requested():
 	pass
 
 
+# Generally used to check if too many protesters or cops are cut down
 func _on_grid_match_made(_number_of_tiles, _tile_group):
-	if _tile_group == "protester":
-		cut_protesters += _number_of_tiles
-		if cut_protesters >= protester_treshold and !ignore_protestor_safety:
-			level_state = 5
-			prompt_end()
-	if _tile_group == "cop":
-		cut_cops += _number_of_tiles
-		game_data.cops_killed += _number_of_tiles
-		print(cut_cops)
-		if cut_cops >= cop_treshold:
-			level_state = 6
-			prompt_end()
-	check_tiles_after_match()
+	# Only add the police and protesters to cut down if the saw was used
+	if game_data.get_node("player_status").current_tool == 1:
+		if _tile_group == "protester":
+			cut_protesters += _number_of_tiles
+			if cut_protesters >= protester_treshold and !ignore_protestor_safety:
+				level_state = 5
+				prompt_end()
+		if _tile_group == "cop":
+			cut_cops += _number_of_tiles
+			game_data.cops_killed += _number_of_tiles
+			print(cut_cops)
+			if cut_cops >= cop_treshold and !ignore_cop_safety:
+				level_state = 6
+				prompt_end()
+		check_tiles_after_match()
 
 
 func _on_score_keeper_protesters_matched():
@@ -125,14 +136,14 @@ func signal_from_scorekeeper():
 	pass
 
 
-func update_score(new_score):
-	if new_score > highest_score:
-		highest_score = new_score
+#func update_score(new_score):
+#	if new_score > highest_score:
+#		highest_score = new_score
 
 
 func prompt_end():
-	var _score = $"../score_keeper".score
-	update_score(_score)
+	level_highscores = $"../score_keeper".get_highscores()
+	#update_score(scores)
 	var boss = $"../Control/Boss"
 	
 	$"../grid".can_play = false
@@ -162,6 +173,9 @@ func prompt_end():
 	if level_state == 3:
 		print("level state is 3 so imma go there")
 		if times_played == 0:
+			print("is boss present ", boss.is_present)
+			#boss.is_present = false
+			boss.play("default")
 			boss.toggle_status()
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(end_of_level_dialogue)
 			boss.can_talk_to = true
@@ -179,8 +193,8 @@ func prompt_end():
 	
 	# go to cop scene
 	if level_state == 6:
-		if $"../Control/Cop".visible:
-			$"../Control/Cop".animation = "default"
+		$"../Control/Cop".visible = true
+		$"../Control/Cop".animation = "default"
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(cop_treshold_met_dialogue)
 		current_dialogue = "restart"
 		# boss.can_talk_to = false
@@ -206,14 +220,15 @@ func reset_level():
 	cut_cops = 0
 	is_level_goal_reached = false
 	$"../grid".reset()
-	$"../grid".can_play = $"../Control/tool_saw".is_selected
-	$"../Control/Boss".toggle_status()
+	$"../grid".can_play = true#$"../Control/tool_saw".is_selected
+	#$"../Control/Boss".toggle_status()
 	#level_state = 3
 	
 
 func next_level():
 	game_data.protesters_killed = cut_protesters
-	game_data.current_score += highest_score
+	game_data.current_score += level_highscores.x
+	game_data.current_good_guys_score += level_highscores.y
 	var _x = get_tree().change_scene(next_level_scene)
 
 

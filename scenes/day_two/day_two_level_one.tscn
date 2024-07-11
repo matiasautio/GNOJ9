@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -10,9 +10,8 @@
 [ext_resource path="res://art/tool.png" type="Texture" id=8]
 [ext_resource path="res://art/tools_header.png" type="Texture" id=9]
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=10]
-[ext_resource path="res://art/faces/boss_face_away.png" type="Texture" id=11]
+[ext_resource path="res://animation/boss_faces.tres" type="SpriteFrames" id=11]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=12]
-[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/tool.tscn" type="PackedScene" id=15]
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=16]
@@ -24,6 +23,8 @@
 [ext_resource path="res://scenes/pieces/aspen_piece.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scripts/move_keeper.gd" type="Script" id=23]
 [ext_resource path="res://art/Tools/tools_tape1.png" type="Texture" id=24]
+[ext_resource path="res://ui/basic_theme_smaller_score.tres" type="Theme" id=25]
+[ext_resource path="res://art/transition.png" type="Texture" id=26]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -38,18 +39,33 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 11 ) ],
-"loop": true,
-"name": "away",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 13 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
+[sub_resource type="Animation" id=3]
+resource_name = "transition_to_scene"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 2, 0.5 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 320, 320 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 1.1 ),
+"transitions": PoolRealArray( 0.5, 0.5 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [node name="day_two_level_one" type="Node2D"]
 
@@ -198,11 +214,26 @@ texture = ExtResource( 9 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 83.0
+margin_top = 62.0
 margin_right = 545.0
-margin_bottom = 123.0
+margin_bottom = 102.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
+theme = ExtResource( 25 )
+bbcode_enabled = true
+bbcode_text = "[center]10000[/center]"
+text = "10000"
+fit_content_height = true
+
+[node name="xr_score" type="RichTextLabel" parent="Control"]
+self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
+margin_left = 289.0
+margin_top = 102.0
+margin_right = 545.0
+margin_bottom = 142.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+theme = ExtResource( 25 )
 bbcode_enabled = true
 bbcode_text = "[center]10000[/center]"
 text = "10000"
@@ -269,7 +300,7 @@ texture = ExtResource( 9 )
 
 [node name="Boss" type="AnimatedSprite" parent="Control"]
 position = Vector2( 103, 938 )
-frames = SubResource( 1 )
+frames = ExtResource( 11 )
 script = ExtResource( 17 )
 
 [node name="boss_button" type="Button" parent="Control/Boss"]
@@ -356,6 +387,33 @@ color = Color( 1, 1, 1, 0 )
 [node name="grid_pauser" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="Transition" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 576.0
+margin_bottom = 1027.0
+
+[node name="TextureRect" type="TextureRect" parent="Transition"]
+self_modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -288.0
+margin_top = -513.5
+margin_right = 288.0
+margin_bottom = 513.5
+rect_min_size = Vector2( 576, 1027 )
+rect_pivot_offset = Vector2( 288, 513 )
+texture = ExtResource( 26 )
+expand = true
+stretch_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Transition"]
+autoplay = "transition_to_scene"
+anims/transition_to_scene = SubResource( 3 )
 
 [connection signal="moves_deplenished" from="move_keeper" to="day_two_level_one" method="_on_move_keeper_moves_deplenished"]
 [connection signal="match_made" from="grid" to="day_two_level_one" method="_on_grid_match_made"]

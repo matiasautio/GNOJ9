@@ -30,7 +30,7 @@ func clicked():
 			current_dialogue = "hit_boss_dead"
 			emit_signal("dead")
 		elif current_tool == 2:
-			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_muffled.json")
+			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/special/cop_tape_reaction.json")
 			#can_talk_to = false
 			#current_dialogue = "hit_boss_dead"
 #			else:

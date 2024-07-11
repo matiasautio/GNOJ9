@@ -25,6 +25,8 @@ export var y_offset : int
 
 # Obstacle stuff
 export (Array, Vector2) var empty_spaces
+export (Array, Vector2) var protected_tiles
+export (Array, Vector2) var just_protected_tiles
 
 # Gameplay variables
 export var use_refill : bool = true
@@ -158,6 +160,7 @@ func touch_input():
 
 
 func swap_pieces(column, row, direction):
+	print("Swapping pieces")
 	# Let's check which tool the player is using
 	if game_data.get_node("player_status").current_tool == 2:
 		is_protecting = true
@@ -177,6 +180,7 @@ func swap_pieces(column, row, direction):
 		if !move_checked:
 			find_matches()
 
+
 func store_info(first_piece, other_piece, place, direction):
 	piece_one = first_piece
 	piece_two = other_piece
@@ -186,10 +190,15 @@ func store_info(first_piece, other_piece, place, direction):
 
 func swap_back():
 	# Move the previously moved pieces back to the previous place
+	print(piece_one)
+	print(piece_two)
 	if piece_one != null and piece_two != null:
+		#if !piece_one.protected and !piece_two.protected:
 		swap_pieces(last_place.x, last_place.y, last_direction)
 	state = move
 	move_checked = false
+	piece_one = null
+	piece_two = null
 
 
 func touch_difference(grid_1, grid_2):
@@ -212,52 +221,61 @@ func _process(_delta):
 
 
 func find_matches():
+	print("Finding matches.")
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				var current_color = all_pieces[i][j].color
+				var protected = all_pieces[i][j].protected
+				#var care_about_protection = true
 				if i > 0 && i < width - 1:
-					if all_pieces[i - 1][j] !=null && all_pieces[i + 1][j] != null:
+					if all_pieces[i - 1][j] != null && all_pieces[i + 1][j] != null:
+#						if all_pieces[i - 1][j].protected != protected and all_pieces[i + 1][j].protected != protected:
+#							#print("asd")
+#							care_about_protection = false
 						if all_pieces[i - 1][j].color == current_color and all_pieces[i + 1][j].color == current_color:
-						#if !all_pieces[i - 1][j].is_static:
-							all_pieces[i - 1][j].matched = true
-							all_pieces[i - 1][j].dim()
-							all_pieces[i - 1][j].cut()
-						#if !all_pieces[i][j].is_static:
-							all_pieces[i][j].matched = true
-							all_pieces[i][j].dim()
-							all_pieces[i][j].cut()
-						#if !all_pieces[i + 1][j].is_static:
-							all_pieces[i + 1][j].matched = true
-							all_pieces[i + 1][j].dim()
-							all_pieces[i + 1][j].cut()
-							if is_protecting:
-								$Protect.play_audio()
-							else:
-								$Destroy.play_audio()
+							if !all_pieces[i - 1][j].protected:
+								all_pieces[i - 1][j].matched = true
+								all_pieces[i - 1][j].dim()
+								all_pieces[i - 1][j].cut()
+							if !all_pieces[i][j].protected:
+								all_pieces[i][j].matched = true
+								all_pieces[i][j].dim()
+								all_pieces[i][j].cut()
+							if !all_pieces[i + 1][j].protected:
+								all_pieces[i + 1][j].matched = true
+								all_pieces[i + 1][j].dim()
+								all_pieces[i + 1][j].cut()
+							
+							print(all_pieces[i][j])
+						if is_protecting:
+							$Protect.play_audio()
+						else:
+							$Destroy.play_audio()
 				if j > 0 && j < height - 1:
-					if all_pieces[i][j - 1] !=null && all_pieces[i][j + 1] != null:
+					if all_pieces[i][j - 1] != null && all_pieces[i][j + 1] != null:
 						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
-						#if !all_pieces[i][j - 1].is_static:
-							all_pieces[i][j - 1].matched = true
-							all_pieces[i][j - 1].dim()
-							all_pieces[i][j - 1].cut()
-						#if !all_pieces[i][j].is_static:
-							all_pieces[i][j].matched = true
-							all_pieces[i][j].dim()
-							all_pieces[i][j].cut()
-						#if !all_pieces[i][j + 1].is_static:
-							all_pieces[i][j + 1].matched = true
-							all_pieces[i][j + 1].dim()
-							all_pieces[i][j + 1].cut()
-							if is_protecting:
-								$Protect.play_audio()
-							else:
-								$Destroy.play_audio()
+							if !all_pieces[i][j - 1].protected:
+								all_pieces[i][j - 1].matched = true
+								all_pieces[i][j - 1].dim()
+								all_pieces[i][j - 1].cut()
+							if !all_pieces[i][j].protected:
+								all_pieces[i][j].matched = true
+								all_pieces[i][j].dim()
+								all_pieces[i][j].cut()
+							if !all_pieces[i][j + 1].protected:
+								all_pieces[i][j + 1].matched = true
+								all_pieces[i][j + 1].dim()
+								all_pieces[i][j + 1].cut()
+						if is_protecting:
+							$Protect.play_audio()
+						else:
+							$Destroy.play_audio()
 	$"../destroy_timer".start()
 
 
 func destroy_matched():
+	print("Destroying matched tiles.")
 	var number_of_tiles = 0 # Used to emit the score
 	var tile_group
 	var was_matched = false
@@ -265,22 +283,39 @@ func destroy_matched():
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					was_matched = true
-					tile_group = all_pieces[i][j].color#get_groups()
-					if game_data.get_node("player_status").current_tool == 2:
-						empty_spaces.append(Vector2(i,j))
-					else:
-						all_pieces[i][j].queue_free()
-					all_pieces[i][j] = null
-					number_of_tiles += 1
-					
+					if !all_pieces[i][j] in just_protected_tiles:
+						#pass
+						was_matched = true
+						tile_group = all_pieces[i][j].color#get_groups()
+						if game_data.get_node("player_status").current_tool == 2:
+							#pass
+							#all_pieces[i][j].queue_free()
+							#empty_spaces.append(Vector2(i,j))
+							#protected_tiles.append(Vector2(i,j))
+							just_protected_tiles.append(all_pieces[i][j])
+							#all_pieces[i][j].matched = false
+						else:
+							# remove if unnecessary
+							if piece_one == all_pieces[i][j]:
+								piece_one = null
+							if piece_two == all_pieces[i][j]:
+								piece_two = null
+							all_pieces[i][j].queue_free()
+							# This removes the matched piece from the board
+							all_pieces[i][j] = null
+						print(tile_group)
+						number_of_tiles += 1
+				
 	move_checked = true
 	if was_matched:
+		print("Tiles were matched!")
+		print(number_of_tiles, " tiles were matched")
 		emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
 		if player_swapped:
 			emit_signal("swap_succesful")
 	else:
+		print("Tiles were not matched!")
 		$FailSound.play()
 		swap_back()
 	# making sure this is always reverted to false
@@ -321,17 +356,25 @@ func refill_columns():
 
 
 func after_refill():
+	print("After refilling.")
 	if !is_protecting:
 		$TreesDropping.play_audio()
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
-				if match_at(i, j, all_pieces[i][j].color):
+				if match_at(i, j, all_pieces[i][j].color) and !all_pieces[i][j].matched and !all_pieces[i][j].protected:
+					print("Found matches after refill")
 					find_matches()
 					$"../destroy_timer".start()
 					return
+				#else:
+					#all_pieces[i][j].matched = false
 	state = move
 	move_checked = false
+	for tile in just_protected_tiles:
+		tile.matched = false
+	just_protected_tiles.clear()
+	# clear just matched
 
 
 func _on_destroy_timer_timeout():
@@ -367,11 +410,16 @@ func pause():
 
 func reset():
 	print("resetting grid")
+	empty_spaces.clear()
 	destroy_matched()
 	for child in self.get_children():
 		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer"):
 			self.remove_child(child)
 			child.queue_free()
 	state = move
+	# these two might be reduntant
+	piece_one = null
+	piece_two = null
+	just_protected_tiles.clear()
 	spawn_pieces()
 
