@@ -6,6 +6,8 @@ var matched = false
 export var is_static = false
 var protected = false
 
+export (int) var health = 1
+
 
 func _ready():
 	tween = $Tween
@@ -27,6 +29,10 @@ func cut():
 	if sprite != null:
 		if game_data.get_node("player_status").current_tool == 2:
 			sprite.play("protected")
-			protected = true
+			#protected = true
 		else:
 			sprite.play("cut")
+
+func take_damage(damage):
+	health -= damage
+	# can add damage effect here

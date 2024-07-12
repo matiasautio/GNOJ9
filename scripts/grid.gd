@@ -25,8 +25,26 @@ export var y_offset : int
 
 # Obstacle stuff
 export (Array, Vector2) var empty_spaces
+export (Array, Vector2) var ice_spaces
+export var random_ice = false
+export (Array, Vector2) var lock_spaces
+export var random_locks = false
+export (Array, Vector2) var concrete_spaces
+export var random_concrete = false
+
 export (Array, Vector2) var protected_tiles
 export (Array, Vector2) var just_protected_tiles
+
+# Obstacle signals
+signal damage_ice(damaged_ice)
+signal make_ice(made_ice)
+signal damage_lock(damaged_lock)
+signal make_lock(made_lock)
+signal damage_concrete(damaged_concrete)
+signal make_concrete(made_concrete)
+
+# Tape tool stuff
+signal deadlocked
 
 # Gameplay variables
 export var use_refill : bool = true
@@ -44,6 +62,7 @@ export (Array, PackedScene) var possible_pieces = [
 
 # Current pieces in the scene
 var all_pieces = []
+var clone_array = []
 
 # Swap back variables
 var piece_one = null
@@ -67,17 +86,50 @@ func _ready():
 	_x = connect("match_made", $"../score_keeper", "_on_grid_match_made")
 	randomize()
 	state = move
+	#print(empty_spaces)
 	all_pieces = make_2d_array()
+	clone_array = make_2d_array()
+	if ice_spaces.size() > 0 or random_ice:
+		spawn_ice()
+	if lock_spaces.size() > 0 or random_locks:
+		spawn_locks()
+	if concrete_spaces.size() > 0 or random_concrete:
+		spawn_concrete()
 	if possible_pieces.size() > 0:
 		spawn_pieces()
 
 
-func restricted_movement(place):
+func restricted_fill(place):
 	# Check the empty pieces
-	for i in empty_spaces.size():
-		if empty_spaces[i] == place:
-			return true
-	return false
+	if is_in_array(empty_spaces, place):
+		return true
+	if is_in_array(concrete_spaces, place):
+		return true
+	else:
+		return false
+
+
+func restricted_move(place):
+	if is_in_array(lock_spaces, place):
+		return true
+	if is_in_array(concrete_spaces, place):
+		return true
+	else:
+		return false
+
+
+func is_in_array(array, item):
+	if item in array:
+		return true
+	else:
+		return false
+
+
+func remove_from_array(array, item):
+	for i in range(array.size() -1, -1, -1):
+		if array[i] == item:
+			array.remove(i)
+	return array
 
 
 func make_2d_array():
@@ -92,7 +144,7 @@ func make_2d_array():
 func spawn_pieces():
 	for i in width:
 		for j in height:
-			if !restricted_movement(Vector2(i,j)):
+			if !restricted_fill(Vector2(i,j)):
 				# pick a random number and store it
 				var rand = floor(rand_range(0, possible_pieces.size()))
 				var piece = possible_pieces[rand].instance()
@@ -106,6 +158,31 @@ func spawn_pieces():
 				piece.position = grid_to_pixel(i, j)
 				all_pieces[i][j] = piece
 	emit_signal("pieces_generated")
+
+
+func spawn_ice():
+	if random_ice:
+		for _i in range(4):
+			ice_spaces.append(Vector2(int(rand_range(0,7)),int(rand_range(0, 9))))
+	#print(ice_spaces)
+	for i in ice_spaces.size():
+		emit_signal("make_ice", ice_spaces[i])
+
+
+func spawn_locks():
+	if random_locks:
+		for _i in range(4):
+			lock_spaces.append(Vector2(int(rand_range(0,7)),int(rand_range(0, 9))))
+	for i in lock_spaces.size():
+		emit_signal("make_lock", lock_spaces[i])
+
+
+func spawn_concrete():
+	if random_concrete:
+		for _i in range(4):
+			concrete_spaces.append(Vector2(int(rand_range(0,7)),int(rand_range(0, 9))))
+	for i in concrete_spaces.size():
+		emit_signal("make_concrete", concrete_spaces[i])
 
 
 #  Is the balancing managed here? By determining 
@@ -160,25 +237,27 @@ func touch_input():
 
 
 func swap_pieces(column, row, direction):
-	print("Swapping pieces")
+	#print("Swapping pieces")
 	# Let's check which tool the player is using
 	if game_data.get_node("player_status").current_tool == 2:
 		is_protecting = true
 	else:
 		is_protecting = false
+	#
 	var first_piece = all_pieces[column][row]
 	var other_piece = all_pieces[column + direction.x][row + direction.y]
 	# if !first_piece.is_static and !other_piece.is_static and first_piece != null and other_piece != null:
 	if first_piece != null and other_piece != null:
-		store_info(first_piece, other_piece, Vector2(column, row), direction)
-		state = wait
-		all_pieces[column][row] = other_piece
-		all_pieces[column + direction.x][row + direction.y] = first_piece
-		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
-		other_piece.move(grid_to_pixel(column, row))
-		$Swap.play()
-		if !move_checked:
-			find_matches()
+		if !restricted_move(Vector2(column, row)) and !restricted_move(Vector2(column, row) + direction):
+			store_info(first_piece, other_piece, Vector2(column, row), direction)
+			state = wait
+			all_pieces[column][row] = other_piece
+			all_pieces[column + direction.x][row + direction.y] = first_piece
+			first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
+			other_piece.move(grid_to_pixel(column, row))
+			$Swap.play()
+			if !move_checked:
+				find_matches()
 
 
 func store_info(first_piece, other_piece, place, direction):
@@ -190,15 +269,15 @@ func store_info(first_piece, other_piece, place, direction):
 
 func swap_back():
 	# Move the previously moved pieces back to the previous place
-	print(piece_one)
-	print(piece_two)
+	#print(piece_one)
+	#print(piece_two)
 	if piece_one != null and piece_two != null:
 		#if !piece_one.protected and !piece_two.protected:
 		swap_pieces(last_place.x, last_place.y, last_direction)
 	state = move
 	move_checked = false
-	piece_one = null
-	piece_two = null
+	#piece_one = null
+	#piece_two = null
 
 
 func touch_difference(grid_1, grid_2):
@@ -220,112 +299,129 @@ func _process(_delta):
 		touch_input()
 
 
-func find_matches():
-	print("Finding matches.")
+func find_matches(query = false, array = all_pieces):
+	#print("Finding matches.")
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] != null:
-				var current_color = all_pieces[i][j].color
-				var protected = all_pieces[i][j].protected
-				#var care_about_protection = true
+			if array[i][j] != null:
+				var current_color = array[i][j].color
 				if i > 0 && i < width - 1:
-					if all_pieces[i - 1][j] != null && all_pieces[i + 1][j] != null:
-#						if all_pieces[i - 1][j].protected != protected and all_pieces[i + 1][j].protected != protected:
-#							#print("asd")
-#							care_about_protection = false
-						if all_pieces[i - 1][j].color == current_color and all_pieces[i + 1][j].color == current_color:
-							if !all_pieces[i - 1][j].protected:
-								all_pieces[i - 1][j].matched = true
-								all_pieces[i - 1][j].dim()
-								all_pieces[i - 1][j].cut()
-							if !all_pieces[i][j].protected:
-								all_pieces[i][j].matched = true
-								all_pieces[i][j].dim()
-								all_pieces[i][j].cut()
-							if !all_pieces[i + 1][j].protected:
-								all_pieces[i + 1][j].matched = true
-								all_pieces[i + 1][j].dim()
-								all_pieces[i + 1][j].cut()
-							
-							print(all_pieces[i][j])
+					if !is_piece_null(i - 1, j) and !is_piece_null(i + 1, j):
+						if array[i - 1][j].color == current_color and array[i + 1][j].color == current_color:
+							if query:
+								return true
+							match_and_dim(array[i - 1][j], Vector2(i - 1,j))
+							match_and_dim(array[i][j], Vector2(i,j))
+							match_and_dim(array[i + 1][j], Vector2(i + 1,j))
 						if is_protecting:
 							$Protect.play_audio()
 						else:
 							$Destroy.play_audio()
 				if j > 0 && j < height - 1:
-					if all_pieces[i][j - 1] != null && all_pieces[i][j + 1] != null:
-						if all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color:
-							if !all_pieces[i][j - 1].protected:
-								all_pieces[i][j - 1].matched = true
-								all_pieces[i][j - 1].dim()
-								all_pieces[i][j - 1].cut()
-							if !all_pieces[i][j].protected:
-								all_pieces[i][j].matched = true
-								all_pieces[i][j].dim()
-								all_pieces[i][j].cut()
-							if !all_pieces[i][j + 1].protected:
-								all_pieces[i][j + 1].matched = true
-								all_pieces[i][j + 1].dim()
-								all_pieces[i][j + 1].cut()
+					if array[i][j - 1] != null && array[i][j + 1] != null:
+						if array[i][j - 1].color == current_color and array[i][j + 1].color == current_color:
+							if query:
+								return true
+							match_and_dim(array[i][j - 1], Vector2(i,j -1))
+							match_and_dim(array[i][j], Vector2(i,j))
+							match_and_dim(array[i][j + 1], Vector2(i,j + 1))
 						if is_protecting:
 							$Protect.play_audio()
 						else:
 							$Destroy.play_audio()
+	if query:
+		return false
 	$"../destroy_timer".start()
 
 
+func is_piece_null(column, row):
+	if all_pieces[column][row] == null:
+		return true
+	else:
+		return false
+
+
+func match_and_dim(item, pos):
+	if is_protecting:
+		#print("should protect")
+		#just_protected_tiles.append(pos)
+		concrete_spaces.append(pos)
+		emit_signal("make_concrete", pos, item)
+		#empty_spaces.append(pos)
+		#item.protected = true
+		#item.hide()
+		item.cut()
+		item.matched = true
+		item.dim()
+	else:
+		item.cut()
+		item.matched = true
+		item.dim()
+
+
 func destroy_matched():
-	print("Destroying matched tiles.")
+	#print("Destroying matched tiles.")
 	var number_of_tiles = 0 # Used to emit the score
-	var tile_group
+	var tile_group = ""
 	var was_matched = false
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				if all_pieces[i][j].matched:
-					if !all_pieces[i][j] in just_protected_tiles:
-						#pass
-						was_matched = true
-						tile_group = all_pieces[i][j].color#get_groups()
-						if game_data.get_node("player_status").current_tool == 2:
-							#pass
-							#all_pieces[i][j].queue_free()
-							#empty_spaces.append(Vector2(i,j))
-							#protected_tiles.append(Vector2(i,j))
-							just_protected_tiles.append(all_pieces[i][j])
-							#all_pieces[i][j].matched = false
-						else:
-							# remove if unnecessary
-							if piece_one == all_pieces[i][j]:
-								piece_one = null
-							if piece_two == all_pieces[i][j]:
-								piece_two = null
-							all_pieces[i][j].queue_free()
-							# This removes the matched piece from the board
-							all_pieces[i][j] = null
-						print(tile_group)
-						number_of_tiles += 1
+					#print("Tile checked is ", Vector2(i, j), " list is currently ", just_protected_tiles)
+					if !is_protecting:
+						damage_special(i, j)
+					was_matched = true
+					tile_group = all_pieces[i][j].color
+					all_pieces[i][j].queue_free()
+					all_pieces[i][j] = null
+					number_of_tiles += 1
 				
 	move_checked = true
 	if was_matched:
-		print("Tiles were matched!")
-		print(number_of_tiles, " tiles were matched")
+		#print("Tiles were matched!")
+		#print(number_of_tiles, " tiles were matched")
 		emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
 		if player_swapped:
 			emit_signal("swap_succesful")
 	else:
-		print("Tiles were not matched!")
+		#if !was_protected:
+		#print("Tiles were not matched!")
 		$FailSound.play()
 		swap_back()
+		#else:
+			#if player_swapped:
+			#	emit_signal("swap_succesful")
+			#state = move
+			#move_checked = false
+			#print("Tile was protected!")
 	# making sure this is always reverted to false
 	player_swapped = false
+
+
+func check_concrete(column, row):
+	# Check cardinal directions for a concrete to remove
+	if column < width -1:
+		emit_signal("damage_concrete", Vector2(column + 1, row))
+	if column > 0:
+		emit_signal("damage_concrete", Vector2(column - 1, row))
+	if row < height - 1:
+		emit_signal("damage_concrete", Vector2(column, row + 1))
+	if row > 0:
+		emit_signal("damage_concrete", Vector2(column, row - 1))
+
+
+func damage_special(column, row):
+	emit_signal("damage_ice", Vector2(column,row))
+	emit_signal("damage_lock", Vector2(column,row))
+	check_concrete(column, row)
 
 
 func collapse_columns():
 	for i in width:
 		for j in height:
-			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
+			if all_pieces[i][j] == null and !restricted_fill(Vector2(i,j)):
 				for k in range(j + 1, height):
 					if all_pieces[i][k] != null:
 						all_pieces[i][k].move(grid_to_pixel(i, j))
@@ -340,7 +436,7 @@ func refill_columns():
 	for i in width:
 		for j in height:
 			# if the spot is empty we'll spawn a new piece
-			if all_pieces[i][j] == null and !restricted_movement(Vector2(i,j)):
+			if all_pieces[i][j] == null and !restricted_fill(Vector2(i,j)):
 				var rand = floor(rand_range(0, possible_pieces.size()))
 				var piece = possible_pieces[rand].instance()
 				var loops = 0
@@ -356,14 +452,14 @@ func refill_columns():
 
 
 func after_refill():
-	print("After refilling.")
+	#print("After refilling.")
 	if !is_protecting:
 		$TreesDropping.play_audio()
 	for i in width:
 		for j in height:
 			if all_pieces[i][j] != null:
 				if match_at(i, j, all_pieces[i][j].color) and !all_pieces[i][j].matched and !all_pieces[i][j].protected:
-					print("Found matches after refill")
+					#print("Found matches after refill")
 					find_matches()
 					$"../destroy_timer".start()
 					return
@@ -371,10 +467,58 @@ func after_refill():
 					#all_pieces[i][j].matched = false
 	state = move
 	move_checked = false
-	for tile in just_protected_tiles:
-		tile.matched = false
+	if is_deadlocked():
+		emit_signal("deadlocked")
+		print("deadlocked")
+	#for tile in just_protected_tiles:
+		#tile.matched = false
 	just_protected_tiles.clear()
+	#print("Grid is done moving")
 	# clear just matched
+
+
+func is_deadlocked():
+	# Create a copy of the all_pieces array
+	clone_array = copy_array(all_pieces)
+	for i in width:
+		for j in height:
+			#switch and check right
+			if switch_and_check(Vector2(i,j), Vector2(1, 0), clone_array):
+				return false
+			#switch and check up
+			if switch_and_check(Vector2(i,j), Vector2(0, 1), clone_array):
+				return false
+	return true
+
+
+func switch_and_check(place, direction, array):
+	switch_pieces(place, direction, array)
+	if find_matches(true, array):
+		switch_pieces(place, direction, array)
+		return true
+	else:
+		switch_pieces(place, direction, array)
+		#print("No match found")
+		return false
+
+
+func switch_pieces(place, direction, array):
+	if is_in_grid(place) and !restricted_fill(place):
+		if is_in_grid(place + direction) and !restricted_fill(place + direction):
+			# First, hold the piece to swap with
+			var holder = array[place.x + direction.x][place.y + direction.y]
+			# Then set the swap spot as the original piece
+			array[place.x + direction.x][place.y + direction.y] = array[place.x][place.y]
+			# Then set the original spot as the other piece
+			array[place.x][place.y] = holder
+
+
+func copy_array(array_to_copy):
+	var new_array = make_2d_array()
+	for i in width:
+		for j in height:
+			new_array[i][j] = array_to_copy[i][j]
+	return new_array
 
 
 func _on_destroy_timer_timeout():
@@ -410,7 +554,7 @@ func pause():
 
 func reset():
 	print("resetting grid")
-	empty_spaces.clear()
+	#empty_spaces.clear()
 	destroy_matched()
 	for child in self.get_children():
 		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer"):
@@ -418,8 +562,16 @@ func reset():
 			child.queue_free()
 	state = move
 	# these two might be reduntant
-	piece_one = null
-	piece_two = null
-	just_protected_tiles.clear()
+	#piece_one = null
+	#piece_two = null
+	#just_protected_tiles.clear()
 	spawn_pieces()
 
+
+func _on_lock_holder_remove_lock(damaged_lock):
+	lock_spaces = remove_from_array(lock_spaces, damaged_lock)
+
+
+func _on_concrete_holder_remove_concrete(damaged_concrete):
+	concrete_spaces = remove_from_array(concrete_spaces, damaged_concrete)
+	#empty_spaces = remove_from_array(empty_spaces, damaged_concrete)
