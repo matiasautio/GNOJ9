@@ -420,6 +420,7 @@ wait_time = 0.1
 one_shot = true
 
 [connection signal="moves_deplenished" from="move_keeper" to="cop_raid" method="_on_move_keeper_moves_deplenished"]
+[connection signal="deadlocked" from="grid" to="cop_raid" method="_on_grid_deadlocked"]
 [connection signal="match_made" from="grid" to="cop_raid" method="_on_grid_match_made"]
 [connection signal="pieces_generated" from="grid" to="cop_raid" method="_on_grid_pieces_generated"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]

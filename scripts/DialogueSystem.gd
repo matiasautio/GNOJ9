@@ -130,9 +130,12 @@ func replace_keywords(phrase):
 	if "$SCORE" in phrase:
 		new_phrase = phrase.replace("$SCORE", String(game_data.current_score))
 	if "$TOTALSCORE" in phrase:
+		game_data.calculate_score()
 		new_phrase = phrase.replace("$TOTALSCORE", String(game_data.total_score))
 	if "$PROTECTSCORE" in phrase:
-		new_phrase = phrase.replace("$PROTECTSCORE", String(game_data.current_good_guys_score))
+		game_data.calculate_score()
+		print(game_data.total_good_guy_score)
+		new_phrase = phrase.replace("$PROTECTSCORE", String(game_data.total_good_guy_score))
 	# Add other keywords here
 	$Text.bbcode_text = new_phrase
 

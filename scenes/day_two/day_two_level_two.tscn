@@ -404,6 +404,7 @@ one_shot = true
 script = ExtResource( 23 )
 number_of_moves = 20
 
+[connection signal="deadlocked" from="grid" to="day_two_level_two" method="_on_grid_deadlocked"]
 [connection signal="match_made" from="grid" to="day_two_level_two" method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]
 [connection signal="level_goal_reached" from="score_keeper" to="day_two_level_two" method="_on_score_keeper_level_goal_reached"]

@@ -23,6 +23,7 @@ func _ready():
 
 
 func _on_grid_match_made(number_of_tiles, tile_group):
+	print(number_of_tiles, tile_group)
 	var price = 70
 	if tile_group == "aspen" or tile_group == "juniper":
 		price = 140
@@ -44,6 +45,7 @@ func _on_grid_match_made(number_of_tiles, tile_group):
 
 
 func reset_score():
+	print("resetting score")
 	# Add highscores
 	if score > current_highscore:
 		current_highscore = score
@@ -57,6 +59,7 @@ func reset_score():
 	
 
 func get_highscores():
+	print("getting score")
 	if score > current_highscore:
 		current_highscore = score
 	if good_guy_points > current_good_guy_highscore:

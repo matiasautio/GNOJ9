@@ -24,6 +24,7 @@ func clicked():
 
 
 func toggle_status():
+	print("Toggling character")
 	# if boss is interactable we don't want him to go away
 	#print("can talk to is ", can_talk_to)
 	if can_talk_to or current_dialogue != null:

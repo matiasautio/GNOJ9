@@ -93,7 +93,6 @@ margin_bottom = 1173.0
 texture = ExtResource( 16 )
 
 [node name="BackgroundColor2" parent="." instance=ExtResource( 1 )]
-color = Color( 0.235294, 0.341176, 0.305882, 1 )
 
 [node name="grid" parent="." instance=ExtResource( 2 )]
 possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 20 ), ExtResource( 22 ) ]
@@ -417,6 +416,7 @@ autoplay = "transition_to_scene"
 anims/transition_to_scene = SubResource( 3 )
 
 [connection signal="moves_deplenished" from="move_keeper" to="day_two_level_one" method="_on_move_keeper_moves_deplenished"]
+[connection signal="deadlocked" from="grid" to="day_two_level_one" method="_on_grid_deadlocked"]
 [connection signal="match_made" from="grid" to="day_two_level_one" method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]
 [connection signal="level_goal_reached" from="score_keeper" to="day_two_level_one" method="_on_score_keeper_level_goal_reached"]

@@ -6,7 +6,8 @@ var orig_boss_health = 5
 var boss_health = 5
 var current_score = 0
 var current_good_guys_score = 0
-var total_score = 0
+var total_score = 5001
+var total_good_guy_score = 0
 
 var orig_level = 0
 var current_level = 1
@@ -24,10 +25,13 @@ func _ready():
 
 # currently calculated on each outro scene closing
 func calculate_score():
+	print("Calculating score in gamedata")
 	total_score += current_score
+	total_good_guy_score += current_good_guys_score
 
 
 func reset_current_score():
+	print("Resetting score in gamedata")
 	current_score = 0
 	current_good_guys_score = 0
 
@@ -55,6 +59,8 @@ func save_progression():
 
 
 func load_saved_progression():
+	return
+	print("Loading game.")
 	# load progression saved to disk here
 	var save_game = File.new()
 	print(save_game.file_exists("user://savegame.save"))

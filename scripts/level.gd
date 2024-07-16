@@ -23,6 +23,7 @@ export (String, MULTILINE) var continue_dialogue = ""
 export (String, MULTILINE) var wanna_quit_dialogue = ""
 export (String, MULTILINE) var end_of_level_dialogue = ""
 export (String, MULTILINE) var restart_dialogue = ""
+export (String, MULTILINE) var deadlock_dialogue = "res://dialogue/special/boss_deadlock_reaction.json"
 
 var current_dialogue
 
@@ -121,6 +122,7 @@ func _on_score_keeper_protesters_matched():
 
 func _on_move_keeper_moves_deplenished():
 	print("moves deplenished")
+	#_on_grid_deadlocked()
 	if level_type == 1:
 		level_state = 3
 		prompt_end()
@@ -142,7 +144,7 @@ func signal_from_scorekeeper():
 
 
 func prompt_end():
-	level_highscores = $"../score_keeper".get_highscores()
+	#level_highscores = $"../score_keeper".get_highscores()
 	#update_score(scores)
 	var boss = $"../Control/Boss"
 	
@@ -226,9 +228,11 @@ func reset_level():
 	
 
 func next_level():
+	level_highscores = $"../score_keeper".get_highscores()
 	game_data.protesters_killed = cut_protesters
 	game_data.current_score += level_highscores.x
 	game_data.current_good_guys_score += level_highscores.y
+	print(level_highscores)
 	var _x = get_tree().change_scene(next_level_scene)
 
 
@@ -253,3 +257,10 @@ func _on_grid_pauser_timeout():
 func check_tiles_after_match():
 	pass
 	
+
+func _on_grid_deadlocked():
+	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(deadlock_dialogue)
+	# hack to show boss
+	$"../Control/Boss".is_present = false
+	$"../Control/Boss".toggle_status()
+	level_state = 3

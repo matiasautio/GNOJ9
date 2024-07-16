@@ -97,6 +97,8 @@ func _ready():
 		spawn_concrete()
 	if possible_pieces.size() > 0:
 		spawn_pieces()
+	# Connect score keeper
+	#connect("match_made", $"../score_keeper", "_on_grid_match_made")
 
 
 func restricted_fill(place):
@@ -380,7 +382,8 @@ func destroy_matched():
 	move_checked = true
 	if was_matched:
 		#print("Tiles were matched!")
-		#print(number_of_tiles, " tiles were matched")
+		#print(number_of_tiles, " tiles were matched")'
+		# Tiles per match per group could be added to an array and the points given re that
 		emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
 		if player_swapped:
@@ -556,6 +559,7 @@ func reset():
 	print("resetting grid")
 	#empty_spaces.clear()
 	destroy_matched()
+	concrete_spaces.clear()
 	for child in self.get_children():
 		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer"):
 			self.remove_child(child)

@@ -213,5 +213,6 @@ position = Vector2( 103, 939 )
 texture = ExtResource( 11 )
 
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
+[connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
 
 [editable path="DialogueBoxHolder"]
