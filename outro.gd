@@ -9,5 +9,9 @@ func _on_DialogueBox_next_phrase_requested():
 	current_dialogue_value += 1
 	# print(current_dialogue_value)
 	if current_dialogue_value == end_game_value:
-		var _x = get_tree().change_scene("res://scenes/dream.tscn")
+		$FadeOut/AnimationPlayer.play("fade_out")
 		game_data.calculate_score()
+
+
+func load_next_scene(anim_name):
+	var _x = get_tree().change_scene("res://scenes/dream.tscn")

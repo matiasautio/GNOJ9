@@ -14,6 +14,9 @@ var current_level = 1
 
 var previous_level_name = ""
 
+# endless mode
+var endless_high_score = 0
+
 # misc fun data
 var protesters_killed = 0
 var cops_killed = 0
@@ -48,18 +51,19 @@ func save_progression():
 	var save_dict = {
 		"current_level" : current_level,
 		"current_score" : current_score,
-		"current_good_guys_score" : current_good_guys_score
+		"current_good_guys_score" : current_good_guys_score,
+		"endless_high_score" : endless_high_score
 	}
 	var save_game = File.new()
 	save_game.open("user://savegame.save", File.WRITE)
-	var save_nodes = get_tree().get_nodes_in_group("Persist")
+	var _save_nodes = get_tree().get_nodes_in_group("Persist")
 	save_game.store_line(to_json(save_dict))
 	print("Game saved!")
 	save_game.close()
 
 
 func load_saved_progression():
-	return
+	#return
 	print("Loading game.")
 	# load progression saved to disk here
 	var save_game = File.new()

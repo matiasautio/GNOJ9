@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://art/faces/it_face.png" type="Texture" id=19]
 [ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=20]
 [ext_resource path="res://art/Tools/tools_tape1_not_in_use.png" type="Texture" id=21]
+[ext_resource path="res://art/bg_shadow.png" type="Texture" id=22]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -139,6 +140,14 @@ tracks/0/keys = {
 "values": [ Vector2( 2, 2 ), Vector2( 1.9, 1.9 ), Vector2( 1.8, 1.8 ), Vector2( 1.9, 1.9 ), Vector2( 2, 2 ) ]
 }
 
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=15]
+
 [sub_resource type="Animation" id=5]
 resource_name = "increase_scale"
 step = 0.05
@@ -187,6 +196,37 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
 }
 
+[sub_resource type="Animation" id=10]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "fade_out"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="dream_two" type="Node2D"]
 script = ExtResource( 3 )
 day = 2
@@ -233,18 +273,22 @@ frames = SubResource( 1 )
 [node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
 
 [node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
+play_on_start = false
 play_sounds_in_batch = false
 dialogue_path = "res://dialogue/day_two/dream_two.json"
 
 [node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
-margin_left = 253.0
-margin_right = 338.0
+margin_left = 0.0
+margin_right = 221.0
+margin_bottom = 35.0
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = "PROTESTER"
-text = "PROTESTER"
+bbcode_text = "[right]NARRATOR"
+text = "NARRATOR"
 
 [node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
+bbcode_text = ""
+text = ""
 
 [node name="CharacterVoice" parent="DialogueBoxHolder/DialogueBox" index="8"]
 yes_interruptions = true
@@ -463,6 +507,10 @@ margin_bottom = 901.0
 rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 64, 64 )
 theme = ExtResource( 20 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 14 )
+custom_styles/disabled = SubResource( 15 )
 icon = ExtResource( 21 )
 flat = true
 
@@ -471,9 +519,32 @@ anims/increase_scale = SubResource( 5 )
 anims/increase_scale_larger = SubResource( 6 )
 anims/pump_scale = SubResource( 7 )
 
+[node name="FadeOut" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.10352e-05
+margin_right = 576.0
+margin_bottom = 1024.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.207843, 0.282353, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
+autoplay = "fade_in"
+anims/fade_in = SubResource( 10 )
+anims/fade_out = SubResource( 11 )
+
+[node name="TextureRect" type="TextureRect" parent="FadeOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 22 )
+expand = true
+
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
 [connection signal="pressed" from="tool_button" to="." method="_on_tool_button_pressed"]
 [connection signal="animation_finished" from="tool_button/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="load_next_day"]
 
 [editable path="DialogueBoxHolder"]

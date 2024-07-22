@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -20,9 +20,19 @@
 [ext_resource path="res://ui/tool_button_theme.tres" type="Theme" id=18]
 [ext_resource path="res://scripts/player_status.gd" type="Script" id=19]
 [ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=20]
-[ext_resource path="res://scenes/pieces/protester_piece.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/pieces/aspen_piece.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/pieces/police_piece.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/pieces/juniper_piece.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/pieces/protester_piece.tscn" type="PackedScene" id=25]
+[ext_resource path="res://art/Tree Pieces/Fir/0001.png" type="Texture" id=26]
+[ext_resource path="res://art/police_pieces/0001.png" type="Texture" id=27]
+[ext_resource path="res://art/Protester Pieces/0001.png" type="Texture" id=28]
+[ext_resource path="res://art/Tree Pieces/Birch/0001.png" type="Texture" id=29]
+[ext_resource path="res://art/Tree Pieces/Pine/0001.png" type="Texture" id=30]
+[ext_resource path="res://art/Tree Pieces/Juniper/0001.png" type="Texture" id=31]
+[ext_resource path="res://art/Tree Pieces/Aspen/0001.png" type="Texture" id=32]
+[ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=33]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -37,9 +47,19 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
 [node name="endless_mode" type="Node2D"]
 script = ExtResource( 5 )
-skip_dialogue = true
+extra_pieces = [ ExtResource( 24 ), ExtResource( 25 ), ExtResource( 22 ) ]
 
 [node name="player_status" type="Node" parent="."]
 script = ExtResource( 19 )
@@ -68,10 +88,13 @@ rect_scale = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 
 [node name="grid" parent="." instance=ExtResource( 2 )]
-possible_pieces = [ ExtResource( 23 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 22 ), ExtResource( 21 ) ]
+possible_pieces = [ ExtResource( 23 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 21 ) ]
 
 [node name="score_keeper" type="Node" parent="."]
 script = ExtResource( 10 )
+
+[node name="move_keeper" type="Node" parent="."]
+script = ExtResource( 6 )
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -117,7 +140,45 @@ bbcode_text = "[center]SCORE[/center]"
 text = "SCORE"
 fit_content_height = true
 
-[node name="Screen2" type="Sprite" parent="Control"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 192.0
+margin_top = -1000.0
+margin_right = -249.0
+margin_bottom = -960.0
+rect_scale = Vector2( 1.5, 1.5 )
+
+[node name="high_score_header" type="RichTextLabel" parent="Control/MarginContainer4"]
+margin_right = 135.0
+margin_bottom = 40.0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]HI-EST[/center]"
+text = "HI-EST"
+fit_content_height = true
+
+[node name="hi_score_screen" type="Sprite" parent="Control"]
+modulate = Color( 0.843137, 0.572549, 0.0196078, 1 )
+position = Vector2( 291.42, 121.227 )
+rotation = 3.14159
+scale = Vector2( 1.83469, -0.631112 )
+texture = ExtResource( 3 )
+
+[node name="hi_score" type="RichTextLabel" parent="Control"]
+margin_left = 97.0
+margin_top = 91.0
+margin_right = 353.0
+margin_bottom = 131.0
+rect_scale = Vector2( 1.5, 1.5 )
+size_flags_vertical = 4
+bbcode_enabled = true
+bbcode_text = "[center]0[/center]"
+text = "0"
+fit_content_height = true
+
+[node name="score_screen" type="Sprite" parent="Control"]
 modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
 position = Vector2( 483, 111 )
 rotation = 3.14159
@@ -237,9 +298,9 @@ position = Vector2( 15, 524 )
 dialogue_path = "res://dialogue/endless_mode/endless_mode_info.json"
 
 [node name="input_blocker" parent="Control/DialogueBoxHolder/DialogueBox" index="0"]
-margin_left = -993.0
+margin_left = -992.0
 margin_top = -1001.0
-margin_right = 1007.0
+margin_right = 1008.0
 margin_bottom = 999.0
 
 [node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
@@ -254,7 +315,9 @@ custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
 [node name="Screen" type="Sprite" parent="Control"]
 visible = false
-position = Vector2( 103, 939 )
+self_modulate = Color( 0.843137, 0.572549, 0.0196078, 1 )
+position = Vector2( 201, 955 )
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 
 [node name="continue_game" type="Control" parent="Control"]
@@ -280,9 +343,9 @@ margin_left = -156.5
 margin_top = 103.5
 margin_bottom = 142.5
 rect_scale = Vector2( 2, 2 )
-text = "stay here"
+text = "restart"
 
-[node name="continue" type="Button" parent="Control/continue_game"]
+[node name="return_to_menu" type="Button" parent="Control/continue_game"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -291,18 +354,7 @@ margin_left = -147.0
 margin_top = 209.0
 margin_bottom = 248.0
 rect_scale = Vector2( 2, 2 )
-text = "move on"
-
-[node name="input_blocker" type="Control" parent="Control"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -172.0
-
-[node name="ColorRect" type="ColorRect" parent="Control/input_blocker"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 1, 1, 1, 0 )
+text = "menu"
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control"]
 anchor_top = 1.0
@@ -361,27 +413,463 @@ fit_content_height = true
 [node name="countdown_timer" type="Timer" parent="Control/moves_text"]
 one_shot = true
 
+[node name="PointMapButton" type="Button" parent="Control"]
+self_modulate = Color( 0.843137, 0.572549, 0.0196078, 1 )
+margin_left = 351.0
+margin_top = 875.0
+margin_right = 479.0
+margin_bottom = 1003.0
+rect_scale = Vector2( -1, 1 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+icon = ExtResource( 3 )
+flat = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PointMapButton"]
+margin_left = 36.0
+margin_top = 24.0
+margin_right = 66.0
+margin_bottom = 65.0
+rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
+bbcode_enabled = true
+bbcode_text = "[center]"
+
+[node name="MarginContainer5" type="MarginContainer" parent="Control/PointMapButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 58.0
+margin_top = -30.0
+margin_right = 134.0
+margin_bottom = 12.0
+rect_scale = Vector2( -1.5, 1.5 )
+mouse_filter = 2
+theme = ExtResource( 33 )
+
+[node name="point_table_text" type="RichTextLabel" parent="Control/PointMapButton/MarginContainer5"]
+margin_right = 76.0
+margin_bottom = 42.0
+mouse_filter = 2
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]POINT TABLE[/center]"
+text = "POINT TABLE"
+fit_content_height = true
+
+[node name="input_blocker" type="Control" parent="Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -172.0
+
+[node name="ColorRect" type="ColorRect" parent="Control/input_blocker"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="PointMap" type="ColorRect" parent="Control"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.00784314, 0.2, 0.270588, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Control/PointMap"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 222.0
+margin_bottom = -240.0
+color = Color( 0.4, 0.588235, 0.00784314, 1 )
+
+[node name="Rows" type="VBoxContainer" parent="Control/PointMap"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -230.0
+margin_top = -406.0
+margin_right = 230.0
+margin_bottom = 470.0
+custom_constants/separation = 50
+
+[node name="Header" type="RichTextLabel" parent="Control/PointMap/Rows"]
+margin_right = 460.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 400, 140 )
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="Header" type="RichTextLabel" parent="Control/PointMap/Rows/Header"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -178.0
+margin_top = -63.0
+margin_right = 110.0
+margin_bottom = 17.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 110, 20 )
+bbcode_enabled = true
+bbcode_text = "[center]Point table"
+text = "Point table"
+fit_content_height = true
+
+[node name="HSeparator" type="HSeparator" parent="Control/PointMap/Rows"]
+visible = false
+margin_top = 190.0
+margin_right = 460.0
+margin_bottom = 190.0
+custom_constants/separation = 0
+custom_styles/separator = SubResource( 6 )
+
+[node name="Row_0" type="HBoxContainer" parent="Control/PointMap/Rows"]
+margin_top = 190.0
+margin_right = 460.0
+margin_bottom = 290.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
+margin_right = 100.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 26 )
+expand = true
+stretch_mode = 1
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0"]
+visible = false
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0/points"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "70"
+text = "70"
+
+[node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 30 )
+expand = true
+stretch_mode = 1
+
+[node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
+margin_left = 240.0
+margin_right = 340.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 29 )
+expand = true
+stretch_mode = 1
+
+[node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0"]
+margin_left = 360.0
+margin_right = 460.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0/points2"]
+margin_top = 22.0
+margin_right = 62.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[right]70"
+text = "70"
+
+[node name="Row_4" type="HBoxContainer" parent="Control/PointMap/Rows"]
+margin_top = 340.0
+margin_right = 460.0
+margin_bottom = 440.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
+margin_right = 100.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+expand = true
+stretch_mode = 1
+
+[node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 32 )
+expand = true
+stretch_mode = 1
+
+[node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
+margin_left = 240.0
+margin_right = 340.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 31 )
+expand = true
+stretch_mode = 1
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4"]
+visible = false
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4/points"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "70"
+text = "70"
+
+[node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4"]
+margin_left = 360.0
+margin_right = 460.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4/points2"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "140"
+text = "140"
+
+[node name="Row_6" type="HBoxContainer" parent="Control/PointMap/Rows"]
+margin_top = 490.0
+margin_right = 460.0
+margin_bottom = 590.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
+margin_right = 100.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+expand = true
+stretch_mode = 1
+
+[node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 28 )
+expand = true
+stretch_mode = 1
+
+[node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
+margin_left = 240.0
+margin_right = 340.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 27 )
+expand = true
+stretch_mode = 1
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6"]
+visible = false
+margin_left = 120.0
+margin_right = 220.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6/points"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 55.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "70"
+text = "70"
+
+[node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6"]
+margin_left = 360.0
+margin_right = 460.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6/points2"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "100"
+text = "100"
+
+[node name="Row_1" type="HBoxContainer" parent="Control/PointMap/Rows"]
+visible = false
+margin_top = 180.0
+margin_right = 460.0
+margin_bottom = 180.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Row_2" type="HBoxContainer" parent="Control/PointMap/Rows"]
+visible = false
+margin_top = 240.0
+margin_right = 460.0
+margin_bottom = 340.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_2"]
+margin_left = 180.0
+margin_right = 280.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
+
+[node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_2/points"]
+margin_top = 22.0
+margin_right = 130.0
+margin_bottom = 58.0
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "70"
+text = "70"
+
+[node name="Row_3" type="HBoxContainer" parent="Control/PointMap/Rows"]
+visible = false
+margin_top = 290.0
+margin_right = 460.0
+margin_bottom = 290.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Row_5" type="HBoxContainer" parent="Control/PointMap/Rows"]
+visible = false
+margin_top = 400.0
+margin_right = 460.0
+margin_bottom = 500.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Return" type="Button" parent="Control/PointMap"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -115.0
+margin_top = -210.0
+margin_right = 115.0
+margin_bottom = -160.0
+rect_min_size = Vector2( 0, 50 )
+theme = ExtResource( 7 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PointMap/Return"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -114.0
+margin_top = -23.0
+margin_right = 114.0
+margin_bottom = 23.0
+mouse_filter = 2
+bbcode_enabled = true
+bbcode_text = "[center]return"
+text = "return"
+
+[node name="TextureRect" type="TextureRect" parent="Control/PointMap"]
+self_modulate = Color( 1, 1, 1, 0.666667 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+expand = true
+
 [node name="grid_pauser" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
-[node name="move_keeper" type="Node" parent="."]
-script = ExtResource( 6 )
-
 [node name="shadow" type="TextureRect" parent="."]
 modulate = Color( 1, 1, 1, 0.0980392 )
+margin_top = 1.0
 margin_right = 72.0
-margin_bottom = 128.0
+margin_bottom = 129.0
 rect_scale = Vector2( 8, 8 )
 mouse_filter = 2
 texture = ExtResource( 4 )
 
+[connection signal="grid_stopped" from="grid" to="." method="_on_grid_grid_stopped"]
 [connection signal="match_made" from="grid" to="." method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]
+[connection signal="level_goal_reached" from="score_keeper" to="." method="_on_score_keeper_level_goal_reached"]
+[connection signal="moves_deplenished" from="move_keeper" to="." method="_on_move_keeper_moves_deplenished"]
 [connection signal="pressed" from="Control/Developer/developer_button" to="." method="_on_developer_button_pressed"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="Control/Developer" method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="moves_deplenished" from="move_keeper" to="." method="_on_move_keeper_moves_deplenished"]
+[connection signal="pressed" from="Control/continue_game/stay" to="." method="_on_stay_pressed"]
+[connection signal="pressed" from="Control/continue_game/return_to_menu" to="." method="_on_return_to_menu_pressed"]
+[connection signal="pressed" from="Control/PointMapButton" to="." method="_on_PointsMap_pressed"]
+[connection signal="pressed" from="Control/PointMap/Return" to="." method="_on_Return_pressed"]
 
 [editable path="Control/tool_saw"]
 [editable path="Control/DialogueBoxHolder"]

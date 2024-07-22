@@ -1,17 +1,49 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
 [ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
 [ext_resource path="res://outro.gd" type="Script" id=3]
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=4]
 [ext_resource path="res://art/Tree Pieces/Birch/0005.png" type="Texture" id=5]
+[ext_resource path="res://art/faces/boss_face_happy.png" type="Texture" id=6]
 [ext_resource path="res://ui/basic_theme.tres" type="Theme" id=7]
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=8]
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=9]
 [ext_resource path="res://art/tools_header.png" type="Texture" id=10]
 [ext_resource path="res://art/tool.png" type="Texture" id=11]
 [ext_resource path="res://art/screen.png" type="Texture" id=12]
-[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
+[ext_resource path="res://art/bg_shadow.png" type="Texture" id=13]
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "fade_out"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="outro" type="Node2D"]
 script = ExtResource( 3 )
@@ -60,7 +92,7 @@ custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 [node name="BossFace" type="Sprite" parent="."]
 position = Vector2( 162, 554 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 13 )
+texture = ExtResource( 6 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false
@@ -212,6 +244,28 @@ visible = false
 position = Vector2( 103, 939 )
 texture = ExtResource( 12 )
 
+[node name="FadeOut" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.10352e-05
+margin_right = 576.0
+margin_bottom = 1024.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.207843, 0.282353, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
+anims/fade_in = SubResource( 2 )
+anims/fade_out = SubResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="FadeOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
+[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="load_next_scene"]
 
 [editable path="DialogueBoxHolder"]

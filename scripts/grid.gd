@@ -3,6 +3,7 @@ extends Node2D
 
 signal match_made(number_of_tiles, tile_group)
 signal pieces_generated()
+signal grid_stopped
 
 # General gameplay variables
 export var can_play = false
@@ -76,6 +77,9 @@ var first_touch = Vector2(0,0)
 var final_touch = Vector2(0,0)
 var controlling = false
 
+# Matched tiles arrays
+var matched_tiles_arrays = []
+
 # Pausing and resetting variables
 # no variables for this currently
 
@@ -97,6 +101,9 @@ func _ready():
 		spawn_concrete()
 	if possible_pieces.size() > 0:
 		spawn_pieces()
+		for piece in possible_pieces:
+			matched_tiles_arrays.append([])
+	print(matched_tiles_arrays)
 	# Connect score keeper
 	#connect("match_made", $"../score_keeper", "_on_grid_match_made")
 
@@ -303,6 +310,7 @@ func _process(_delta):
 
 func find_matches(query = false, array = all_pieces):
 	#print("Finding matches.")
+	var number_of_tiles = [] # Used to emit the score
 	for i in width:
 		for j in height:
 			if array[i][j] != null:
@@ -315,6 +323,9 @@ func find_matches(query = false, array = all_pieces):
 							match_and_dim(array[i - 1][j], Vector2(i - 1,j))
 							match_and_dim(array[i][j], Vector2(i,j))
 							match_and_dim(array[i + 1][j], Vector2(i + 1,j))
+							add_to_array(array[i - 1][j])
+							add_to_array(array[i][j])
+							add_to_array(array[i + 1][j])
 						if is_protecting:
 							$Protect.play_audio()
 						else:
@@ -327,13 +338,33 @@ func find_matches(query = false, array = all_pieces):
 							match_and_dim(array[i][j - 1], Vector2(i,j -1))
 							match_and_dim(array[i][j], Vector2(i,j))
 							match_and_dim(array[i][j + 1], Vector2(i,j + 1))
+							add_to_array(array[i][j - 1])
+							add_to_array(array[i][j])
+							add_to_array(array[i][j + 1])
 						if is_protecting:
 							$Protect.play_audio()
 						else:
 							$Destroy.play_audio()
 	if query:
 		return false
+	#print(matched_tiles_arrays)
+	for matched_array in matched_tiles_arrays:
+		if matched_array.size() > 0:
+			emit_signal("match_made", matched_array.size(), matched_array[0].color)
+	matched_tiles_arrays.clear()
+	for piece in possible_pieces:
+		matched_tiles_arrays.append([])
 	$"../destroy_timer".start()
+
+
+func add_to_array(tile):
+	for matched_array in matched_tiles_arrays:
+		if matched_array.size() == 0 or matched_array[0].color == tile.color:
+			if !tile in matched_array:
+				matched_array.append(tile)
+				return
+	#if !tile in array:
+		#array.append(tile)
 
 
 func is_piece_null(column, row):
@@ -363,8 +394,8 @@ func match_and_dim(item, pos):
 
 func destroy_matched():
 	#print("Destroying matched tiles.")
-	var number_of_tiles = 0 # Used to emit the score
-	var tile_group = ""
+	#var number_of_tiles = 0 # Used to emit the score
+	#var tile_group = ""
 	var was_matched = false
 	for i in width:
 		for j in height:
@@ -374,17 +405,16 @@ func destroy_matched():
 					if !is_protecting:
 						damage_special(i, j)
 					was_matched = true
-					tile_group = all_pieces[i][j].color
+					#tile_group = all_pieces[i][j].color
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
-					number_of_tiles += 1
-				
+					#number_of_tiles += 1
 	move_checked = true
 	if was_matched:
 		#print("Tiles were matched!")
 		#print(number_of_tiles, " tiles were matched")'
 		# Tiles per match per group could be added to an array and the points given re that
-		emit_signal("match_made", number_of_tiles, tile_group)
+		#emit_signal("match_made", number_of_tiles, tile_group)
 		$"../collapse_timer".start()
 		if player_swapped:
 			emit_signal("swap_succesful")
@@ -476,6 +506,7 @@ func after_refill():
 	#for tile in just_protected_tiles:
 		#tile.matched = false
 	just_protected_tiles.clear()
+	emit_signal("grid_stopped")
 	#print("Grid is done moving")
 	# clear just matched
 

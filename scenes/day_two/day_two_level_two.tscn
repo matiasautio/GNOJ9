@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://art/faces/cop_happy.png" type="Texture" id=26]
 [ext_resource path="res://art/faces/cop_neutral.png" type="Texture" id=27]
 [ext_resource path="res://art/faces/cop_pain.png" type="Texture" id=28]
+[ext_resource path="res://art/bg_shadow.png" type="Texture" id=29]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -65,11 +66,26 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="Animation" id=4]
+resource_name = "fade_out"
+length = 1.25
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="day_two_level_two" type="Node2D"]
 
 [node name="day_two_level_two" type="Node" parent="."]
 script = ExtResource( 21 )
-level_type = -1
 score_threshold = 7500
 moves = -1
 current_day = 2
@@ -403,6 +419,26 @@ one_shot = true
 [node name="move_keeper" type="Node" parent="."]
 script = ExtResource( 23 )
 number_of_moves = 20
+
+[node name="FadeOut" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.10352e-05
+margin_right = 576.0
+margin_bottom = 1024.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.207843, 0.282353, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
+anims/fade_out = SubResource( 4 )
+
+[node name="TextureRect" type="TextureRect" parent="FadeOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 29 )
+expand = true
 
 [connection signal="deadlocked" from="grid" to="day_two_level_two" method="_on_grid_deadlocked"]
 [connection signal="match_made" from="grid" to="day_two_level_two" method="_on_grid_match_made"]

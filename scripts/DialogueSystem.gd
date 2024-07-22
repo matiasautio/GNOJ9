@@ -73,7 +73,7 @@ func next_phrase() -> void:
 	
 	finished = false
 	
-	$Name.bbcode_text = dialogue[phrase_num]["Name"]
+	$Name.bbcode_text = "[right]" + dialogue[phrase_num]["Name"]
 	if special_character in dialogue[phrase_num]["Text"]:
 		replace_keywords(dialogue[phrase_num]["Text"])
 	else:

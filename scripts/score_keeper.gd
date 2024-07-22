@@ -9,7 +9,7 @@ onready var score_text = $"../Control/score"
 var xr_score_text = null
 export var level_goal = 10000
 
-# Current highestscores
+# Current highest scores
 var current_highscore = 0
 var current_good_guy_highscore = 0
 
@@ -23,7 +23,7 @@ func _ready():
 
 
 func _on_grid_match_made(number_of_tiles, tile_group):
-	print(number_of_tiles, tile_group)
+	#print(number_of_tiles, tile_group)
 	var price = 70
 	if tile_group == "aspen" or tile_group == "juniper":
 		price = 140
@@ -37,7 +37,9 @@ func _on_grid_match_made(number_of_tiles, tile_group):
 	if tile_group == "protester":
 		emit_signal("protesters_matched")
 		#score -= 70 * number_of_tiles # uncomment to not add score from protesters
-	if score >= level_goal:
+	# To pass a level's score threshold, both point types are used
+	var total_score = score + good_guy_points
+	if total_score >= level_goal:
 		emit_signal("level_goal_reached")
 	score_text.bbcode_text = "[center]" + String(score) + "[/center]"
 	if xr_score_text != null:

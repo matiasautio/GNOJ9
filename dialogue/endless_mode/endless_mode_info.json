@@ -1,6 +1,6 @@
 [
 	{"Name":"DEVELOPER", "Text":"Welcome to the [wave]Endless Mode"},
-	{"Name":"DEVELOPER", "Text":"Stack up points before you run out of moves."},
-	{"Name":"DEVELOPER", "Text":"Match four or more tress to gain more moves."},
+	{"Name":"DEVELOPER", "Text":"Stack up points before you run out of moves. Match four or more trees to gain more moves."},
+	{"Name":"DEVELOPER", "Text":"Check the point table for tile values. Click me if you wanna quit."},
 	{"Name":"DEVELOPER", "Text":"Have fun!"},
 ]

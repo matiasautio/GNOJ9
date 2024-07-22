@@ -1,7 +1,7 @@
 [
-	{"Name":"[right]PROTESTER", "Text":"Hi again!"},
-	{"Name":"[right]PROTESTER", "Text":"Eh, so I guess you tested out our protecting tool?"},
-	{"Name":"[right]PROTESTER", "Text":"Here is your score [wave]$PROTECTSCORE[/wave]."},
-	{"Name":"[right]PROTESTER", "Text":"Keep protecting the trees, don't let the company win!"},
-	{"Name":"[right]PROTESTER", "Text":"Oh heck, I hear someone coming! I'll see you later!"},
+	{"Name":"PROTESTER", "Text":"Hi again!"},
+	{"Name":"PROTESTER", "Text":"Eh, so I guess you tested out our protecting tool?"},
+	{"Name":"PROTESTER", "Text":"Here is your score [wave]$PROTECTSCORE[/wave]."},
+	{"Name":"PROTESTER", "Text":"Keep protecting the trees, don't let the company win!"},
+	{"Name":"PROTESTER", "Text":"Oh heck, I hear someone coming! I'll see you later!"},
 ]

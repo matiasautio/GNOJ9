@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://art/Tree Pieces/Pine/0005.png" type="Texture" id=1]
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=2]
@@ -12,6 +12,38 @@
 [ext_resource path="res://art/faces/protester.png" type="Texture" id=10]
 [ext_resource path="res://art/screen.png" type="Texture" id=11]
 [ext_resource path="res://animation/boss_faces.tres" type="SpriteFrames" id=12]
+[ext_resource path="res://art/bg_shadow.png" type="Texture" id=13]
+
+[sub_resource type="Animation" id=1]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade_out"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="day_two_outro" type="Node2D"]
 script = ExtResource( 6 )
@@ -212,7 +244,29 @@ visible = false
 position = Vector2( 103, 939 )
 texture = ExtResource( 11 )
 
+[node name="FadeOut" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.10352e-05
+margin_right = 576.0
+margin_bottom = 1024.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.207843, 0.282353, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
+anims/fade_in = SubResource( 1 )
+anims/fade_out = SubResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="FadeOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
+[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="load_next_scene"]
 
 [editable path="DialogueBoxHolder"]

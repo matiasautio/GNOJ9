@@ -10,7 +10,8 @@ var current_dialogue
 
 # This level limits the amount of protesters the player can cut down
 var cut_protesters = 0
-const protester_treshold = 10
+const protester_treshold = 13 # 13 = 5 matched groups of 3
+var ignore_protestor_safety = false
 
 # looping
 var times_played = 0
@@ -54,18 +55,21 @@ func _on_DialogueBox_dialog_box_closed():
 
 
 func _on_grid_match_made(_number_of_tiles, _tile_group):
-	pass
-#	if tile_group.size() > 0 and tile_group[0] == "protester":
-#		cut_protesters += 1
-#		if cut_protesters == protester_treshold:
-#			level_state = 5
-#			prompt_end()
+	if _tile_group == "protester":
+		cut_protesters += _number_of_tiles
+		print(cut_protesters)
+		if cut_protesters >= protester_treshold and !ignore_protestor_safety:
+			level_state = 5
+			prompt_end()
+
 
 func _on_score_keeper_protesters_matched():
-	cut_protesters += 1
-	if cut_protesters == protester_treshold:
-		level_state = 5
-		prompt_end()
+	pass
+#	cut_protesters += 1
+#	if cut_protesters == protester_treshold:
+#		level_state = 5
+#		prompt_end()
+
 
 func _on_move_keeper_moves_deplenished():
 	if !is_level_goal_reached and cut_protesters < protester_treshold:
@@ -75,6 +79,7 @@ func _on_move_keeper_moves_deplenished():
 		if $"../score_keeper".score > highest_score:
 			highest_score = $"../score_keeper".score
 
+
 func _on_score_keeper_level_goal_reached():
 	if !is_level_goal_reached and cut_protesters < protester_treshold:
 		is_level_goal_reached = true
@@ -82,6 +87,7 @@ func _on_score_keeper_level_goal_reached():
 		prompt_end()
 		if $"../score_keeper".score > highest_score:
 			highest_score = $"../score_keeper".score
+
 
 func signal_from_scorekeeper():
 	pass

@@ -99,6 +99,7 @@ func _on_DialogueBox_next_phrase_requested():
 
 # Generally used to check if too many protesters or cops are cut down
 func _on_grid_match_made(_number_of_tiles, _tile_group):
+	#print(_number_of_tiles, _tile_group)
 	# Only add the police and protesters to cut down if the saw was used
 	if game_data.get_node("player_status").current_tool == 1:
 		if _tile_group == "protester":
@@ -109,10 +110,11 @@ func _on_grid_match_made(_number_of_tiles, _tile_group):
 		if _tile_group == "cop":
 			cut_cops += _number_of_tiles
 			game_data.cops_killed += _number_of_tiles
-			print(cut_cops)
+			#print(cut_cops)
 			if cut_cops >= cop_treshold and !ignore_cop_safety:
 				level_state = 6
 				prompt_end()
+		#print(cut_cops)
 		check_tiles_after_match()
 
 
