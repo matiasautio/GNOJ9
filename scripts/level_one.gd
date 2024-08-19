@@ -11,6 +11,8 @@ var is_level_goal_reached = false
 var current_dialogue = null
 const current_level = 1
 
+var boss_just_hurt = false
+
 # looping
 var times_played = 0
 
@@ -23,7 +25,7 @@ var highest_score = 0
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
-	$"../Control/Boss".current_level = current_level
+	$"../Control/Boss".current_level = self
 
 
 func _on_tool_button_button_down():

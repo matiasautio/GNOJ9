@@ -31,10 +31,14 @@ func toggle_status():
 		print("The character is supposed to stay on screen. Not toggling him away!")
 		return
 	if is_present:
-		is_present = false
-		self.play("away")
-		print("Playing character goes away.")
+		go_away()
 	else:
 		is_present = true
 		self.play("default")
 		print("Playing character appears.")
+
+
+func go_away():
+	is_present = false
+	self.play("away")
+	print("Playing character goes away.")

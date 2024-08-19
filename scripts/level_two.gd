@@ -8,6 +8,8 @@ var current_dialogue = null
 
 const current_level = 2
 
+var boss_just_hurt = false
+
 # grid pause hack
 var times_paused = 0
 
@@ -17,7 +19,7 @@ var highest_score = 0
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
-	$"../Control/Boss".current_level = current_level
+	$"../Control/Boss".current_level = self
 
 
 func _on_DialogueBox_dialog_box_closed():
@@ -26,6 +28,7 @@ func _on_DialogueBox_dialog_box_closed():
 		$"../Control/input_blocker".visible = false
 		#$"../grid".can_play = true
 		#$"../Control/Boss".toggle_status()
+		$"../Control/timer_text".level = self
 		$"../Control/timer_text".start_countdown()
 	if level_state == 2:
 		if current_dialogue == "level_two_restart":
@@ -45,7 +48,7 @@ func _on_DialogueBox_dialog_box_closed():
 			reset_level()
 		if current_dialogue == "level_two_continue":
 			game_data.current_score += highest_score
-			get_tree().change_scene("res://scenes/game_window_three.tscn")
+			get_tree().change_scene("res://scenes/game_window_rocks.tscn")
 		if current_dialogue == "level_two_wanna_quit":
 			$"../Control/continue_game".visible = true
 		if current_dialogue == "level_two_stay":
@@ -57,9 +60,10 @@ func _on_DialogueBox_dialog_box_closed():
 	current_dialogue = null
 
 
-func prompt_end(times_played = 0):
+func prompt_end():
 	var score = $"../score_keeper".score
 	var boss = $"../Control/Boss"
+	var times_played =$"../Control/timer_text".times_played
 	
 	ask_for_grid_pause()
 	$"../Control/timer_text".pause_countdown()

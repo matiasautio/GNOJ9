@@ -1,10 +1,26 @@
 extends AnimatedSprite
 
 
+var can_swap = true
 onready var tool_sprite = self
 onready var player_status = get_node("/root/game_data/player_status")
 var is_selected = false
 export var tool_i_am = 1
+
+
+func _ready():
+	$"../../grid".connect("swapping_pieces", self, "swapping_pieces")
+	$"../../grid".connect("grid_stopped", self, "grid_stopped")
+
+
+func swapping_pieces():
+	if can_swap:
+		can_swap = false
+
+
+func grid_stopped():
+	if !can_swap:
+		can_swap = true
 
 
 func toggle_selection():
@@ -15,6 +31,7 @@ func toggle_selection():
 		$"../../grid".can_play = false
 		player_status.tool_selected(0)
 		deselect()
+
 
 func select():
 	player_status.tool_selected(tool_i_am)
@@ -32,5 +49,5 @@ func deselect():
 
 
 func _on_tool_button_button_down():
-	print("asd")
-	toggle_selection()
+	if can_swap:
+		toggle_selection()

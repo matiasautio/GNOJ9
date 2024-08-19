@@ -110,6 +110,7 @@ texture = ExtResource( 16 )
 [node name="BackgroundColor2" parent="." instance=ExtResource( 1 )]
 
 [node name="grid" parent="." instance=ExtResource( 2 )]
+warning_spaces = [ Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 2, 0 ), Vector2( 3, 0 ), Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ), Vector2( 7, 0 ) ]
 possible_pieces = [ ExtResource( 4 ), ExtResource( 20 ), ExtResource( 22 ) ]
 
 [node name="destroy_timer" type="Timer" parent="."]

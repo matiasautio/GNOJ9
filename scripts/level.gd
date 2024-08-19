@@ -5,6 +5,7 @@ class_name Level
 # 0 = score, 1 = moves, 2 = timer
 export var level_type = 0
 export var score_threshold = 10000
+export var level_time_limit = 30
 # -1 is infinite moves
 export var moves = 10
 
@@ -37,6 +38,10 @@ var cop_treshold = 10
 export (String, MULTILINE) var cop_treshold_met_dialogue = "res://dialogue/cop_triggered.json"
 export (String, MULTILINE) var cop_scene = "res://scenes/day_two/cop_raid.tscn"
 
+# boss
+onready var boss = $"../Control/Boss"
+var boss_just_hurt = false
+
 # looping
 var times_played = 0
 
@@ -53,9 +58,16 @@ var has_boss_reacted = false
 
 func _ready():
 	get_node("/root/game_data").current_level = current_day
-	$"../Control/Boss".current_level = current_day
-	$"../move_keeper".number_of_moves = moves
-	$"../score_keeper".level_goal = score_threshold
+	boss.current_level = self
+	if level_type == 0:
+		$"../score_keeper".level_goal = score_threshold
+	elif level_type == 1:
+		#$"../move_keeper".number_of_moves = moves
+		$"../move_keeper".set_moves(moves)
+	elif level_type == 2:
+		$"../Control/timer_text".level = self
+		$"../Control/timer_text".countdown_length = level_time_limit
+		#$"../Control/timer_text".init()
 	other_init()
 
 
@@ -66,8 +78,8 @@ func other_init():
 func _on_DialogueBox_dialog_box_closed():
 	if level_state == 0:
 		level_state = 2
-		if $"../Control/Boss".visible:
-			$"../Control/Boss".animation = "away"
+		if boss.visible:
+			boss.animation = "away"
 		if $"../Control/Cop" != null and $"../Control/Cop".visible:
 			$"../Control/Cop".animation = "away"
 			$"../Control/Cop".visible = false
@@ -75,6 +87,8 @@ func _on_DialogueBox_dialog_box_closed():
 			$"../Control/Protester".animation = "away"
 			$"../Control/Protester".visible = false
 		$"../Control/input_blocker".visible = false
+		if level_type == 2:
+			$"../Control/timer_text".start_countdown()
 	elif level_state == 2:
 		#level_state = 3
 		$"../Control/continue_game".visible = true
@@ -82,6 +96,10 @@ func _on_DialogueBox_dialog_box_closed():
 		$"../Control/continue_game".visible = true
 	# Level reset was selected
 	elif level_state == 4:
+		print("Level state is ", level_state, " and the boss hurt is ", boss_just_hurt)
+		if boss_just_hurt:
+			boss_just_hurt = false
+			return
 		reset_level()
 	# Too many protesters were cut down, level resets
 	elif level_state == 5:
@@ -131,6 +149,7 @@ func _on_move_keeper_moves_deplenished():
 
 
 func _on_score_keeper_level_goal_reached():
+	print("Level goal reached!")
 	if level_type == 0:
 		level_state = 3
 		prompt_end()
@@ -148,7 +167,7 @@ func signal_from_scorekeeper():
 func prompt_end():
 	#level_highscores = $"../score_keeper".get_highscores()
 	#update_score(scores)
-	var boss = $"../Control/Boss"
+	#var boss = $"../Control/Boss"
 	
 	$"../grid".can_play = false
 	ask_for_grid_pause()
@@ -188,6 +207,12 @@ func prompt_end():
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
 			current_dialogue = "wanna_quit"
 	
+	if level_state == 4:
+		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
+		current_dialogue = "wanna_quit"
+		level_state = 3
+		print("player has clicked on the boss, level state is now ", level_state)
+		
 	# reset
 	if level_state == 5:
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(protester_treshold_met_dialogue)
@@ -218,13 +243,20 @@ func reset_level():
 	print("---------------")
 	print("resetting scene")
 	$"../score_keeper".reset_score()
-	$"../move_keeper".number_of_moves = moves
-	$"../move_keeper".reset_moves()
+	if level_type == 1:
+		$"../move_keeper".number_of_moves = moves
+		$"../move_keeper".reset_moves()
+	elif level_type == 2:
+		$"../Control/timer_text".countdown_length = level_time_limit
+		$"../Control/timer_text".init()
+		$"../Control/timer_text".start_countdown()
 	cut_protesters = 0
 	cut_cops = 0
 	is_level_goal_reached = false
 	$"../grid".reset()
-	$"../grid".can_play = true#$"../Control/tool_saw".is_selected
+	$"../grid".can_play = true
+	$"../Control/tool_saw".grid_stopped()
+	#$"../Control/tool_saw".is_selected
 	#$"../Control/Boss".toggle_status()
 	#level_state = 3
 	
@@ -261,8 +293,11 @@ func check_tiles_after_match():
 	
 
 func _on_grid_deadlocked():
+	# If the level is timer based, just let time run out lol
+	if level_type == 2:
+		return
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(deadlock_dialogue)
 	# hack to show boss
-	$"../Control/Boss".is_present = false
-	$"../Control/Boss".toggle_status()
+	boss.is_present = false
+	boss.toggle_status()
 	level_state = 3

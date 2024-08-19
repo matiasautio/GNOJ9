@@ -1,8 +1,8 @@
 [
-	{"Name":"BOSS", "Text":"All the fun sides of forestry with none of the bad."},
-	{"Name":"BOSS", "Text":"No sawdust, no noise, no screaming protesters."},
-	{"Name":"BOSS", "Text":"I bet you enjoyed your first day!"},
-	{"Name":"BOSS", "Text":"Let's see. Your score in total today was [wave]$SCORE[/wave]."},
-	{"Name":"BOSS", "Text":"I think I should say ''thank you for playing''..."},
+	{"Name":"BOSS", "Text":"Working remotely like this is fun huh?"},
+	{"Name":"BOSS", "Text":"You get to stay home and just play on your phone."},
+	{"Name":"BOSS", "Text":"No sawdust, not getting hit by a tree, can't hear the protesters scream."},
+	{"Name":"BOSS", "Text":"Now let's see. Your score in total today was [wave]$SCORE[/wave]."},
+	{"Name":"BOSS", "Text":"I think I should say [wave]thanks for playing...[/wave]"},
 	{"Name":"BOSS", "Text":"but I'll just say don't be late tomorrow, we continue at 06:00."},
 ]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scenes/pieces/fir_piece.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/pieces/birch_piece.tscn" type="PackedScene" id=2]
@@ -21,6 +21,12 @@
 [ext_resource path="res://scenes/locks/lock_holder.gd" type="Script" id=19]
 [ext_resource path="res://scenes/ice/ice_holder.gd" type="Script" id=20]
 [ext_resource path="res://scenes/concrete/concrete_holder.gd" type="Script" id=21]
+[ext_resource path="res://sounds/rock_break/rock_break_3.wav" type="AudioStream" id=22]
+[ext_resource path="res://sounds/rock_break/rock_break_4.wav" type="AudioStream" id=23]
+[ext_resource path="res://sounds/rock_break/rock_break_1.wav" type="AudioStream" id=24]
+[ext_resource path="res://sounds/rock_break/rock_break_2.wav" type="AudioStream" id=25]
+[ext_resource path="res://sounds/rock_break/rock_break_0.wav" type="AudioStream" id=26]
+[ext_resource path="res://scenes/elements/warning_tiles.gd" type="Script" id=27]
 
 [node name="grid" type="Node2D"]
 script = ExtResource( 4 )
@@ -59,6 +65,14 @@ script = ExtResource( 19 )
 [node name="concrete_holder" type="Node2D" parent="."]
 script = ExtResource( 21 )
 
+[node name="rock_break" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 7 )
+sounds = [ ExtResource( 26 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 23 ) ]
+
+[node name="warning_tiles" type="Node2D" parent="."]
+script = ExtResource( 27 )
+
 [connection signal="damage_concrete" from="." to="concrete_holder" method="_on_grid_damage_concrete"]
 [connection signal="make_concrete" from="." to="concrete_holder" method="_on_grid_make_concrete"]
+[connection signal="make_warning" from="." to="warning_tiles" method="_on_grid_make_warning"]
 [connection signal="remove_concrete" from="concrete_holder" to="." method="_on_concrete_holder_remove_concrete"]

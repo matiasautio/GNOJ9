@@ -4,6 +4,7 @@ extends Node2D
 signal match_made(number_of_tiles, tile_group)
 signal pieces_generated()
 signal grid_stopped
+signal swapping_pieces
 
 # General gameplay variables
 export var can_play = false
@@ -32,6 +33,9 @@ export (Array, Vector2) var lock_spaces
 export var random_locks = false
 export (Array, Vector2) var concrete_spaces
 export var random_concrete = false
+export var concrete_amount = 4
+export (Array, Vector2) var warning_spaces
+signal make_warning(made_warning)
 
 export (Array, Vector2) var protected_tiles
 export (Array, Vector2) var just_protected_tiles
@@ -43,6 +47,7 @@ signal damage_lock(damaged_lock)
 signal make_lock(made_lock)
 signal damage_concrete(damaged_concrete)
 signal make_concrete(made_concrete)
+signal removed_rock(amount_of_rocks, tile_group)
 
 # Tape tool stuff
 signal deadlocked
@@ -103,6 +108,8 @@ func _ready():
 		spawn_pieces()
 		for piece in possible_pieces:
 			matched_tiles_arrays.append([])
+	if warning_spaces.size() > 0:
+		spawn_warning_spaces()
 	print(matched_tiles_arrays)
 	# Connect score keeper
 	#connect("match_made", $"../score_keeper", "_on_grid_match_made")
@@ -188,10 +195,17 @@ func spawn_locks():
 
 func spawn_concrete():
 	if random_concrete:
-		for _i in range(4):
+		for _i in range(concrete_amount):
 			concrete_spaces.append(Vector2(int(rand_range(0,7)),int(rand_range(0, 9))))
 	for i in concrete_spaces.size():
+		#print("adding concrete")
 		emit_signal("make_concrete", concrete_spaces[i])
+
+
+func spawn_warning_spaces():
+	for i in warning_spaces.size():
+		#print("adding concrete")
+		emit_signal("make_warning", warning_spaces[i])
 
 
 #  Is the balancing managed here? By determining 
@@ -246,7 +260,7 @@ func touch_input():
 
 
 func swap_pieces(column, row, direction):
-	#print("Swapping pieces")
+	emit_signal("swapping_pieces")
 	# Let's check which tool the player is using
 	if game_data.get_node("player_status").current_tool == 2:
 		is_protecting = true
@@ -326,10 +340,10 @@ func find_matches(query = false, array = all_pieces):
 							add_to_array(array[i - 1][j])
 							add_to_array(array[i][j])
 							add_to_array(array[i + 1][j])
-						if is_protecting:
-							$Protect.play_audio()
-						else:
-							$Destroy.play_audio()
+							if is_protecting:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 				if j > 0 && j < height - 1:
 					if array[i][j - 1] != null && array[i][j + 1] != null:
 						if array[i][j - 1].color == current_color and array[i][j + 1].color == current_color:
@@ -341,10 +355,10 @@ func find_matches(query = false, array = all_pieces):
 							add_to_array(array[i][j - 1])
 							add_to_array(array[i][j])
 							add_to_array(array[i][j + 1])
-						if is_protecting:
-							$Protect.play_audio()
-						else:
-							$Destroy.play_audio()
+							if is_protecting:
+								$Protect.play_audio()
+							else:
+								$Destroy.play_audio()
 	if query:
 		return false
 	#print(matched_tiles_arrays)
@@ -584,6 +598,7 @@ func pause():
 	$"../destroy_timer".stop()
 	$"../collapse_timer".stop()
 	$"../refill_timer".stop()
+	emit_signal("grid_stopped")
 
 
 func reset():
@@ -609,4 +624,6 @@ func _on_lock_holder_remove_lock(damaged_lock):
 
 func _on_concrete_holder_remove_concrete(damaged_concrete):
 	concrete_spaces = remove_from_array(concrete_spaces, damaged_concrete)
+	emit_signal("removed_rock", 1, "rock")
+	$rock_break.play_audio()
 	#empty_spaces = remove_from_array(empty_spaces, damaged_concrete)

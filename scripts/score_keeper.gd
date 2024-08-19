@@ -2,7 +2,9 @@ extends Node
 
 signal level_goal_reached
 signal protesters_matched
+signal cannot_score
 
+export var can_score = true
 var score = 0
 var good_guy_points = 0
 onready var score_text = $"../Control/score"
@@ -20,16 +22,27 @@ func _ready():
 	xr_score_text = get_node_or_null("../Control/xr_score")
 	if xr_score_text != null:
 		xr_score_text.bbcode_text = "[center]" + String(good_guy_points) + "[/center]"
+	if $"../grid" != null:
+		$"../grid".connect("removed_rock", self, "_on_grid_match_made")
 
 
 func _on_grid_match_made(number_of_tiles, tile_group):
 	#print(number_of_tiles, tile_group)
+	var current_tool = game_data.get_node("player_status").current_tool
+	if !can_score:
+		emit_signal("cannot_score")
+		return
 	var price = 70
 	if tile_group == "aspen" or tile_group == "juniper":
 		price = 140
+	if tile_group == "rock":
+		price = 100
+		# no money for protecting rocks
+		if current_tool == 2:
+			price = 0
 	# Using the tape gives no score
 	# just good guy points
-	if game_data.get_node("player_status").current_tool == 2:
+	if current_tool == 2:
 		good_guy_points += price * number_of_tiles
 		price = 0
 	score += price * number_of_tiles

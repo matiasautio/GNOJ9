@@ -1,5 +1,6 @@
 extends Character
 
+signal boss_clicked
 
 var boss_health
 var boss_annoyance = 0 # tie boss annoyance to an angry sprite
@@ -18,18 +19,15 @@ func _ready():
 
 func clicked():
 	if can_talk_to:
+		# pause the timer here
+		emit_signal("boss_clicked")
 		var current_tool = player_status.current_tool
 		print(current_tool)
+		
 		# player has nothing equipped
-		if current_tool == 0:#$"../../player_status".none:
-			# $"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/level_one_continue.json")
-			# current_dialogue = "level_one_continue"
-			if current_level == 1:
-				$"../../level_one".prompt_end()
-			elif current_level == 2:
-				$"../../level_two".prompt_end()
-			elif current_level == 3:
-				$"../../level_three".prompt_end()
+		if current_tool == 0:
+			current_level.prompt_end()
+			
 		# player has the saw equipped
 		elif current_tool == 1:#$"../../player_status".saw:
 			boss_health -= 1
@@ -47,15 +45,15 @@ func clicked():
 						$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_last_warning.json")
 					can_talk_to = false
 					current_dialogue = "hit_boss"
+					current_level.boss_just_hurt = true
 				else:
 					$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/hit_boss_fired.json")
 					can_talk_to = false
 					current_dialogue = "hit_boss_fired"
+		
+		# player has the tape equipped
 		elif current_level == 2:
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/special/boss_tape_reaction.json")
-			#$"../../level_two".prompt_end()
-		#elif current_level == 3:
-			#$"../../level_three".prompt_end()
 		game_data.boss_health = boss_health
 
 

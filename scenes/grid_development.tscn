@@ -48,6 +48,9 @@ one_shot = true
 
 [node name="grid" parent="." instance=ExtResource( 2 )]
 can_play = true
+random_concrete = true
 possible_pieces = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 3 ) ]
+
+[connection signal="make_lock" from="grid" to="grid/lock_holder" method="_on_grid_make_lock"]
 
 [editable path="grid"]

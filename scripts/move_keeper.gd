@@ -9,7 +9,9 @@ var moves_left : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_moves(number_of_moves)
+	return
+	# called from the level script
+	#set_moves(number_of_moves)
 #	moves_left = number_of_moves
 #	if number_of_moves == -1:
 #		moves_text.bbcode_text = "[center]∞[/center]"
@@ -34,6 +36,8 @@ func _on_grid_swap_succesful():
 
 
 func set_moves(moves):
+	if moves_text == null:
+		moves_text = $"../Control/timer_text"
 	number_of_moves = moves
 	moves_left = number_of_moves
 	if number_of_moves == -1:

@@ -333,6 +333,7 @@ one_shot = true
 
 [node name="move_keeper" type="Node" parent="."]
 script = ExtResource( 23 )
+number_of_moves = 1
 
 [connection signal="match_made" from="grid" to="level_three" method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="move_keeper" method="_on_grid_swap_succesful"]

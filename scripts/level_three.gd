@@ -8,6 +8,8 @@ const current_level = 3
 
 var current_dialogue
 
+var boss_just_hurt = false
+
 # This level limits the amount of protesters the player can cut down
 var cut_protesters = 0
 const protester_treshold = 13 # 13 = 5 matched groups of 3
@@ -25,7 +27,7 @@ var highest_score = 0
 
 func _ready():
 	get_node("/root/game_data").current_level = current_level
-	$"../Control/Boss".current_level = current_level
+	$"../Control/Boss".current_level = self
 
 
 func _on_DialogueBox_dialog_box_closed():
@@ -57,8 +59,9 @@ func _on_DialogueBox_dialog_box_closed():
 func _on_grid_match_made(_number_of_tiles, _tile_group):
 	if _tile_group == "protester":
 		cut_protesters += _number_of_tiles
-		print(cut_protesters)
+		print(cut_protesters, " protesters cut down")
 		if cut_protesters >= protester_treshold and !ignore_protestor_safety:
+			ignore_protestor_safety = true # usign this to not trigger this function multiple times
 			level_state = 5
 			prompt_end()
 
@@ -144,6 +147,7 @@ func reset_level():
 	$"../score_keeper".reset_score()
 	$"../move_keeper".reset_moves()
 	cut_protesters = 0
+	ignore_protestor_safety = false
 	is_level_goal_reached = false
 	$"../grid".reset()
 	$"../grid".can_play = $"../Control/tool_saw".is_selected
@@ -154,7 +158,7 @@ func reset_level():
 func next_level():
 	game_data.protesters_killed = cut_protesters
 	game_data.current_score += highest_score
-	var _x = get_tree().change_scene("res://scenes/outro.tscn")
+	var _x = get_tree().change_scene("res://scenes/game_window_glitch.tscn")
 
 
 func _on_stay_pressed():
