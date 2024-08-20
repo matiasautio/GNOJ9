@@ -7,6 +7,7 @@ extends Level
 
 var cop_piece = preload("res://scenes/pieces/police_piece.tscn")
 var next_phrases = 0
+var cop_reached_bottom = false
 var is_raid_over = false
 
 # res://dialogue/cop_raid_failed.json
@@ -35,6 +36,8 @@ func _on_DialogueBox_dialog_box_closed():
 	elif level_state == 3:
 		prompt_end()
 	elif level_state == 4:
+		# No need to save here, because the game has been saved at the start of the day
+		#game_data.save_progression()
 		var _x = get_tree().change_scene(main_menu)
 	elif level_state == 6:
 		var _x = get_tree().change_scene(cop_scene)
@@ -58,7 +61,8 @@ func spawn_first_cop():
 
 func check_tiles_after_match():
 	for x in $"../grid".width:
-		if $"../grid".all_pieces[x][0] != null and $"../grid".all_pieces[x][0].color == "cop":
+		if $"../grid".all_pieces[x][0] != null and $"../grid".all_pieces[x][0].color == "cop" and !cop_reached_bottom:
+			cop_reached_bottom = true
 			level_state = 4
 			prompt_end()
 
@@ -108,3 +112,7 @@ func _on_grid_pieces_generated():
 func _on_Cop_dead():
 	level_state = 3
 	#var _x = get_tree().change_scene(game_data.previous_level_name)
+
+
+func _on_grid_grid_stopped():
+	check_tiles_after_match()

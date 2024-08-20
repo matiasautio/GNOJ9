@@ -75,7 +75,7 @@ func _on_DialogueBox_next_phrase_requested():
 		dream_vision.play("cut")
 	if dream_sequence_index == 4 and day == 1:
 		dream_vision.visible = false
-	if dream_sequence_index == 7 and day == 1:
+	if dream_sequence_index == 6 and day == 1:
 		$tool_button/AnimationPlayer.play("increase_scale")
 		$DialogueBoxHolder/DialogueBox.disconnect_skip_buttons()
 	if dream_sequence_index == 4 and day == 2:
@@ -103,6 +103,7 @@ func _on_tool_button_pressed():
 		#$DialogueBoxHolder/DialogueBox/Text.visible_characters = len($DialogueBoxHolder/DialogueBox/Text.text)
 		#$DialogueBoxHolder/DialogueBox.finished = true
 		$tool_button/AnimationPlayer.disconnect("animation_finished",self, "_on_AnimationPlayer_animation_finished")
+		$tool_button/AnimationPlayer.playback_speed = 2
 		$tool_button/AnimationPlayer.play_backwards("increase_scale")
 		$tool_button.disconnect("pressed", self, "_on_tool_button_pressed")
 		$DialogueBoxHolder/DialogueBox._on_continue_button_down()

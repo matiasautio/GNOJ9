@@ -59,6 +59,7 @@ func save_progression():
 	var _save_nodes = get_tree().get_nodes_in_group("Persist")
 	save_game.store_line(to_json(save_dict))
 	print("Game saved!")
+	print(save_dict)
 	save_game.close()
 
 
