@@ -6,7 +6,7 @@ export var skip_dialogue = false
 export var initial_moves = 5
 #export var change_treshold = 5000
 var level_tresholds = [5000, 10000, 15000, 20000, 25000, 30000]
-var point_increase = 500
+var point_increase = 5000
 var level_index = 0
 var orig_pieces = []
 export (Array, PackedScene) var extra_pieces
@@ -31,6 +31,7 @@ func _ready():
 	$score_keeper.level_goal = point_increase#level_tresholds[level_index]
 	for piece in $grid.possible_pieces:
 		orig_pieces.append(piece)
+	move_keeper.is_used = true
 
 
 func add_moves(moves):
@@ -102,7 +103,9 @@ func hide_continue_ui():
 func _on_stay_pressed():
 	hide_continue_ui()
 	$score_keeper.reset_score()
+	$score_keeper.level_goal = point_increase
 	$move_keeper.reset_moves()
+	remove_rocks()
 	$grid.possible_pieces.clear()
 	for piece in orig_pieces:
 		$grid.possible_pieces.append(piece)
@@ -118,27 +121,33 @@ func _on_return_to_menu_pressed():
 func _on_score_keeper_level_goal_reached():
 	level_index += 1
 	$score_keeper.level_goal += point_increase #level_tresholds[level_index]
+	# add juniper trees
 	if level_index == 1:
-		add_tile()
+		add_tile(0)
+	# add rocks
 	if level_index == 2:
 		add_rock_tiles()
+	# add protesters
 	if level_index == 3:
-		add_tile()
+		add_tile(1)
+	# add more rocks
 	if level_index == 4:
 		#add_empty_spaces()
 		remove_rocks()
 		add_rock_tiles()
+	# add cops
 	if level_index == 5:
 		#remove_rocks()
-		add_tile()
-	if level_index >= 6:
-		add_tile()
+		add_tile(2)
+	# currently the endless mode ends here
+	# in the future the could be a forest fire or somehing like that!
+	# add more rocks
+	#if level_index >= 6:
+		#add_rock_tiles()
 
 
-func add_tile():
-	if level_index <= extra_pieces.size():
-		$grid.possible_pieces.append(extra_pieces[tile_index])
-		tile_index += 1
+func add_tile(index):
+	$grid.possible_pieces.append(extra_pieces[index])
 
 
 func add_empty_spaces():
@@ -170,10 +179,12 @@ func add_rock_tiles():
 
 func remove_rocks():
 	# Let's leave the rocks in place to further mess up the game!
+	$grid.concrete_spaces.clear()
 	for i in range($grid/concrete_holder.concrete_pieces.size()):
 		for rock in $grid/concrete_holder.concrete_pieces[i]:
 			if rock != null:
 				rock.queue_free()
+	$grid/concrete_holder.concrete_pieces.clear()
 				#$grid/concrete_holder.concrete_pieces[i].erase(rock)
 
 

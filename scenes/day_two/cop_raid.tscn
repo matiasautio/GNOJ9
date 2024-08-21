@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://ui/tool_button_theme.tres" type="Theme" id=18]
 [ext_resource path="res://art/Tools/tools_tape2.png" type="Texture" id=19]
 [ext_resource path="res://scenes/pieces/juniper_piece.tscn" type="PackedScene" id=20]
+[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=21]
 [ext_resource path="res://scenes/pieces/aspen_piece.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scripts/move_keeper.gd" type="Script" id=23]
 [ext_resource path="res://art/Tools/tools_tape1.png" type="Texture" id=24]
@@ -94,6 +95,7 @@ script = ExtResource( 6 )
 level_type = 1
 wanna_quit_dialogue = "res://dialogue/cop_raid_looping.json"
 end_of_level_dialogue = "res://dialogue/cop_raid_001.json"
+deadlock_dialogue = "res://dialogue/special/developer_deadlock_reaction.json"
 
 [node name="move_keeper" type="Node" parent="."]
 script = ExtResource( 23 )
@@ -230,9 +232,9 @@ texture = ExtResource( 9 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 62.0
+margin_top = 83.0
 margin_right = 545.0
-margin_bottom = 102.0
+margin_bottom = 123.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 theme = ExtResource( 5 )
@@ -242,6 +244,7 @@ text = "10000"
 fit_content_height = true
 
 [node name="xr_score" type="RichTextLabel" parent="Control"]
+visible = false
 self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
 margin_left = 289.0
 margin_top = 102.0
@@ -352,6 +355,11 @@ visible = false
 position = Vector2( 103, 938 )
 texture = ExtResource( 12 )
 
+[node name="Developer" type="Sprite" parent="Control"]
+visible = false
+position = Vector2( 103, 938 )
+texture = ExtResource( 21 )
+
 [node name="DialogueBoxHolder" parent="Control" instance=ExtResource( 14 )]
 position = Vector2( 15, 524 )
 
@@ -359,7 +367,10 @@ position = Vector2( 15, 524 )
 dialogue_path = "res://dialogue/cop_raid_000.json"
 
 [node name="Name" parent="Control/DialogueBoxHolder/DialogueBox" index="3"]
+margin_left = 202.0
+margin_right = 316.0
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
+bbcode_text = "[right]name"
 
 [node name="Text" parent="Control/DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
@@ -430,6 +441,7 @@ one_shot = true
 [connection signal="protesters_matched" from="score_keeper" to="cop_raid" method="_on_score_keeper_protesters_matched"]
 [connection signal="timeout" from="Control/timer_text/countdown_timer" to="Control/timer_text" method="_on_countdown_timer_timeout"]
 [connection signal="button_down" from="Control/Boss/boss_button" to="Control/Boss" method="_on_boss_button_button_down"]
+[connection signal="cop_clicked" from="Control/Cop" to="cop_raid" method="_on_Cop_cop_clicked"]
 [connection signal="dead" from="Control/Cop" to="cop_raid" method="_on_Cop_dead"]
 [connection signal="button_down" from="Control/Cop/cop_button" to="Control/Cop" method="_on_cop_button_button_down"]
 [connection signal="dialog_box_closed" from="Control/DialogueBoxHolder/DialogueBox" to="cop_raid" method="_on_DialogueBox_dialog_box_closed"]

@@ -264,6 +264,7 @@ func swap_pieces(column, row, direction):
 	# Let's check which tool the player is using
 	if game_data.get_node("player_status").current_tool == 2:
 		is_protecting = true
+		#print("Player is protecting.")
 	else:
 		is_protecting = false
 	#
@@ -299,6 +300,7 @@ func swap_back():
 		swap_pieces(last_place.x, last_place.y, last_direction)
 	state = move
 	move_checked = false
+	emit_signal("grid_stopped")
 	#piece_one = null
 	#piece_two = null
 
@@ -407,7 +409,7 @@ func match_and_dim(item, pos):
 
 
 func destroy_matched():
-	#print("Destroying matched tiles.")
+	print("Destroying matched tiles.")
 	#var number_of_tiles = 0 # Used to emit the score
 	#var tile_group = ""
 	var was_matched = false
@@ -606,8 +608,10 @@ func reset():
 	#empty_spaces.clear()
 	destroy_matched()
 	concrete_spaces.clear()
+	$concrete_holder.reset()
 	for child in self.get_children():
-		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer"):
+		# would be easier to to store the generated tiles under one node but i don't want to mess with the grid...
+		if !child.is_class("AudioStreamPlayer") and !child.is_class("Timer") and !child.name == "ice_holder" and !child.name == "lock_holder" and !child.name == "concrete_holder" and !child.name == "warning_tiles":
 			self.remove_child(child)
 			child.queue_free()
 	state = move

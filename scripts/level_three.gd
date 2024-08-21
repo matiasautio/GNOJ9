@@ -28,6 +28,8 @@ var highest_score = 0
 func _ready():
 	get_node("/root/game_data").current_level = current_level
 	$"../Control/Boss".current_level = self
+	$"../move_keeper".is_used = true
+	$"../move_keeper".set_moves(10)
 
 
 func _on_DialogueBox_dialog_box_closed():
@@ -152,6 +154,7 @@ func reset_level():
 	$"../grid".reset()
 	$"../grid".can_play = $"../Control/tool_saw".is_selected
 	$"../Control/Boss".toggle_status()
+	$"../Control/tool_saw".grid_stopped()
 	#level_state = 3
 	
 

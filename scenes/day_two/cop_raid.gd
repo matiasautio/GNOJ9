@@ -38,9 +38,15 @@ func _on_DialogueBox_dialog_box_closed():
 	elif level_state == 4:
 		# No need to save here, because the game has been saved at the start of the day
 		#game_data.save_progression()
-		var _x = get_tree().change_scene(main_menu)
+		var _x = get_tree().change_scene(game_over_scene)
 	elif level_state == 6:
 		var _x = get_tree().change_scene(cop_scene)
+	elif level_state == 7:
+		level_state = 4
+	elif level_state == 187:
+		$"../Control/Developer".visible = false
+		level_state = 2
+		reset_level()
 
 
 func _on_DialogueBox_next_phrase_requested():
@@ -116,3 +122,41 @@ func _on_Cop_dead():
 
 func _on_grid_grid_stopped():
 	check_tiles_after_match()
+
+
+# Special case for deadlocking
+func _on_grid_deadlocked():
+	# If the level is timer based, just let time run out lol
+	if level_type == 2:
+		return
+	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(deadlock_dialogue)
+	# hack to show boss
+	$"../Control/Developer".visible = true
+	level_state = 187
+
+
+func reset_level():
+	print("---------------")
+	print("resetting scene")
+	$"../score_keeper".reset_score()
+	if level_type == 1:
+		$"../move_keeper".number_of_moves = moves
+		$"../move_keeper".reset_moves()
+	elif level_type == 2:
+		$"../Control/timer_text".countdown_length = level_time_limit
+		$"../Control/timer_text".init()
+		$"../Control/timer_text".start_countdown()
+	cut_protesters = 0
+	cut_cops = 0
+	is_level_goal_reached = false
+	$"../grid".reset()
+	$"../grid".can_play = true
+	$"../Control/tool_saw".grid_stopped()
+	var tape = get_node_or_null("../Control/tool_combiner")
+	if tape != null:
+		$"../Control/tool_combiner".grid_stopped()
+
+
+func _on_Cop_cop_clicked():
+	if game_data.get_node("player_status").current_tool != 1:
+		level_state = 7

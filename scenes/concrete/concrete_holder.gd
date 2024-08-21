@@ -8,7 +8,7 @@ var width = 8
 var height = 10
 var concrete = preload("res://scenes/concrete/rock.tscn")
 
-var index = 0
+#var index = 0
 
 
 func make_2d_array():
@@ -56,4 +56,11 @@ func _on_grid_damage_concrete(damaged_concrete):
 
 func rock_cut_finished(rock_to_delete):
 	# the bug never lets the rock go here
+	print("Deleting rock.")
 	rock_to_delete.queue_free()
+
+
+func reset():
+	concrete_pieces.clear()
+	for child in get_children():
+		child.queue_free()

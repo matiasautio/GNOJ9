@@ -15,6 +15,7 @@ onready var credits_button = $BackgroundColor/Control/VBoxContainer/credits
 onready var continue_button_text = $BackgroundColor/Control/VBoxContainer/continue/text
 
 func _ready():
+	game_data.load_saved_progression()
 	var current_level = game_data.current_level
 	if current_level > 1:
 		start_game_button.visible = false
@@ -51,10 +52,12 @@ func _on_start_delay_timeout():
 
 func _on_credits_button_down():
 	$Credits.visible = true
+	$AudioStreamPlayer.play()
 
 
 func _on_return_button_down():
 	$Credits.visible = false
+	$AudioStreamPlayer.play()
 
 
 func _on_continue_button_down():

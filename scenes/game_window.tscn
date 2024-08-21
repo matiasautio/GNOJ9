@@ -280,9 +280,9 @@ color = Color( 1, 1, 1, 0 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -24.0
+margin_left = -4.0
 margin_top = -1024.0
-margin_right = -471.0
+margin_right = -451.0
 margin_bottom = -905.0
 rect_scale = Vector2( 1.5, 1.5 )
 
@@ -291,8 +291,8 @@ margin_right = 129.0
 margin_bottom = 40.0
 size_flags_vertical = 0
 bbcode_enabled = true
-bbcode_text = "[center]TIME[/center]"
-text = "TIME"
+bbcode_text = "[center]MOVES[/center]"
+text = "MOVES"
 fit_content_height = true
 
 [node name="Screen3" type="Sprite" parent="Control"]

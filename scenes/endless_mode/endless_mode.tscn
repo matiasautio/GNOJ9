@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=1]
 [ext_resource path="res://scenes/grid.tscn" type="PackedScene" id=2]
@@ -33,6 +33,7 @@
 [ext_resource path="res://art/Tree Pieces/Juniper/0001.png" type="Texture" id=31]
 [ext_resource path="res://art/Tree Pieces/Aspen/0001.png" type="Texture" id=32]
 [ext_resource path="res://ui/basic_theme_smaller.tres" type="Theme" id=33]
+[ext_resource path="res://art/special_pieces/0000.png" type="Texture" id=34]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -141,14 +142,13 @@ text = "SCORE"
 fit_content_height = true
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 192.0
-margin_top = -1000.0
-margin_right = -249.0
-margin_bottom = -960.0
-rect_scale = Vector2( 1.5, 1.5 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -51.5
+margin_top = 52.0
+margin_right = 83.5
+margin_bottom = 92.0
+rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="high_score_header" type="RichTextLabel" parent="Control/MarginContainer4"]
 margin_right = 135.0
@@ -529,14 +529,16 @@ custom_styles/separator = SubResource( 6 )
 [node name="Row_0" type="HBoxContainer" parent="Control/PointMap/Rows"]
 margin_top = 190.0
 margin_right = 460.0
-margin_bottom = 290.0
+margin_bottom = 254.0
+rect_min_size = Vector2( 0, 64 )
 custom_constants/separation = 20
 alignment = 1
 
 [node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
-margin_right = 100.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 40.0
+margin_right = 104.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 26 )
 expand = true
 stretch_mode = 1
@@ -565,39 +567,41 @@ bbcode_text = "70"
 text = "70"
 
 [node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
-margin_left = 120.0
-margin_right = 220.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 124.0
+margin_right = 188.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 30 )
 expand = true
 stretch_mode = 1
 
 [node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_0"]
-margin_left = 240.0
-margin_right = 340.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 208.0
+margin_right = 272.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 29 )
 expand = true
 stretch_mode = 1
 
 [node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0"]
-margin_left = 360.0
-margin_right = 460.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 292.0
+margin_right = 420.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 64 )
 theme = ExtResource( 7 )
 bbcode_enabled = true
-bbcode_text = "
-"
-text = "
-"
 
 [node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_0/points2"]
-margin_top = 22.0
-margin_right = 62.0
-margin_bottom = 58.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 50, 50 )
 rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 7 )
 bbcode_enabled = true
@@ -605,33 +609,35 @@ bbcode_text = "[right]70"
 text = "70"
 
 [node name="Row_4" type="HBoxContainer" parent="Control/PointMap/Rows"]
-margin_top = 340.0
+margin_top = 304.0
 margin_right = 460.0
-margin_bottom = 440.0
+margin_bottom = 368.0
+rect_min_size = Vector2( 64, 64 )
 custom_constants/separation = 20
 alignment = 1
 
 [node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
-margin_right = 100.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 40.0
+margin_right = 104.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 expand = true
 stretch_mode = 1
 
 [node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
-margin_left = 120.0
-margin_right = 220.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 124.0
+margin_right = 188.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 32 )
 expand = true
 stretch_mode = 1
 
 [node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_4"]
-margin_left = 240.0
-margin_right = 340.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 208.0
+margin_right = 272.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 31 )
 expand = true
 stretch_mode = 1
@@ -660,21 +666,23 @@ bbcode_text = "70"
 text = "70"
 
 [node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4"]
-margin_left = 360.0
-margin_right = 460.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 292.0
+margin_right = 420.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 64 )
 theme = ExtResource( 7 )
 bbcode_enabled = true
-bbcode_text = "
-"
-text = "
-"
 
 [node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_4/points2"]
-margin_top = 22.0
-margin_right = 130.0
-margin_bottom = 58.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 50, 50 )
 rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 7 )
 bbcode_enabled = true
@@ -682,33 +690,36 @@ bbcode_text = "140"
 text = "140"
 
 [node name="Row_6" type="HBoxContainer" parent="Control/PointMap/Rows"]
-margin_top = 490.0
+margin_top = 418.0
 margin_right = 460.0
-margin_bottom = 590.0
+margin_bottom = 482.0
+rect_min_size = Vector2( 64, 64 )
 custom_constants/separation = 20
 alignment = 1
 
 [node name="piece3" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
-margin_right = 100.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 40.0
+margin_right = 104.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 34 )
 expand = true
 stretch_mode = 1
 
 [node name="piece2" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
-margin_left = 120.0
-margin_right = 220.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 124.0
+margin_right = 188.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 28 )
 expand = true
 stretch_mode = 1
 
 [node name="piece" type="TextureRect" parent="Control/PointMap/Rows/Row_6"]
-margin_left = 240.0
-margin_right = 340.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 208.0
+margin_right = 272.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 27 )
 expand = true
 stretch_mode = 1
@@ -737,21 +748,23 @@ bbcode_text = "70"
 text = "70"
 
 [node name="points2" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6"]
-margin_left = 360.0
-margin_right = 460.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+margin_left = 292.0
+margin_right = 420.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 128, 64 )
 theme = ExtResource( 7 )
 bbcode_enabled = true
-bbcode_text = "
-"
-text = "
-"
 
 [node name="points" type="RichTextLabel" parent="Control/PointMap/Rows/Row_6/points2"]
-margin_top = 22.0
-margin_right = 130.0
-margin_bottom = 58.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 50, 50 )
 rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 7 )
 bbcode_enabled = true

@@ -238,9 +238,9 @@ texture = ExtResource( 9 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
-margin_top = 62.0
+margin_top = 83.0
 margin_right = 545.0
-margin_bottom = 102.0
+margin_bottom = 123.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 4
 theme = ExtResource( 29 )
@@ -250,6 +250,7 @@ text = "10000"
 fit_content_height = true
 
 [node name="xr_score" type="RichTextLabel" parent="Control"]
+visible = false
 self_modulate = Color( 0.4, 0.588235, 0.00784314, 1 )
 margin_left = 289.0
 margin_top = 102.0

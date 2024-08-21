@@ -1,6 +1,6 @@
 [
 	{"Name":"BOSS", "Text":"[shake]What was that?[/shake] A glitch?"},
 	{"Name":"BOSS", "Text":"You... taped up the trees?"},
-	{"Name":"BOSS", "Text":"Must be a bug in the software, Jesus Christ."},
-	{"Name":"BOSS", "Text":"Continue logging and hope the bug doesn't remanifest."}
+	{"Name":"BOSS", "Text":"Must be a bug in the software. Always something with this cursed app. "},
+	{"Name":"BOSS", "Text":"For now just continue logging and hope the bug doesn't remanifest."}
 ]

@@ -99,6 +99,7 @@ func reset_level():
 	$"../score_keeper".reset_score()
 	$"../grid".reset()
 	$"../grid".can_play = $"../Control/tool_saw".is_selected
+	$"../Control/tool_saw".grid_stopped()
 
 
 func _on_stay_button_down():

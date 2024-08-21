@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scripts/audio.gd" type="Script" id=1]
 [ext_resource path="res://scripts/grid.gd" type="Script" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=25]
 [ext_resource path="res://animation/how_to_swipe.tres" type="Animation" id=26]
 [ext_resource path="res://animation/how_to_swipe_low_fps.tres" type="Animation" id=27]
+[ext_resource path="res://scenes/helpers/onboarding_score_keeper.gd" type="Script" id=28]
 
 [sub_resource type="Animation" id=3]
 resource_name = "increase_scale"
@@ -333,6 +334,9 @@ one_shot = true
 [node name="button_feedback" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 25 )
 
+[node name="score_keeper" type="Node" parent="."]
+script = ExtResource( 28 )
+
 [connection signal="timeout" from="onboarding/delay" to="onboarding" method="_on_delay_timeout"]
 [connection signal="animation_finished" from="BackgroundColor/score_ui/AnimationPlayer" to="onboarding" method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="BackgroundColor/moves_ui/timer_text/countdown_timer" to="BackgroundColor/moves_ui/timer_text" method="_on_countdown_timer_timeout"]
@@ -341,7 +345,4 @@ stream = ExtResource( 25 )
 [connection signal="animation_finished" from="BackgroundColor/start_job/AnimationPlayer" to="onboarding" method="start_job_button_became_visible"]
 [connection signal="match_made" from="grid" to="onboarding" method="_on_grid_match_made"]
 [connection signal="swap_succesful" from="grid" to="onboarding" method="_on_grid_swap_succesful"]
-[connection signal="timeout" from="destroy_timer" to="grid" method="_on_destroy_timer_timeout"]
-[connection signal="timeout" from="collapse_timer" to="grid" method="_on_collapse_timer_timeout"]
-[connection signal="timeout" from="refill_timer" to="grid" method="_on_refill_timer_timeout"]
 [connection signal="timeout" from="score_incrementer" to="onboarding" method="_on_score_incrementer_timeout"]

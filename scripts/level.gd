@@ -9,7 +9,7 @@ export var level_time_limit = 30
 # -1 is infinite moves
 export var moves = 10
 
-# 0 = beginning, 1 = intro done, 2 = gameplay, 3 = goal reached, 4 = replay, 5 = protester fail, 6 = cop fail
+# 0 = beginning, 1 = intro done, 2 = gameplay, 3 = goal reached, 4 = replay, 5 = protester fail, 6 = cop fail, 7 = boss reacting to tool
 # 10 = end level
 var level_state = 0
 var gameplay_state = 2 # depends on scene?
@@ -18,6 +18,7 @@ export var current_day : int = 0
 #export var current_level_name = ""
 export (String, MULTILINE) var next_level_scene = ""
 const main_menu = "res://scenes/main_menu.tscn"
+const game_over_scene = "res://scenes/game_over/game_over.tscn"
 
 export (String, MULTILINE) var stay_dialogue = ""
 export (String, MULTILINE) var continue_dialogue = ""
@@ -63,11 +64,13 @@ func _ready():
 		$"../score_keeper".level_goal = score_threshold
 	elif level_type == 1:
 		#$"../move_keeper".number_of_moves = moves
+		$"../move_keeper".is_used = true
 		$"../move_keeper".set_moves(moves)
 	elif level_type == 2:
 		$"../Control/timer_text".level = self
 		$"../Control/timer_text".countdown_length = level_time_limit
 		#$"../Control/timer_text".init()
+	boss.connect("boss_clicked", self, "_on_boss_clicked")
 	other_init()
 
 
@@ -107,6 +110,9 @@ func _on_DialogueBox_dialog_box_closed():
 	elif level_state == 6:
 		#game_data.previous_level_name = current_level_name
 		var _x = get_tree().change_scene(cop_scene)
+	# Boss was clicked with a tool, change state back to replay
+	elif level_state == 7:
+		level_state = 4
 	elif level_state == 10:
 		next_level()
 
@@ -256,6 +262,9 @@ func reset_level():
 	$"../grid".reset()
 	$"../grid".can_play = true
 	$"../Control/tool_saw".grid_stopped()
+	var tape = get_node_or_null("../Control/tool_combiner")
+	if tape != null:
+		$"../Control/tool_combiner".grid_stopped()
 	#$"../Control/tool_saw".is_selected
 	#$"../Control/Boss".toggle_status()
 	#level_state = 3
@@ -274,6 +283,7 @@ func _on_stay_pressed():
 	$"../Control/continue_game".visible = false
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(stay_dialogue)
 	#current_dialogue = "level_three_stay"
+	boss.make_boss_stay()
 	level_state = 4
 
 
@@ -282,6 +292,12 @@ func _on_continue_pressed():
 	$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(continue_dialogue)
 	#current_dialogue = "level_three_continue"
 	level_state = 10
+
+
+func _on_boss_clicked():
+	# Basically if the player is hitting the boss
+	if game_data.get_node("player_status").current_tool != 0:
+		level_state = 7
 
 
 func _on_grid_pauser_timeout():

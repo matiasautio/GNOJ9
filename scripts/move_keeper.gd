@@ -2,6 +2,7 @@ extends Node
 
 signal moves_deplenished
 
+var is_used = false
 onready var moves_text = $"../Control/timer_text"
 export var number_of_moves = 10
 var moves_left : int
@@ -28,7 +29,7 @@ func reset_moves():
 
 
 func _on_grid_swap_succesful():
-	if moves_left != -1:
+	if moves_left != -1 and is_used:
 		moves_left -= 1
 		moves_text.bbcode_text = "[center]" + String(moves_left) + "[/center]"
 		if moves_left == 0:

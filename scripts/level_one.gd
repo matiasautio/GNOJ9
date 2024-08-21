@@ -100,6 +100,7 @@ func reset():
 	$"../grid".can_play = $"../Control/tool_saw".is_selected
 	$"../score_keeper".reset_score()
 	is_level_goal_reached = false
+	$"../Control/tool_saw".grid_stopped()
 
 
 func next_level():

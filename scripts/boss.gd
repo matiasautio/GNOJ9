@@ -52,7 +52,7 @@ func clicked():
 					current_dialogue = "hit_boss_fired"
 		
 		# player has the tape equipped
-		elif current_level == 2:
+		elif current_tool == 2:
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/special/boss_tape_reaction.json")
 		game_data.boss_health = boss_health
 
@@ -66,7 +66,7 @@ func _on_boss_button_button_down():
 func _on_DialogueBox_dialog_box_closed():
 	if current_dialogue != null:
 		if current_dialogue == "hit_boss_fired":
-			var _x = get_tree().change_scene("res://scenes/main_menu.tscn")
+			var _x = get_tree().change_scene("res://scenes/game_over/game_over.tscn")
 		if current_dialogue == "hit_boss_dead":
 			var _x = get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
 		can_talk_to = true
@@ -77,3 +77,8 @@ func hurt_window():
 	play("default")
 	if boss_annoyance >= annoyance_treshold:
 		play("happy")
+
+
+# The player is replaying a level so the boss should always be visible
+func make_boss_stay():
+	can_talk_to = true

@@ -2,6 +2,7 @@ extends Level
 
 
 var next_phrases = 0
+var cop_triggered = false
 
 
 func _on_DialogueBox_next_phrase_requested():
@@ -35,7 +36,7 @@ func prompt_end():
 		#current_dialogue = "wanna_quit"
 		
 	# level goal is reached
-	if level_state == 3:
+	elif level_state == 3:
 		print("level state is 3 so imma go there")
 		if times_played == 0:
 			print("is boss present ", boss.is_present)
@@ -49,24 +50,27 @@ func prompt_end():
 			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
 			current_dialogue = "wanna_quit"
 	
-	if level_state == 4:
+	elif level_state == 4:
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(wanna_quit_dialogue)
 		current_dialogue = "wanna_quit"
 		level_state = 3
 		print("player has clicked on the boss, level state is now ", level_state)
 		
 	# reset
-	if level_state == 5:
+	elif level_state == 5:
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(protester_treshold_met_dialogue)
 		current_dialogue = "restart"
 		# boss.can_talk_to = false
 		return
 	
 	# go to cop scene
-	if level_state == 6:
-		$"../Control/Cop".visible = true
-		$"../Control/Cop".animation = "default"
-		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(cop_treshold_met_dialogue)
-		current_dialogue = "restart"
-		# boss.can_talk_to = false
-		return
+	elif level_state == 6:
+		if !cop_triggered:
+			$"../Control/timer_text".pause_countdown()
+			cop_triggered = true
+			$"../Control/Cop".visible = true
+			$"../Control/Cop".animation = "default"
+			$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue(cop_treshold_met_dialogue)
+			current_dialogue = "restart"
+			# boss.can_talk_to = false
+			return
