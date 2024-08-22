@@ -62,6 +62,37 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.5625 ), Color( 1, 1, 1, 0.5 ), Color( 1, 1, 1, 0.625 ), Color( 1, 1, 1, 0.75 ), Color( 1, 1, 1, 0.875 ), Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="Animation" id=12]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "fade_out"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [sub_resource type="StyleBoxEmpty" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=6]
@@ -120,37 +151,6 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ), Vector2( 0.8, 0.8 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=12]
-resource_name = "fade_in"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 2 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-
-[sub_resource type="Animation" id=13]
-resource_name = "fade_out"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-
 [node name="dream" type="Node2D"]
 script = ExtResource( 3 )
 
@@ -190,30 +190,6 @@ position = Vector2( 270, 345 )
 scale = Vector2( 4.68, 4.68 )
 frames = SubResource( 1 )
 
-[node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
-
-[node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
-play_on_start = false
-play_sounds_in_batch = false
-dialogue_path = "res://dialogue/dream.json"
-
-[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
-margin_left = 4.0
-margin_right = 223.0
-margin_bottom = 41.0
-custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = "[right]NARRATOR"
-text = "NARRATOR"
-
-[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
-custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = ""
-text = ""
-
-[node name="CharacterVoice" parent="DialogueBoxHolder/DialogueBox" index="8"]
-yes_interruptions = true
-character = "dream"
-
 [node name="BossFace" type="Sprite" parent="."]
 visible = false
 position = Vector2( 162, 554 )
@@ -224,6 +200,12 @@ texture = ExtResource( 13 )
 position = Vector2( 162, 553 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
+
+[node name="DeveloperFace" type="Sprite" parent="."]
+visible = false
+position = Vector2( 162, 553 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 13 )
 
 [node name="Protester" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -391,6 +373,52 @@ visible = false
 position = Vector2( 103, 939 )
 texture = ExtResource( 12 )
 
+[node name="FadeOut" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -6.10352e-05
+margin_right = 576.0
+margin_bottom = 1024.0
+mouse_filter = 2
+color = Color( 0.00784314, 0.207843, 0.282353, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
+autoplay = "fade_in"
+anims/fade_in = SubResource( 12 )
+anims/fade_out = SubResource( 13 )
+
+[node name="TextureRect" type="TextureRect" parent="FadeOut"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 21 )
+expand = true
+
+[node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
+
+[node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
+play_on_start = false
+play_sounds_in_batch = false
+dialogue_path = "res://dialogue/dream.json"
+
+[node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
+margin_left = 4.0
+margin_right = 223.0
+margin_bottom = 41.0
+custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
+bbcode_text = "[right]NARRATOR"
+text = "NARRATOR"
+
+[node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
+custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
+bbcode_text = ""
+text = ""
+
+[node name="CharacterVoice" parent="DialogueBoxHolder/DialogueBox" index="8"]
+yes_interruptions = true
+character = "dream"
+
 [node name="tool_button" type="Button" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -416,32 +444,10 @@ anims/increase_scale = SubResource( 2 )
 anims/increase_scale_larger = SubResource( 3 )
 anims/pump_scale = SubResource( 4 )
 
-[node name="FadeOut" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -6.10352e-05
-margin_right = 576.0
-margin_bottom = 1024.0
-mouse_filter = 2
-color = Color( 0.00784314, 0.207843, 0.282353, 1 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
-autoplay = "fade_in"
-anims/fade_in = SubResource( 12 )
-anims/fade_out = SubResource( 13 )
-
-[node name="TextureRect" type="TextureRect" parent="FadeOut"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 21 )
-expand = true
-
+[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="load_next_day"]
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
 [connection signal="next_phrase_requested" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_next_phrase_requested"]
 [connection signal="pressed" from="tool_button" to="." method="_on_tool_button_pressed"]
 [connection signal="animation_finished" from="tool_button/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="load_next_day"]
 
 [editable path="DialogueBoxHolder"]

@@ -68,7 +68,8 @@ func _on_DialogueBox_dialog_box_closed():
 		if current_dialogue == "hit_boss_fired":
 			var _x = get_tree().change_scene("res://scenes/game_over/game_over.tscn")
 		if current_dialogue == "hit_boss_dead":
-			var _x = get_tree().change_scene("res://scenes/outro_boss_dead.tscn")
+			game_data.dead_character = "boss"
+			var _x = get_tree().change_scene("res://scenes/death_scene/death_scene.tscn")
 		can_talk_to = true
 		current_dialogue = null
 

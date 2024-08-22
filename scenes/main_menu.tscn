@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/menu_theme.tres" type="Theme" id=2]
@@ -8,6 +8,13 @@
 [ext_resource path="res://scripts/main_menu.gd" type="Script" id=6]
 [ext_resource path="res://art/logo.png" type="Texture" id=7]
 [ext_resource path="res://sounds/start_game.wav" type="AudioStream" id=8]
+[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=9]
+[ext_resource path="res://art/faces/boss_face_away.png" type="Texture" id=10]
+[ext_resource path="res://art/faces/narrator_face.png" type="Texture" id=11]
+[ext_resource path="res://art/faces/protester.png" type="Texture" id=12]
+[ext_resource path="res://art/faces/it_face.png" type="Texture" id=13]
+[ext_resource path="res://art/faces/cop_happy.png" type="Texture" id=14]
+[ext_resource path="res://art/faces/games_now.png" type="Texture" id=15]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.4, 0.588235, 0.00784314, 0.745098 )
@@ -158,9 +165,9 @@ text = "restart"
 
 [node name="endless_mode" type="Button" parent="BackgroundColor/Control/VBoxContainer"]
 visible = false
-margin_top = 108.0
+margin_top = 104.0
 margin_right = 400.0
-margin_bottom = 158.0
+margin_bottom = 154.0
 rect_min_size = Vector2( 0, 50 )
 theme = ExtResource( 5 )
 custom_styles/hover = SubResource( 2 )
@@ -210,22 +217,18 @@ text = "credits"
 
 [node name="Credits" parent="." instance=ExtResource( 1 )]
 visible = false
+color = Color( 0.4, 0.588235, 0.00784314, 1 )
 
 [node name="Control" type="Control" parent="Credits"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -288.5
+margin_left = -287.5
 margin_top = -513.5
-margin_right = 288.5
+margin_right = 289.5
 margin_bottom = 513.5
 theme = ExtResource( 5 )
-
-[node name="piece" parent="Credits/Control" instance=ExtResource( 4 )]
-visible = false
-position = Vector2( 284, 310 )
-scale = Vector2( 10, 10 )
 
 [node name="TextureRect" type="TextureRect" parent="Credits/Control"]
 visible = false
@@ -241,6 +244,7 @@ texture = ExtResource( 3 )
 stretch_mode = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Credits/Control"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -270,6 +274,7 @@ Games Now!, Mom, Sami, Santtu, Aino"
 fit_content_height = true
 
 [node name="Logo" type="Sprite" parent="Credits/Control"]
+visible = false
 position = Vector2( 284, 161 )
 scale = Vector2( 1.6, 1.6 )
 texture = ExtResource( 7 )
@@ -287,6 +292,303 @@ rect_scale = Vector2( 2, 2 )
 theme = ExtResource( 5 )
 text = "return"
 
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/Control"]
+margin_left = 37.0
+margin_right = 537.0
+margin_bottom = 950.0
+rect_min_size = Vector2( 500, 128 )
+alignment = 1
+
+[node name="tatu" type="Sprite" parent="Credits/Control/VBoxContainer"]
+visible = false
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
+
+[node name="item_0" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 95.0
+margin_right = 500.0
+margin_bottom = 223.0
+alignment = 1
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_0"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 9 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_0"]
+margin_left = 132.0
+margin_right = 500.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_0/description_holder"]
+margin_top = 20.0
+margin_right = 185.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]a game by
+[wave]Tatu Heinämäki[/wave]"
+text = "a game by
+Tatu Heinämäki"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="item_1" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 227.0
+margin_right = 500.0
+margin_bottom = 355.0
+alignment = 1
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_1"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 10 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_1"]
+margin_left = 132.0
+margin_right = 500.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_1/description_holder"]
+margin_top = 20.0
+margin_right = 185.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]with audio by
+[wave]Aleksi Martikainen[/wave]"
+text = "with audio by
+Aleksi Martikainen"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="item_2" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 359.0
+margin_right = 500.0
+margin_bottom = 459.0
+rect_min_size = Vector2( 0, 100 )
+alignment = 1
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_2"]
+visible = false
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 10 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_2"]
+margin_right = 500.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 64 )
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_2/description_holder"]
+anchor_left = -0.002
+anchor_right = -0.002
+margin_top = 42.0
+margin_right = 250.0
+margin_bottom = 63.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center]Thanks to"
+text = "Thanks to"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="item_3" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 463.0
+margin_right = 500.0
+margin_bottom = 591.0
+alignment = 1
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_3"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 12 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_3"]
+margin_left = 132.0
+margin_right = 248.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_3/description_holder"]
+margin_top = 40.0
+margin_right = 50.0
+margin_bottom = 82.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center][wave]Mom"
+text = "Mom"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="face2" type="TextureRect" parent="Credits/Control/VBoxContainer/item_3"]
+margin_left = 252.0
+margin_right = 380.0
+margin_bottom = 128.0
+texture = ExtResource( 11 )
+
+[node name="description_holder2" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_3"]
+margin_left = 384.0
+margin_right = 500.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_3/description_holder2"]
+margin_top = 40.0
+margin_right = 70.0
+margin_bottom = 82.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center][wave]Santtu"
+text = "Santtu"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="item_5" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 595.0
+margin_right = 500.0
+margin_bottom = 723.0
+alignment = 1
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_5"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 14 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_5"]
+margin_left = 132.0
+margin_right = 248.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_5/description_holder"]
+margin_top = 40.0
+margin_right = 50.0
+margin_bottom = 82.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center][wave]Sami"
+text = "Sami"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="face2" type="TextureRect" parent="Credits/Control/VBoxContainer/item_5"]
+margin_left = 252.0
+margin_right = 380.0
+margin_bottom = 128.0
+texture = ExtResource( 13 )
+
+[node name="description_holder2" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_5"]
+margin_left = 384.0
+margin_right = 500.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_5/description_holder2"]
+margin_top = 40.0
+margin_right = 70.0
+margin_bottom = 82.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center][wave]Aino"
+text = "Aino"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="item_6" type="HBoxContainer" parent="Credits/Control/VBoxContainer"]
+margin_top = 727.0
+margin_right = 500.0
+margin_bottom = 855.0
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Credits/Control/VBoxContainer/item_6"]
+margin_right = 80.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 80, 0 )
+color = Color( 1, 1, 1, 0 )
+
+[node name="face" type="TextureRect" parent="Credits/Control/VBoxContainer/item_6"]
+margin_left = 84.0
+margin_right = 212.0
+margin_bottom = 128.0
+texture = ExtResource( 15 )
+
+[node name="description_holder" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_6"]
+margin_left = 216.0
+margin_right = 500.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content_height = true
+
+[node name="description" type="RichTextLabel" parent="Credits/Control/VBoxContainer/item_6/description_holder"]
+margin_top = 40.0
+margin_right = 100.0
+margin_bottom = 82.0
+rect_min_size = Vector2( 0, 21 )
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+bbcode_enabled = true
+bbcode_text = "[center][wave]Games Now!"
+text = "Games Now!"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="start_delay" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
@@ -300,9 +602,7 @@ stream = ExtResource( 8 )
 [connection signal="button_down" from="BackgroundColor/Control/VBoxContainer/restart" to="." method="_on_restart_button_down"]
 [connection signal="pressed" from="BackgroundColor/Control/VBoxContainer/endless_mode" to="." method="_on_endless_mode_pressed"]
 [connection signal="button_down" from="BackgroundColor/Control/VBoxContainer/credits" to="." method="_on_credits_button_down"]
-[connection signal="animation_finished" from="Credits/Control/piece/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="button_down" from="Credits/Control/return" to="." method="_on_return_button_down"]
 [connection signal="timeout" from="start_delay" to="." method="_on_start_delay_timeout"]
 
 [editable path="BackgroundColor/Control/piece"]
-[editable path="Credits/Control/piece"]

@@ -104,7 +104,7 @@ func prompt_end():
 		if is_raid_over:
 			var _x = get_tree().change_scene("res://scenes/day_two/day_two_level_three.tscn")#game_data.previous_level_name)
 		else:
-			var _x = get_tree().change_scene("res://scenes/day_two/day_two_cop_died.tscn")
+			var _x = get_tree().change_scene("res://scenes/death_scene/death_scene.tscn")
 	elif level_state == 4:
 		$"../Control/DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_raid_failed.json")
 		$"../Control/Cop".toggle_status()

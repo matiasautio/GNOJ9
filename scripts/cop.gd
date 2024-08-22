@@ -21,6 +21,7 @@ func clicked():
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/cop_dead.json")
 			can_talk_to = false
 			current_dialogue = "hit_boss_dead"
+			game_data.dead_character = "cop"
 			emit_signal("dead")
 		elif current_tool == 2:
 			$"../DialogueBoxHolder/DialogueBox".trigger_dialogue("res://dialogue/special/cop_tape_reaction.json")

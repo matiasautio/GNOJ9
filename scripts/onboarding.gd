@@ -3,6 +3,34 @@ extends Node
 var index = 0
 var score = 0
 var previous_score = 0
+var grid
+
+
+func _ready():
+	grid = $"../grid"
+	grid.onboarding = true
+
+
+func spawn_pieces():
+	grid.spawn_specific_piece(1,0,3)
+	grid.spawn_specific_piece(1,0,2)
+	grid.spawn_specific_piece(0,0,1)
+	grid.spawn_specific_piece(2,0,0)
+	# second column
+	grid.spawn_specific_piece(1,1,3)
+	grid.spawn_specific_piece(0,1,2)
+	grid.spawn_specific_piece(2,1,1)
+	grid.spawn_specific_piece(0,1,0)
+	# third column
+	grid.spawn_specific_piece(2,2,3)
+	grid.spawn_specific_piece(1,2,2)
+	grid.spawn_specific_piece(1,2,1)
+	grid.spawn_specific_piece(2,2,0)
+	# fourth column
+	grid.spawn_specific_piece(0,3,3)
+	grid.spawn_specific_piece(0,3,2)
+	grid.spawn_specific_piece(2,3,1)
+	grid.spawn_specific_piece(1,3,0)
 
 
 func _on_grid_swap_succesful():

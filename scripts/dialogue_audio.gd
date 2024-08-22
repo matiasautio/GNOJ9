@@ -49,3 +49,5 @@ func set_sounds(sound_set):
 		sounds = dream_sounds
 	elif sound_set == "protester":
 		sounds = protester_sounds
+	elif sound_set == "developer":
+		sounds = boss_sounds

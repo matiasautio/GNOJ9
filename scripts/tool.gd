@@ -11,6 +11,10 @@ export var tool_i_am = 1
 func _ready():
 	$"../../grid".connect("swapping_pieces", self, "swapping_pieces")
 	$"../../grid".connect("grid_stopped", self, "grid_stopped")
+	if tool_i_am == 1:
+		game_data.get_node("player_status").saw_node = self
+	elif tool_i_am == 2:
+		game_data.get_node("player_status").tape_node = self
 
 
 func swapping_pieces():
@@ -51,3 +55,9 @@ func deselect():
 func _on_tool_button_button_down():
 	if can_swap:
 		toggle_selection()
+
+
+func tool_not_selected_feedback():
+	if !$"../DialogueBoxHolder/DialogueBox".visible:
+		$AnimationPlayer.play("feedback")
+		$tool_not_selected.play()

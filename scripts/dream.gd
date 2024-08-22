@@ -10,6 +10,8 @@ var dream_sequence_index = 0
 onready var dream_vision = $dream_vision
 
 var scene_sequence_index = 0
+var ready_for_next_day = false
+var display_saving = false
 
 onready var narrator = $NarratorFace
 onready var protester = $Protester
@@ -24,6 +26,8 @@ export var visitor_sounds = "boss"
 export (String, MULTILINE) var prostester_dialogue: String = "res://dialogue/protester_visit.json"
 export (String, MULTILINE) var visitor_dialogue : String = "res://dialogue/day_two/it_visit.json"
 export (String, MULTILINE) var next_scene : String = "res://scenes/day_two/day_two_intro.tscn"
+var game_saved_dialogue = "res://dialogue/special/developer_game_saved.json"
+var game_saved_short_dialogue = "res://dialogue/special/developer_game_saved_short.json"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -49,9 +53,10 @@ func _on_DialogueBox_dialog_box_closed():
 		$Protester/AnimationPlayer.play("appears")
 	elif scene_sequence_index == 1:
 		if day == 1:
-			game_data.current_level = day + 1
+			#trigger_save_game()
+			#game_data.current_level = day + 1
 			# all data from level 1 is written to disk here and only here
-			game_data.save_progression()
+			#game_data.save_progression()
 			#var _scene = get_tree().change_scene(next_scene)
 			$FadeOut/AnimationPlayer.play("fade_out")
 		elif day == 2:
@@ -63,13 +68,24 @@ func _on_DialogueBox_dialog_box_closed():
 			$Visitor/AnimationPlayer.play("appears")
 		scene_sequence_index += 1
 	elif scene_sequence_index == 2:
-		scene_sequence_index += 1
-		game_data.current_level = day + 1
-		# all data from level 1 is written to disk here and only here
-		game_data.save_progression()
 		$FadeOut/AnimationPlayer.play("fade_out")
-		#var _scene = get_tree().change_scene(next_scene)
-		
+	elif scene_sequence_index == 100:
+		$FadeOut/AnimationPlayer.play("fade_out")
+
+
+func trigger_save_game():
+	game_data.current_level = day + 1
+	game_data.save_progression()
+	$DeveloperFace.visible = true
+	$DialogueBoxHolder/DialogueBox/CharacterVoice.set_sounds("developer")
+	if day == 1:
+		$DialogueBoxHolder/DialogueBox.trigger_dialogue(game_saved_dialogue)
+	elif day == 2:
+		$DialogueBoxHolder/DialogueBox.trigger_dialogue(game_saved_short_dialogue)
+	scene_sequence_index = 100
+	ready_for_next_day = true
+
+
 func _on_DialogueBox_next_phrase_requested():
 	if dream_sequence_index == 0:
 		dream_vision.play("cut")
@@ -113,6 +129,15 @@ func _on_tool_button_pressed():
 
 func load_next_day(_anim_name):
 	if _anim_name == "fade_in":
+		if display_saving:
+			trigger_save_game()
+			return
 		$DialogueBoxHolder/DialogueBox.start_dialogue()
 	if _anim_name == "fade_out":
-		var _scene = get_tree().change_scene(next_scene)
+		if ready_for_next_day:
+			var _scene = get_tree().change_scene(next_scene)
+		$Protester.hide()
+		$Visitor.hide()
+		background.color = "d8c4cf"
+		$FadeOut/AnimationPlayer.play("fade_in")
+		display_saving = true

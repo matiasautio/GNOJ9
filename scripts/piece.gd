@@ -11,10 +11,22 @@ export (int) var health = 1
 
 func _ready():
 	tween = $Tween
+	#yield(get_tree().create_timer(2), "timeout")
 
 
 func move(target):
 	tween.interpolate_property(self, "position", position, target, .3, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	tween.start()
+
+
+func touch():
+	tween.interpolate_property(self, "scale", Vector2(1,1), Vector2(0.75,0.75), .75, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	#tween.interpolate_property(self, "scale", Vector2(0.75,0.75), Vector2(1,1), .75, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	tween.start()
+
+
+func release_touch():
+	tween.interpolate_property(self, "scale", Vector2(0.75,0.75), Vector2(1,1), 1.5, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
 	tween.start()
 
 

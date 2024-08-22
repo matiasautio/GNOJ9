@@ -85,6 +85,9 @@ var controlling = false
 # Matched tiles arrays
 var matched_tiles_arrays = []
 
+# Onboarding
+var onboarding = false
+
 # Pausing and resetting variables
 # no variables for this currently
 
@@ -105,6 +108,9 @@ func _ready():
 	if concrete_spaces.size() > 0 or random_concrete:
 		spawn_concrete()
 	if possible_pieces.size() > 0:
+		if onboarding:
+			$"../onboarding".spawn_pieces()
+			return
 		spawn_pieces()
 		for piece in possible_pieces:
 			matched_tiles_arrays.append([])
@@ -242,21 +248,37 @@ func is_in_grid(grid_position):
 
 
 func touch_input():
-	if can_play:
-		if Input.is_action_just_pressed("ui_touch"):
-			var mouse = get_global_mouse_position()
-			mouse = pixel_to_grid(mouse.x, mouse.y)
-			if is_in_grid(mouse):
-				first_touch = mouse
+	#if can_play:
+	if Input.is_action_just_pressed("ui_touch"):
+		var mouse = get_global_mouse_position()
+		mouse = pixel_to_grid(mouse.x, mouse.y)
+		if is_in_grid(mouse):
+			first_touch = mouse
+			if can_play:
+				all_pieces[mouse.x][mouse.y].touch()
 				controlling = true
-		if Input.is_action_just_released("ui_touch"):
-			var mouse = get_global_mouse_position()
-			mouse = pixel_to_grid(mouse.x, mouse.y)
-			if is_in_grid(mouse) and controlling:
-				final_touch = mouse
+	if Input.is_action_just_released("ui_touch"):
+		var mouse = get_global_mouse_position()
+		mouse = pixel_to_grid(mouse.x, mouse.y)
+		if is_in_grid(mouse):# and controlling:
+			final_touch = mouse
+			if final_touch != first_touch:
+				game_data.get_node("player_status").no_tool_feedback()
+			if controlling:
 				player_swapped = true
+				all_pieces[first_touch.x][first_touch.y].release_touch()
 				touch_difference(first_touch, final_touch)
-			controlling = false
+		controlling = false
+#	else:
+#		if Input.is_action_just_released("ui_touch"):
+#			var mouse = get_global_mouse_position()
+#			mouse = pixel_to_grid(mouse.x, mouse.y)
+#			if is_in_grid(mouse):
+#				game_data.get_node("player_status").no_tool_feedback()
+		#if Input.is_action_just_pressed("ui_touch"):
+			#game_data.get_node("player_status").no_tool_feedback()
+		#if Input.is_action_just_released("ui_touch"):
+			#all_pieces[first_touch.x][first_touch.y].release_touch()
 
 
 func swap_pieces(column, row, direction):
@@ -631,3 +653,32 @@ func _on_concrete_holder_remove_concrete(damaged_concrete):
 	emit_signal("removed_rock", 1, "rock")
 	$rock_break.play_audio()
 	#empty_spaces = remove_from_array(empty_spaces, damaged_concrete)
+
+
+#	var i_index = 0
+#	var j_index = 0
+#	for i in width:
+#		for j in height:
+#			if !restricted_fill(Vector2(i,j)):
+#				# pick a random number and store it
+#				var rand = floor(rand_range(0, possible_pieces.size()))
+#				var piece = possible_pieces[rand].instance()
+#				var loops = 0
+#				while(match_at(i, j, piece.color) and loops < 100):
+#					rand = floor(rand_range(0, possible_pieces.size()))
+#					loops += 1
+#					piece = possible_pieces[rand].instance()
+#				# instantiate piece from array
+#				add_child(piece)
+#				piece.position = grid_to_pixel(i, j)
+#				all_pieces[i][j] = piece
+#				j_index += 1
+#		i_index += 1
+#		print(i_index)
+
+
+func spawn_specific_piece(color, i, j):
+	var piece = possible_pieces[color].instance()
+	add_child(piece)
+	piece.position = grid_to_pixel(i, j)
+	all_pieces[i][j] = piece

@@ -1,53 +1,31 @@
 [gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://scripts/score_keeper.gd" type="Script" id=1]
-[ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/credits.gd" type="Script" id=3]
-[ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=4]
-[ext_resource path="res://art/Tree Pieces/Birch/0001.png" type="Texture" id=5]
-[ext_resource path="res://art/bg_shadow_white.png" type="Texture" id=6]
-[ext_resource path="res://ui/basic_theme.tres" type="Theme" id=7]
-[ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=8]
-[ext_resource path="res://art/faces/protester.png" type="Texture" id=9]
-[ext_resource path="res://art/tools_header.png" type="Texture" id=10]
-[ext_resource path="res://art/tool.png" type="Texture" id=11]
-[ext_resource path="res://art/screen.png" type="Texture" id=12]
-[ext_resource path="res://art/faces/boss_face.png" type="Texture" id=13]
-[ext_resource path="res://art/bg_shadow.png" type="Texture" id=14]
+[ext_resource path="res://art/police_pieces/0002.png" type="Texture" id=1]
+[ext_resource path="res://scenes/elements/background_color.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/DialogueBoxHolder.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/basic_theme.tres" type="Theme" id=4]
+[ext_resource path="res://scenes/death_scene/death_scene.gd" type="Script" id=5]
+[ext_resource path="res://art/tool.png" type="Texture" id=7]
+[ext_resource path="res://art/tools_header.png" type="Texture" id=8]
+[ext_resource path="res://art/dc0dw0y-6473555f-a449-4ca2-a519-7522693e870e.jpg" type="Texture" id=9]
+[ext_resource path="res://art/faces/protester.png" type="Texture" id=10]
+[ext_resource path="res://art/screen.png" type="Texture" id=11]
+[ext_resource path="res://animation/boss_faces.tres" type="SpriteFrames" id=12]
+[ext_resource path="res://art/police_pieces/0003.png" type="Texture" id=13]
+[ext_resource path="res://art/police_pieces/0005.png" type="Texture" id=14]
+[ext_resource path="res://art/police_pieces/0001.png" type="Texture" id=15]
+[ext_resource path="res://art/police_pieces/0004.png" type="Texture" id=16]
 
-[sub_resource type="Animation" id=1]
-resource_name = "fade_in"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 2 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 15 ), ExtResource( 15 ), ExtResource( 15 ), ExtResource( 1 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 14 ) ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
 
-[sub_resource type="Animation" id=2]
-resource_name = "fade_out"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-
-[node name="credits" type="Node2D"]
-script = ExtResource( 3 )
+[node name="day_two_cop_died" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
@@ -55,14 +33,9 @@ margin_left = -668.0
 margin_top = 93.0
 margin_right = 1252.0
 margin_bottom = 1173.0
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
-[node name="BackgroundColor" parent="." instance=ExtResource( 4 )]
-color = Color( 0.847059, 0.768627, 0.811765, 1 )
-
-[node name="shadow" parent="BackgroundColor" index="0"]
-modulate = Color( 1, 1, 1, 0.0980392 )
-texture = ExtResource( 6 )
+[node name="BackgroundColor" parent="." instance=ExtResource( 2 )]
 
 [node name="destroy_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -77,32 +50,33 @@ wait_time = 0.5
 one_shot = true
 
 [node name="score_keeper" type="Node" parent="."]
-script = ExtResource( 1 )
 
-[node name="Background" type="Sprite" parent="."]
+[node name="Background" type="AnimatedSprite" parent="."]
 position = Vector2( 270, 345 )
 scale = Vector2( 4.64844, 4.64844 )
-texture = ExtResource( 5 )
+frames = SubResource( 1 )
 
-[node name="DialogueBoxHolder" parent="." instance=ExtResource( 2 )]
+[node name="DialogueBoxHolder" parent="." instance=ExtResource( 3 )]
 
 [node name="DialogueBox" parent="DialogueBoxHolder" index="0"]
-dialogue_path = "res://dialogue/credits/note_from_tatu.json"
+play_on_start = false
+dialogue_path = "res://dialogue/day_two/day_two_dead_cop.json"
 
 [node name="Name" parent="DialogueBoxHolder/DialogueBox" index="3"]
-margin_left = 270.0
-margin_right = 356.0
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
-bbcode_text = "DEVELOPER"
-text = "DEVELOPER"
 
 [node name="Text" parent="DialogueBoxHolder/DialogueBox" index="4"]
 custom_colors/default_color = Color( 0.847059, 0.768627, 0.811765, 1 )
 
-[node name="DeveloperFace" type="Sprite" parent="."]
+[node name="BossFace" type="AnimatedSprite" parent="."]
+visible = false
 position = Vector2( 162, 554 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 13 )
+frames = ExtResource( 12 )
+
+[node name="CharacterPortrait" type="Sprite" parent="."]
+position = Vector2( 162, 554 )
+scale = Vector2( 2, 2 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false
@@ -113,7 +87,7 @@ margin_left = 293.0
 margin_right = 477.0
 margin_bottom = 118.0
 rect_scale = Vector2( 1.5, 1.5 )
-theme = ExtResource( 7 )
+theme = ExtResource( 4 )
 
 [node name="score_header" type="RichTextLabel" parent="MarginContainer2"]
 margin_right = 184.0
@@ -142,7 +116,7 @@ step = 1.0
 visible = false
 margin_right = 576.0
 margin_bottom = 1024.0
-theme = ExtResource( 7 )
+theme = ExtResource( 4 )
 
 [node name="Header" type="ColorRect" parent="Control"]
 anchor_top = 1.0
@@ -157,27 +131,27 @@ modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
 position = Vector2( 483, 111 )
 rotation = 3.14159
 scale = Vector2( 1.25, -1 )
-texture = ExtResource( 12 )
+texture = ExtResource( 11 )
 
 [node name="Tool_0" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 382, 174 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="Tool_1" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 582, 174 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="Tool_2" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 782, 174 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="ToolsHeader" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 586, 62 )
-texture = ExtResource( 10 )
+texture = ExtResource( 8 )
 
 [node name="score" type="RichTextLabel" parent="Control"]
 margin_left = 289.0
@@ -226,57 +200,34 @@ rect_scale = Vector2( 1.5, 1.5 )
 [node name="Tool_3" type="Sprite" parent="Control"]
 position = Vector2( 287, 937 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="Tool_4" type="Sprite" parent="Control"]
 position = Vector2( 387, 937 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="Tool_5" type="Sprite" parent="Control"]
 position = Vector2( 487, 937 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
+texture = ExtResource( 7 )
 
 [node name="ToolsHeader2" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 389, 881 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 10 )
+texture = ExtResource( 8 )
 
 [node name="Protester" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 103, 938 )
-texture = ExtResource( 9 )
+texture = ExtResource( 10 )
 
 [node name="Screen" type="Sprite" parent="Control"]
 visible = false
 position = Vector2( 103, 939 )
-texture = ExtResource( 12 )
-
-[node name="FadeOut" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -6.10352e-05
-margin_right = 576.0
-margin_bottom = 1024.0
-mouse_filter = 2
-color = Color( 0.00784314, 0.207843, 0.282353, 1 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="FadeOut"]
-autoplay = "fade_in"
-anims/fade_in = SubResource( 1 )
-anims/fade_out = SubResource( 2 )
-
-[node name="TextureRect" type="TextureRect" parent="FadeOut"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 14 )
-expand = true
+texture = ExtResource( 11 )
 
 [connection signal="dialog_box_closed" from="DialogueBoxHolder/DialogueBox" to="." method="_on_DialogueBox_dialog_box_closed"]
-[connection signal="animation_finished" from="FadeOut/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
-[editable path="BackgroundColor"]
 [editable path="DialogueBoxHolder"]

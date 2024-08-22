@@ -13,6 +13,8 @@ var orig_level = 0
 var current_level = 1
 
 var previous_level_name = ""
+# boss, cop
+var dead_character = "cop"
 
 # endless mode
 var endless_high_score = 0

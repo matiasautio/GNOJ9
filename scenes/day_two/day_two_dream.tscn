@@ -305,6 +305,12 @@ position = Vector2( 162, 553 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 
+[node name="DeveloperFace" type="Sprite" parent="."]
+visible = false
+position = Vector2( 162, 553 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 13 )
+
 [node name="Protester" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 282, 434 )
