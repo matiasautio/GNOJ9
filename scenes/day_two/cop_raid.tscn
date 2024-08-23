@@ -425,6 +425,10 @@ margin_top = -172.0
 [node name="ColorRect" type="ColorRect" parent="Control/input_blocker"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = 1.0
 color = Color( 1, 1, 1, 0 )
 
 [node name="grid_pauser" type="Timer" parent="."]
@@ -452,5 +456,7 @@ one_shot = true
 [connection signal="timeout" from="grid_pauser" to="cop_raid" method="_on_grid_pauser_timeout"]
 
 [editable path="Control/tool_saw"]
+[editable path="Control/tool_saw/Glitch"]
 [editable path="Control/tool_combiner"]
+[editable path="Control/tool_combiner/Glitch"]
 [editable path="Control/DialogueBoxHolder"]

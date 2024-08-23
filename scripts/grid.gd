@@ -250,35 +250,43 @@ func is_in_grid(grid_position):
 func touch_input():
 	#if can_play:
 	if Input.is_action_just_pressed("ui_touch"):
+		#print("Touch registered.")
 		var mouse = get_global_mouse_position()
 		mouse = pixel_to_grid(mouse.x, mouse.y)
+		# The player has touched a piece in the grid
 		if is_in_grid(mouse):
 			first_touch = mouse
 			if can_play:
-				all_pieces[mouse.x][mouse.y].touch()
-				controlling = true
+				# The piece is movable
+				if all_pieces[mouse.x][mouse.y] != null:
+					all_pieces[mouse.x][mouse.y].touch()
+					controlling = true
+				# The piece is not movable, eg. a rock
+				#else:
+					#print("The piece touched is null.")
+			#else:
+				#print("can_play is set to false.")
+		#else:
+			#print("Mouse is not in grid.")
 	if Input.is_action_just_released("ui_touch"):
 		var mouse = get_global_mouse_position()
 		mouse = pixel_to_grid(mouse.x, mouse.y)
-		if is_in_grid(mouse):# and controlling:
+		if is_in_grid(mouse):
 			final_touch = mouse
+			# this might get triggered unwantedly too
+			# so also the tool itself checks if the feedback can trigger
 			if final_touch != first_touch:
 				game_data.get_node("player_status").no_tool_feedback()
 			if controlling:
+				#print("Player is moving a piece.")
 				player_swapped = true
 				all_pieces[first_touch.x][first_touch.y].release_touch()
+				# If this is called, the switching tools is not allowed
+				# Thus emit grid stopped should be emitted
 				touch_difference(first_touch, final_touch)
+		if controlling:
+			all_pieces[first_touch.x][first_touch.y].release_touch()
 		controlling = false
-#	else:
-#		if Input.is_action_just_released("ui_touch"):
-#			var mouse = get_global_mouse_position()
-#			mouse = pixel_to_grid(mouse.x, mouse.y)
-#			if is_in_grid(mouse):
-#				game_data.get_node("player_status").no_tool_feedback()
-		#if Input.is_action_just_pressed("ui_touch"):
-			#game_data.get_node("player_status").no_tool_feedback()
-		#if Input.is_action_just_released("ui_touch"):
-			#all_pieces[first_touch.x][first_touch.y].release_touch()
 
 
 func swap_pieces(column, row, direction):
@@ -304,6 +312,10 @@ func swap_pieces(column, row, direction):
 			$Swap.play()
 			if !move_checked:
 				find_matches()
+	else:
+		#print("Cannot swap pieces!")
+		#state = move
+		emit_signal("grid_stopped")
 
 
 func store_info(first_piece, other_piece, place, direction):
@@ -414,16 +426,13 @@ func is_piece_null(column, row):
 
 func match_and_dim(item, pos):
 	if is_protecting:
-		#print("should protect")
-		#just_protected_tiles.append(pos)
 		concrete_spaces.append(pos)
 		emit_signal("make_concrete", pos, item)
-		#empty_spaces.append(pos)
-		#item.protected = true
-		#item.hide()
 		item.cut()
 		item.matched = true
 		item.dim()
+		#state = move
+		emit_signal("grid_stopped")
 	else:
 		item.cut()
 		item.matched = true
@@ -431,7 +440,7 @@ func match_and_dim(item, pos):
 
 
 func destroy_matched():
-	print("Destroying matched tiles.")
+	#print("Destroying matched tiles.")
 	#var number_of_tiles = 0 # Used to emit the score
 	#var tile_group = ""
 	var was_matched = false
@@ -449,24 +458,17 @@ func destroy_matched():
 					#number_of_tiles += 1
 	move_checked = true
 	if was_matched:
-		#print("Tiles were matched!")
-		#print(number_of_tiles, " tiles were matched")'
-		# Tiles per match per group could be added to an array and the points given re that
-		#emit_signal("match_made", number_of_tiles, tile_group)
-		$"../collapse_timer".start()
+		# If we are protecting, skip to the end of this logic
+		if is_protecting:
+			after_refill()
+		# we only ever need to collapse if we are cutting trees
+		else:
+			$"../collapse_timer".start()
 		if player_swapped:
 			emit_signal("swap_succesful")
 	else:
-		#if !was_protected:
-		#print("Tiles were not matched!")
 		$FailSound.play()
 		swap_back()
-		#else:
-			#if player_swapped:
-			#	emit_signal("swap_succesful")
-			#state = move
-			#move_checked = false
-			#print("Tile was protected!")
 	# making sure this is always reverted to false
 	player_swapped = false
 

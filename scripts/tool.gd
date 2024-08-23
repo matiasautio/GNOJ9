@@ -2,6 +2,7 @@ extends AnimatedSprite
 
 
 var can_swap = true
+var is_blocked = false
 onready var tool_sprite = self
 onready var player_status = get_node("/root/game_data/player_status")
 var is_selected = false
@@ -15,6 +16,9 @@ func _ready():
 		game_data.get_node("player_status").saw_node = self
 	elif tool_i_am == 2:
 		game_data.get_node("player_status").tape_node = self
+	if is_blocked:
+		can_swap = false
+		$Glitch.show()
 
 
 func swapping_pieces():
@@ -53,8 +57,13 @@ func deselect():
 
 
 func _on_tool_button_button_down():
+	print("Trying to swap tools.")
 	if can_swap:
 		toggle_selection()
+	else:
+		print("Cannot swap.")
+		if is_blocked:
+			$Glitch/AnimationPlayer.play("glitch")
 
 
 func tool_not_selected_feedback():

@@ -386,4 +386,5 @@ script = ExtResource( 23 )
 [connection signal="moves_deplenished" from="move_keeper" to="level_glitch" method="_on_move_keeper_moves_deplenished"]
 
 [editable path="Control/tool_saw"]
+[editable path="Control/tool_saw/Glitch"]
 [editable path="Control/DialogueBoxHolder"]

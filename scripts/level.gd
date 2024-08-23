@@ -71,6 +71,9 @@ func _ready():
 		$"../Control/timer_text".countdown_length = level_time_limit
 		#$"../Control/timer_text".init()
 	boss.connect("boss_clicked", self, "_on_boss_clicked")
+	if game_data.is_tape_blocked:
+		$"../Control/tool_combiner".can_swap = false
+		$"../Control/tool_combiner".is_blocked = true
 	other_init()
 
 

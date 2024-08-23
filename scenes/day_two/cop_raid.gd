@@ -36,8 +36,6 @@ func _on_DialogueBox_dialog_box_closed():
 	elif level_state == 3:
 		prompt_end()
 	elif level_state == 4:
-		# No need to save here, because the game has been saved at the start of the day
-		#game_data.save_progression()
 		var _x = get_tree().change_scene(game_over_scene)
 	elif level_state == 6:
 		var _x = get_tree().change_scene(cop_scene)
@@ -46,7 +44,9 @@ func _on_DialogueBox_dialog_box_closed():
 	elif level_state == 187:
 		$"../Control/Developer".visible = false
 		level_state = 2
+		$"../grid".possible_pieces.erase(cop_piece)
 		reset_level()
+		$"../grid".possible_pieces.append(cop_piece)
 
 
 func _on_DialogueBox_next_phrase_requested():
@@ -155,6 +155,7 @@ func reset_level():
 	var tape = get_node_or_null("../Control/tool_combiner")
 	if tape != null:
 		$"../Control/tool_combiner".grid_stopped()
+	$"../grid".possible_pieces.erase(cop_piece)
 
 
 func _on_Cop_cop_clicked():

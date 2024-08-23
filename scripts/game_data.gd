@@ -15,6 +15,7 @@ var current_level = 1
 var previous_level_name = ""
 # boss, cop
 var dead_character = "cop"
+var is_tape_blocked = false
 
 # endless mode
 var endless_high_score = 0

@@ -24,3 +24,5 @@ frames = SubResource( 1 )
 animation = "cut"
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="ScaleTween" type="Tween" parent="."]

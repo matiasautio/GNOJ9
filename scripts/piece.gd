@@ -2,6 +2,7 @@ extends Node2D
 
 export var color : String
 onready var tween
+var scale_tween
 var matched = false
 export var is_static = false
 var protected = false
@@ -11,6 +12,7 @@ export (int) var health = 1
 
 func _ready():
 	tween = $Tween
+	scale_tween = $ScaleTween
 	#yield(get_tree().create_timer(2), "timeout")
 
 
@@ -20,14 +22,18 @@ func move(target):
 
 
 func touch():
-	tween.interpolate_property(self, "scale", Vector2(1,1), Vector2(0.75,0.75), .75, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	#print("scaling down")
+	scale_tween.reset_all()
+	scale_tween.interpolate_property(self, "scale", Vector2(1,1), Vector2(0.75,0.75), .75, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
 	#tween.interpolate_property(self, "scale", Vector2(0.75,0.75), Vector2(1,1), .75, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
-	tween.start()
+	scale_tween.start()
 
 
 func release_touch():
-	tween.interpolate_property(self, "scale", Vector2(0.75,0.75), Vector2(1,1), 1.5, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
-	tween.start()
+	#print("scaling up")
+	scale_tween.reset_all()
+	scale_tween.interpolate_property(self, "scale", Vector2(0.75,0.75), Vector2(1,1), 1.5, Tween.TRANS_ELASTIC, Tween.EASE_OUT);
+	scale_tween.start()
 
 
 func dim():
